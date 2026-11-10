@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GPEIS Front Door Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fredoka:wght@500;600&family=Jost:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="sample-bar" role="note">
+  <span id="sampleNote"><b>샘플 화면</b> · 실제 계정·결제 없음</span>
+  <button type="button" id="resetDemo" class="link-btn">처음 상태로</button>
+  <span class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="ko">한국어</button><button type="button" data-lang="en">English</button>
+  </span>
+</div>
+<div id="app" aria-live="polite"></div>
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<script src="regions.js"></script>
+<script src="books.js"></script>
+<script src="book-catalog.js"></script>
+<script src="backend.js"></script>
+<script src="teaser-overlays.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
