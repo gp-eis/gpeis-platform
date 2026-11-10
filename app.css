@@ -1551,3 +1551,13 @@ main.about .stress p.dim { opacity: 1; }
 @keyframes pmRollUp { 0%, 26% { transform: translateY(0); } 33%, 59% { transform: translateY(-100%); } 66%, 92% { transform: translateY(-200%); } 100% { transform: translateY(-300%); } }
 @keyframes pmRollDown { 0%, 26% { transform: translateY(-300%); } 33%, 59% { transform: translateY(-200%); } 66%, 92% { transform: translateY(-100%); } 100% { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .pm-roll > div > div { animation: none; } .pm-roll .down > div { transform: translateY(-300%); } }
+
+/* Teaser scene 5 on narrow screens (phones, small tablets): the three moving photos are sized by the screen's width and set side by side,
+   so the baker no longer covers the children at the block tower. On a computer screen nothing changes. */
+@media (max-width: 1000px) {
+  .reel.teaser .scene-r:nth-child(5) .tz-pop { height: auto !important; top: auto !important; bottom: auto !important; }
+  .reel.teaser .scene-r:nth-child(5) .tz-pop video { width: 100%; height: auto; }
+  .reel.teaser .scene-r:nth-child(5) .tz-pop:nth-of-type(1) { left: 3% !important; top: 6% !important; width: 24%; }
+  .reel.teaser .scene-r:nth-child(5) .tz-pop:nth-of-type(2) { left: 30% !important; top: 6% !important; width: 21%; }
+  .reel.teaser .scene-r:nth-child(5) .tz-pop:nth-of-type(3) { left: 33% !important; bottom: 6% !important; width: 28%; }
+}
