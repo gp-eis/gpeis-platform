@@ -61,11 +61,11 @@
       en: 'The power to think becomes logic, and logic becomes writing. Twelve themes for organising ideas and writing them in English.',
       note: ['표지 옆 장들은 열두 주제의 워크시트예요. 내 생각 말하기에서 시작해 근거를 들고, 설득하고, 한 편의 글을 완성해요.', 'The pages beside the cover are the worksheets for the twelve themes: from saying my own idea to giving reasons, persuading and finishing an essay.'],
       facts: [['Logic Essay · GPPIS', 'Logic Essay · GPPIS'], ['12가지 주제', '12 themes'], ['주제마다 워크시트 2쪽', 'A two-page worksheet per theme']], sheets: ws('logic-essay', 2, LE) },
-    { id: 'fresh-math', series: 'fm', level: 'A', no: '1', title: 'Fresh Math: Black Forest', kind: 'Booklet', cover: 'assets/fmbook/1.webp', talk: [], seal: ['Level', 'A'],
+    ...['A', 'B', 'C'].map(L => ({ id: 'fresh-math-' + L.toLowerCase(), series: 'fm', level: L, no: '4', title: 'Literacy and Math: Lengths', kind: 'Literacy and Math', cover: cat('math-' + L.toLowerCase() + '-4'), talk: [], seal: ['Level', L],
       ko: '도형, 시계, 무게를 그림으로 만나고 직접 그리고 써 보는 Fresh Math 워크시트예요.',
       en: 'Fresh Math worksheets: children meet shapes, the clock and weight in pictures, then draw and write.',
       note: ['표지 옆 장들은 Fresh Math 워크시트예요. 색종이 도형, 째깍째깍 시계, 뚱뚱해진 고양이 이야기로 수학 개념을 경험해요.', 'The pages beside the cover are Fresh Math worksheets: shapes on coloured paper, the tick-tock clock and the cat that got chubby.'],
-      facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['Booklet', 'Booklet'], ['Level A · 1', 'Level A · 1']], sheets: ws('fresh-math', 1, FM) });
+      facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['Literacy and Math', 'Literacy and Math'], ['Level ' + L + ' · 4', 'Level ' + L + ' · 4']], sheets: ws('fresh-math', 1, FM) })));
 
   window.CATALOG = {
     'p-pbl': { levels: [
@@ -93,24 +93,24 @@
     ] },
     'p-fm': { levels: [
       { key: 'A', age: ['만 3세', 'age 3'], shelves: [
-        shelf('Fresh Math Booklet', '', [bk(lv('A', 1, 'Black Forest'), 'assets/fmbook/1.webp', 'fresh-math')]),
-        shelf('Literacy and Math', '', [bk(lv('A', 4, 'Lengths'), cat('math-a-4')), bk(lv('A', 6, 'Weight'), cat('math-a-6')), bk(lv('A', 8, 'Category'), cat('math-a-8')), bk(lv('A', 9, 'Time'), cat('math-a-9'))]) ] },
+        shelf('Fresh Math Booklet', '', [bk(lv('A', 1, 'Black Forest'), 'assets/fmbook/1.webp')]),
+        shelf('Literacy and Math', '', [bk(lv('A', 4, 'Lengths'), cat('math-a-4'), 'fresh-math-a'), bk(lv('A', 6, 'Weight'), cat('math-a-6')), bk(lv('A', 8, 'Category'), cat('math-a-8')), bk(lv('A', 9, 'Time'), cat('math-a-9'))]) ] },
       { key: 'B', age: ['만 4세', 'age 4'], shelves: [
-        shelf('Literacy and Math', '', [bk(lv('B', 4, 'Lengths'), cat('math-b-4')), bk(lv('B', 6, 'Weight'), cat('math-b-6')), bk(lv('B', 8, 'Category'), cat('math-b-8')), bk(lv('B', 9, 'Time'), cat('math-b-9'))]) ] },
+        shelf('Literacy and Math', '', [bk(lv('B', 4, 'Lengths'), cat('math-b-4'), 'fresh-math-b'), bk(lv('B', 6, 'Weight'), cat('math-b-6')), bk(lv('B', 8, 'Category'), cat('math-b-8')), bk(lv('B', 9, 'Time'), cat('math-b-9'))]) ] },
       { key: 'C', age: ['만 5세', 'age 5'], shelves: [
-        shelf('Literacy and Math', '', [bk(lv('C', 4, 'Lengths'), cat('math-c-4')), bk(lv('C', 5, 'Area'), cat('math-c-5')), bk(lv('C', 6, 'Weight'), old('els-math-weight'), 'els-math-weight'), bk(lv('C', 8, 'Category'), old('els-math-category'), 'els-math-category'), bk(lv('C', 9, 'Time'), old('els-math-time'), 'els-math-time')]) ] }
+        shelf('Literacy and Math', '', [bk(lv('C', 4, 'Lengths'), cat('math-c-4'), 'fresh-math-c'), bk(lv('C', 5, 'Area'), cat('math-c-5')), bk(lv('C', 6, 'Weight'), old('els-math-weight'), 'els-math-weight'), bk(lv('C', 8, 'Category'), old('els-math-category'), 'els-math-category'), bk(lv('C', 9, 'Time'), old('els-math-time'), 'els-math-time')]) ] }
     ] },
     'p-ml': { levels: [{ key: '', age: ['', ''], shelves: [
         shelf('Math Lab', '12 themes', [bk('Think Beyond Numbers!', cat('math-lab-cover'), 'math-lab')]) ] }] },
     'p-le': { levels: [{ key: '', age: ['', ''], shelves: [
         shelf('Logic Essay', '12 themes', [bk('Think. Reason. Argue. Write.', cat('logic-essay-cover'), 'logic-essay')]) ] }] },
     /* GB Magic Library: every number has a Reading Book, a Workbook and four stories. Covers come from make-gb-covers.cjs:
-       real ones where the book exists, stand-ins ("soft") in the colour plan's colours where it does not yet. Stories exist for 1, 7, 8, 9. */
+       real ones where the book exists, stand-ins ("soft") in the colour plan's colours where it does not yet. Story covers: numbers 1, 7, 8, 9 from our own book files, the rest cut from the yearly story list (make-gb-stories.cjs). */
     'p-gb': { levels: ['a', 'b', 'c'].map(l => ({ key: l.toUpperCase(), age: ['', ''],
       lead: ['번호마다 <mark>Reading Book</mark>과 <mark>Workbook</mark>, 그리고 이야기 네 편이 있어요.', 'Every number has a <mark>Reading Book</mark>, a <mark>Workbook</mark> and four stories.'],
       rows: Array.from({ length: 12 }, (x, i) => i + 1).map(n => ({ no: n,
         rb: { img: n === 8 ? `assets/covers/front-gb-${l}8.webp` : cat(`gb-rb-${l}${n}`), soft: ![1, 7, 8, 9].includes(n) },
         wb: { img: n === 8 && l === 'b' ? 'assets/covers/front-gb-wb-b8.webp' : cat(`gb-wb-${l}${n}`), soft: !(n === 7 || (n === 8 && l === 'b')) },
-        stories: [1, 7, 8, 9].includes(n) ? gb(l, n) : [] })) })) }
+        stories: gb(l, n) })) })) }
   };
 })();
