@@ -75,8 +75,8 @@
         themes: themes('B', [['가족과 이웃', 'My Family', 'Designer', '#ffb48a'], ['식물', 'Growing Plants', 'Farmer', '#ffe45c'], ['문화', 'Culture & Life', 'Beekeeper', '#9fd3f5'], ['탐험', 'Exploration & Tools', 'Cave Explorer', '#c9b8f0']]) },
       { key: 'C', age: ['만 5세', 'age 5'], lead: ['<mark>인성 논술 · 언어, 수 · 미술놀이 · 통합사고</mark>가 차례로 세 번 돌아옵니다.', '<mark>Personality Essay · Language and Math · Art Play · Integrated Thinking</mark> come in turn, three rounds.'],
         cycle, strips: [
-          { tag: 'SPEECH BOOK', title: ['스피치북<br>매번 1권', 'Speech Book<br>one every number'], text: ['12권 세트. 네 가지 스피치가 차례로 돌아옵니다.', 'A set of 12. Four kinds of speech come in turn.'], books: speech, wide: true },
-          { tag: 'PHONICS', title: ['GP Phonics Book<br>매번 1권', 'GP Phonics Book<br>one every number'], text: ['소리와 글자를 익히는 파닉스 패드.', 'A phonics pad for sounds and letters.'], books: [7, 8, 9].map(n => bk('Level C · ' + n, cat('ph-c-' + n))) } ] }
+          { tag: 'SPEECH BOOK', title: ['스피치북<br>매월 1권', 'Speech Book<br>one every number'], text: ['12권 세트. 네 가지 스피치가 차례로 돌아옵니다.', 'A set of 12. Four kinds of speech come in turn.'], books: speech, wide: true },
+          { tag: 'PHONICS', title: ['GP Phonics Book<br>매월 1권', 'GP Phonics Book<br>one every number'], text: ['소리와 글자를 익히는 파닉스 패드.', 'A phonics pad for sounds and letters.'], books: [7, 8, 9].map(n => bk('Level C · ' + n, cat('ph-c-' + n))) } ] }
     ] },
     'p-lgr': { levels: [
       { key: 'A', age: ['만 3세', 'age 3'], shelves: [

@@ -1,8 +1,7 @@
 /* Front door sample: screens. Data comes from backend.js (window.API), which is pretend.
    Every text is written twice, L('Korean', 'English'); the switch in the yellow bar picks one (saved in this browser). */
 (function () {
-  const $app = document.getElementById('app');
-  const $modal = document.getElementById('modal');
+  const $app = document.getElementById('app');  const $modal = document.getElementById('modal');
   const $toast = document.getElementById('toast');
   const P = API.PRODUCTS;
   const prod = id => P.find(p => p.id === id);
@@ -328,7 +327,7 @@
     <main class="wrap acts">
       <section class="acts-head">
         <h1>${L('<mark class="hl-y">놀면서</mark> 배워요', 'Learning by <mark class="hl-y">doing</mark>')}</h1>
-        <p class="acts-line">${L('<mark class="k1">영어</mark>로 세상을 만나고, <mark class="k2">놀이</mark>로 생각을 키우며, 말과 <mark class="k3">표현</mark>으로 채워가는 아이들의 행복한 성장일기.', 'Meeting the world in <mark class="k1">English</mark>, growing thinking through <mark class="k2">play</mark>, filled with words and <mark class="k3">expression</mark>: a happy growth diary.')}</p>
+        <p class="acts-line">${L('<mark class="k1">영어</mark>로 세상을 만나고, <mark class="k2">놀이</mark>로 생각을 키우며, 말과 <mark class="k3">표현</mark>으로 채워 가는 아이들의 행복한 성장일기.', 'Meeting the world in <mark class="k1">English</mark>, growing thinking through <mark class="k2">play</mark>, filled with words and <mark class="k3">expression</mark>: a happy growth diary.')}</p>
       </section>
       <div class="gal">${GALLERY.map(([id, prog]) => `<figure class="gal-item"><img src="assets/photos/${id}.webp" alt="${prog}" onerror="this.parentNode.remove()"></figure>`).join('')}</div>
       <p class="note">${L('샘플: 사진은 실제 GP 학생이 아니라 AI로 만든 예시예요. 실제 사진이 준비되면 바꿔요.', 'Sample: these pictures are AI-made examples, not real GP students. They will be replaced when real photos are ready.')}</p>
@@ -396,7 +395,7 @@
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
         <img class="ask-pose" src="assets/friends/pose3.webp" alt="">
-        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 선생님께 상담 받기', 'Ask a teacher near you')}</b> <span class="dim">${L('시·구를 고르고 문의를 남기면 담당 선생님이 답해 드려요', 'Pick your city and district, leave a question, and the local teacher answers')}</span></div>
+        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 선생님께 상담받기', 'Ask a teacher near you')}</b> <span class="dim">${L('시·구를 고르고 문의를 남기면 담당 선생님이 답해 드려요', 'Pick your city and district, leave a question, and the local teacher answers')}</span></div>
         <a class="btn primary" href="#/consult" style="margin-left:auto">${L('상담 문의하기', 'Ask a question')}</a>
       </div>
       ${''/* The four points about how the platform works inside (what opens, child profiles, parent area, school version) were taken out on 11 Nov 2026: not for customers yet. */}
@@ -727,7 +726,7 @@
         <button class="btn primary">${L('초대 보내기', 'Send invite')}</button></form>
         <p class="note" style="margin-top:10px">${L('초대는 알림톡이나 이메일로 가요. 선생님은 자기 반만 보고, 다른 반·결제·가정 정보는 못 봐요. 그만둔 선생님은 "내보내기"하면 바로 못 들어와요.', 'The invite goes by KakaoTalk message or email. Teachers see only their own class, never other classes, payments or family details. "Remove" locks out a teacher who has left, straight away.')}</p></div>`;
     } else if (tab === 'students') {
-      body = `<h1>${L('원생', 'Children')}</h1><p class="sub">${L('이름(또는 이름만), 반, 얼굴 그림만 받아요. 사진·생일·주민번호는 받지 않아요.', 'Only a (first) name, class and face picture. No photos, birthdays or ID numbers.')}</p>
+      body = `<h1>${L('원생', 'Children')}</h1><p class="sub">${L('성과 이름(또는 이름만), 반, 얼굴 그림만 받아요. 사진·생일·주민번호는 받지 않아요.', 'Only a (first) name, class and face picture. No photos, birthdays or ID numbers.')}</p>
       <div class="panel" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn" data-x>${L('엑셀 명단 올리기', 'Upload an Excel list')}</button><button class="btn" data-x>${L('한 명 추가', 'Add one child')}</button><span class="dim" style="font-size:13px">${L('3월에는 GP가 명단을 받아 대신 넣어 드려요.', 'In March, GP loads the list for the school.')}</span></div>
       <div class="panel scroll"><table><tr><th>${L('이름', 'Name')}</th><th>${L('반', 'Class')}</th><th>${L('그림 비밀번호', 'Picture password')}</th><th>${L('가정 연결', 'Home link')}</th></tr>
       ${sch.students.map((k, i) => `<tr><td><img class="mini-face" src="${face(k.face)}" alt="">${k.name}</td><td>${sch.classes.find(c => c.id === k.classId).name}</td><td style="font-size:18px">${k.picPass.join('')}</td><td>${i % 4 === 0 ? `<span class="badge ok">${L('부모님 연결', 'Parent linked')}</span>` : `<span class="badge muted">${L('코드 보내기', 'Send code')}</span>`}</td></tr>`).join('')}</table></div>`;
@@ -883,7 +882,7 @@
       body = `<h1>${L('데이터 보기', 'Data')}</h1><p class="sub">${L('샘플의 "데이터베이스"예요. 지금은 이 브라우저 안(localStorage, 이름 gpdemo.db)에만 있어요.', 'The sample\'s "database". For now it lives only inside this browser (localStorage, named gpdemo.db).')}</p>
       <div class="panel scroll"><table><tr><th>${L('표', 'Table')}</th><th class="num">${L('개수', 'Rows')}</th><th>${L('들어 있는 것', 'What is in it')}</th></tr>${rows.map(r => `<tr><td>${r[0]} <span class="dim">(${r[1]})</span></td><td class="num">${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table></div>
       <div class="panel"><h2>${L('원본 데이터 (JSON)', 'Raw data (JSON)')} <button class="btn" id="copyDb">${L('복사', 'Copy')}</button></h2><pre style="max-height:420px;overflow:auto;font:12px/1.5 Consolas,'Noto Sans KR',monospace;background:var(--bg);border-radius:10px;padding:12px;margin:0">${esc(JSON.stringify(db, null, 2))}</pre></div>
-      <p class="note">${L('실제 버전에서는 이 표들이 Supabase(서울) 데이터베이스에 있고, Supabase 관리 화면에서도 볼 수 있어요. 처음 데이터는 platform/sample/backend.js 의 seed() 에 적혀 있어요.', 'In the real version these tables live in a Supabase database (Seoul), also visible in Supabase\'s admin screen. The starting data is written in seed() in platform/sample/backend.js.')}</p>`;
+      <p class="note">${L('실제 버전에서는 이 표들이 Supabase(서울) 데이터베이스에 있고, Supabase 관리 화면에서도 볼 수 있어요. 처음 데이터는 platform/sample/backend.js의 seed()에 적혀 있어요.', 'In the real version these tables live in a Supabase database (Seoul), also visible in Supabase\'s admin screen. The starting data is written in seed() in platform/sample/backend.js.')}</p>`;
     }
     $app.innerHTML = topbar(authNav()) + `<div class="wrap shell">${side}<main class="main">${body}</main></div>`;
     bindCommon();
@@ -909,7 +908,7 @@
         <div class="kb-side">
           <p class="kb-sub">
             <span class="kb-line on">${L('GP는 아이 스스로 배우고 연결하며 세상을 이해하도록 돕습니다.', 'GP helps children learn, connect and understand the world for themselves.')}</span>
-            <span class="kb-line">${L('같은 영어를 반복해서 듣는 것에서 벗어나, 새로운 내용을 이해하며 듣기의 세계를 넓혀갑니다.', 'Instead of hearing the same English again and again, children widen their listening by understanding new things.')}</span>
+            <span class="kb-line">${L('같은 영어를 반복해서 듣는 것에서 벗어나, 새로운 내용을 이해하며 듣기의 세계를 넓혀 갑니다.', 'Instead of hearing the same English again and again, children widen their listening by understanding new things.')}</span>
             <span class="kb-line">${L('듣고 이해한 내용이 생각과 말하기로 연결되어야 합니다.', 'What children hear and understand should lead to thinking and speaking.')}</span>
           </p>
           <p class="tagline">Listen More, Understand More, Speak Naturally.</p>
@@ -1142,7 +1141,7 @@
     <main class="wrap consult">
       <section class="hero" style="padding-block:32px 8px">
         <span class="eyebrow">${L('교육센터', 'Education centres')}</span>
-        <h1>${L('우리 동네 선생님께 상담 받기', 'Ask a teacher near you')}</h1>
+        <h1>${L('우리 동네 선생님께 상담받기', 'Ask a teacher near you')}</h1>
         <p>${L('지역을 고르고 궁금한 점을 남겨 주세요. 그 지역 담당 선생님이 답해 드려요. 회원이 아니어도 문의할 수 있어요.', 'Pick your area and leave your question. The teacher for that area will answer. You do not need an account.')}</p>
       </section>
       <div class="consult-grid">
@@ -1161,7 +1160,7 @@
             <label>${L('보호자 이름', 'Your name')}<input id="qn" required value="${fam ? esc(fam.name) : ''}"></label>
             <label>${L('연락처 (휴대폰 또는 이메일)', 'Phone or email')}<input id="qc" required value="${fam ? esc(fam.email) : ''}"></label>
             <label>${L('아이 나이', 'Child\'s age')}<select id="qa">${AGES.map(a => `<option value="${a}" ${a === '5' ? 'selected' : ''}>${ageText(a)}</option>`).join('')}</select></label>
-            <label>${L('답변 받을 방법', 'How to reply')}<select id="qm">${Object.keys(METHODS).map(k => `<option value="${k}" ${k === (fam ? 'site' : 'phone') ? 'selected' : ''}>${METHODS[k]()}</option>`).join('')}</select></label>
+            <label>${L('답변받을 방법', 'How to reply')}<select id="qm">${Object.keys(METHODS).map(k => `<option value="${k}" ${k === (fam ? 'site' : 'phone') ? 'selected' : ''}>${METHODS[k]()}</option>`).join('')}</select></label>
           </div>
           <fieldset class="prods"><legend>${L('관심 있는 프로그램 (선택)', 'Programmes you are interested in (optional)')}</legend>
             ${P.map(p => `<label class="switch"><input type="checkbox" value="${p.id}"> ${p.name}</label>`).join('')}
