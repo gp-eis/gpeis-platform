@@ -16,6 +16,7 @@
   /* ---------- Language ---------- */
   let lang = 'ko';
   try { lang = localStorage.getItem('gpdemo.lang') || 'ko'; } catch (e) {}
+  { const q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ko') lang = q; }   // ...?lang=en opens the English version directly
   const L = (ko, en) => lang === 'en' ? en : ko;
   const unit = p => L(p.unit, p.unitEn);
   // Words that come from the sample data (statuses, payment methods, receipts). Names of people and schools stay as they are.
@@ -64,7 +65,7 @@
     const here = (location.hash.slice(2).split(/[/?]/)[0]) || '';
     const tab = (to, ko, en) => `<a class="tab ${here === to ? 'on' : ''}" href="#/${to}">${L(ko, en)}</a>`;
     const tabs = `<div class="tabs">${tab('about', 'GPEIS 소개', 'About')}${tab('programs', '프로그램', 'Programs')}${tab('books', '책', 'Books')}${tab('activities', '활동', 'Activities')}</div>`;
-    const ask = `<a class="btn util ask" href="#/consult"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor"/></svg>${L('교육센터 상담', 'Ask an education centre')}</a>`;
+    const ask = `<a class="btn util ask" href="#/consult"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor"/></svg>${L('교육센터 상담', 'Ask a centre')}</a>`;
     if (!s) return tabs + `<div class="utils">${ask}<a class="util-link" href="#/school-login">${L('기관 로그인', 'School log-in')}</a><a class="btn primary" href="#/login">${L('로그인 / 가입', 'Log in / Sign up')}</a></div>`;
     const name = { parent: L('우리 가족', 'My family'), teacher: L('선생님 화면', 'Teacher'), admin: L('기관 관리', 'School admin'), staff: L('GP 운영', 'GP staff'), counselor: L('상담 선생님', 'Counsellor') }[s.role];
     return (s.role === 'parent' ? tabs : '') + `<div class="utils">${s.role === 'parent' ? ask : ''}<a class="btn" href="${ROLE_HOME[s.role]}">${name}</a><button class="util-link" data-logout>${L('로그아웃', 'Log out')}</button></div>`;
@@ -361,16 +362,16 @@
             <a class="pmore" href="#/books?p=${about}">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
             <div class="body"><h3>${logo}</h3></div>
           </article>
-          <div class="pbelow"><div class="price">${won(price)} <small>/ ${L('월', 'month')}</small></div><div class="actions">${actions}</div></div>
+          <div class="pbelow"><div class="price">${won(price)} <small>/ ${L('월', 'mo')}</small></div><div class="actions">${actions}</div></div>
         </div>`;
     const ABOUT_OF = { library: 'p-gb', math: 'p-fm', phonics: 'p-lgr' };
     const buyCard = p => cell('stripe-' + art(p.id),
       (p.id === 'library' ? flipBook() : p.id === 'math' ? pileDeal('fresh-math', [1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
       plogo(p.id, p.name), ABOUT_OF[p.id], p.price,
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
-      `<a class="btn" href="#/play/${p.id}?sample=1">${L('맛보기', 'Try a sample')}</a>`);
+      `<a class="btn" href="#/play/${p.id}?sample=1">${L('맛보기', 'Sample')}</a>`);
     const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 35000,
-      `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Go to the Start PBL site')} ↗</button>`);
+      `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll(key, [1, 2, 8]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
         `<span class="badge muted">${L('준비 중', 'Coming soon')}</span>`); };
@@ -385,7 +386,7 @@
         <div>
           <span class="eyebrow">${L('유치부 GPKIS · 초등부 GPPIS', 'Kinder GPKIS · Primary GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
-          <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a></div>
+          <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('교육센터 상담', 'Ask a centre')}</a></div>
         </div>
         ${heroBook()}
       </section>

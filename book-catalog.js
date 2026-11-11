@@ -72,7 +72,7 @@
       { key: 'A', age: ['만 3세', 'age 3'], lead: ['네 개의 <mark>PBL 주제</mark>를 세 번씩 깊게 경험하며 People, History, Conversation, General Knowledge로 넓혀 갑니다.', 'Four <mark>PBL themes</mark>, three steps each, growing through People, History, Conversation and General Knowledge.'],
         themes: themes('A', [['나와 친구들', 'Me and My Friends', 'Baker', '#ff9f8c'], ['동물', 'Animal Friends', 'Pet Groomer', '#ffe45c'], ['세계 여러 나라', 'Countries of the World', 'Athlete', '#a8e6cf'], ['환경', 'Environment & Life', 'Park Ranger', '#151e4b', '#fff']]) },
       { key: 'B', age: ['만 4세', 'age 4'], lead: ['<mark>가족과 이웃, 식물, 문화, 탐험</mark>을 세 번씩 깊게 경험하며 더 긴 문장과 스스로 하는 탐구로 나아갑니다.', '<mark>Family and neighbours, plants, culture and exploration</mark>, three steps each, moving to longer sentences and independent inquiry.'],
-        themes: themes('B', [['가족과 이웃', 'My Family', 'Designer', '#ffb48a'], ['식물', 'Growing Plants', 'Farmer', '#ffe45c'], ['문화', 'Culture & Life', 'Beekeeper', '#9fd3f5'], ['탐험', 'Exploration & Tools', 'Cave Explorer', '#c9b8f0']]) },
+        themes: themes('B', [['가족과 이웃', 'Family & Neighbours', 'Designer', '#ffb48a'], ['식물', 'Growing Plants', 'Farmer', '#ffe45c'], ['문화', 'Culture & Life', 'Beekeeper', '#9fd3f5'], ['탐험', 'Exploration & Tools', 'Cave Explorer', '#c9b8f0']]) },
       { key: 'C', age: ['만 5세', 'age 5'], lead: ['<mark>인성 논술 · 언어, 수 · 미술놀이 · 통합사고</mark>가 차례로 세 번 돌아옵니다.', '<mark>Personality Essay · Language and Math · Art Play · Integrated Thinking</mark> come in turn, three rounds.'],
         cycle, strips: [
           { tag: 'SPEECH BOOK', title: ['스피치북<br>매월 1권', 'Speech Book<br>one every number'], text: ['12권 세트. 네 가지 스피치가 차례로 돌아옵니다.', 'A set of 12. Four kinds of speech come in turn.'], books: speech, wide: true },
