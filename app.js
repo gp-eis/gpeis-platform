@@ -1132,6 +1132,12 @@
   function seoulMap(cls, picked) {
     return `<div class="seoul" role="group" aria-label="${L('서울 지도', 'Map of Seoul')}">${R.seoulTiles.map(([g, c, r]) => `<button type="button" class="tile-gu ${cls(g)} ${g === picked ? 'picked' : ''}" style="grid-column:${c + 1};grid-row:${r + 1}" data-gu="${g}">${g.replace(/구$/, '')}</button>`).join('')}</div>`;
   }
+  // The same kind of map for the other regions, made from real positions (regions.js, tiles). Cities with their own 구 show two lines.
+  const tileLabel = g => { const m = g.match(/^(.+)시 (.+)구$/); return m ? `<small>${m[1]}</small>${m[2]}` : (g.length > 2 ? g.replace(/[시군구]$/, '') : g); };
+  function areaMap(sido, cls, picked) {
+    const t = R.tiles[sido]; if (!t) return '';
+    return `<div class="seoul area-map c${t.cols}" style="grid-template-columns:repeat(${t.cols},minmax(0,1fr));grid-template-rows:repeat(${t.rows},44px);max-width:${Math.max(t.cols, 3) * 71 - 4}px" role="group" aria-label="${L(sido + ' 지도', 'Map of ' + sido)}">${t.list.map(e => { const [g, c, r] = e.split('|'); return `<button type="button" class="tile-gu ${cls(g)} ${g === picked ? 'picked' : ''}" style="grid-column:${+c + 1};grid-row:${+r + 1}" data-gu="${g}">${tileLabel(g)}</button>`; }).join('')}</div>`;
+  }
   const consultState = { sido: '서울특별시', gu: '', dong: '' };
   async function consult() {
     const s = API.session();
@@ -1155,7 +1161,7 @@
             <select id="gu" aria-label="${L('시·군·구', 'District')}" ${gus.length ? '' : 'disabled'}><option value="">${gus.length ? L('시·군·구 고르기', 'Pick a district') : L('시·군·구 없음', 'No districts')}</option>${gus.map(x => `<option ${x === st.gu ? 'selected' : ''}>${x}</option>`).join('')}</select>
             <select id="dong" aria-label="${L('읍·면·동', 'Neighbourhood')}" ${dongs.length ? '' : 'disabled'}><option value="">${dongs.length ? L('읍·면·동 고르기', 'Pick a neighbourhood') : L('읍·면·동 (시·군·구를 먼저 골라 주세요)', 'Neighbourhood (pick a district first)')}</option>${dongs.map(x => `<option ${x === st.dong ? 'selected' : ''}>${x}</option>`).join('')}</select>
           </div>
-          ${st.sido === '서울특별시' ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${seoulMap(g => API.counselorFor('서울특별시', g) ? 'on' : '', st.gu)}` : ''}
+          ${st.sido === '서울특별시' ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${seoulMap(g => API.counselorFor('서울특별시', g) ? 'on' : '', st.gu)}` : R.tiles[st.sido] ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 시·군·구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${areaMap(st.sido, g => API.counselorFor(st.sido, g) ? 'on' : '', st.gu)}` : ''}
           <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 교육센터가 없어서 GP 본사에서 답해 드려요.`, `No education centre for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구가 없어서 읍·면·동만 고르면 돼요. GP 본사에서 답해 드려요.`, `${st.sido} has no districts, so just pick the neighbourhood. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 교육센터가 있어요.', 'Coloured districts already have an education centre.') : L('시·군·구를 고르면 담당 교육센터가 있는지 알려 드려요.', 'Pick a district to see whether it has an education centre.')}</div>
         </section>
         <form class="panel" id="qform" novalidate>

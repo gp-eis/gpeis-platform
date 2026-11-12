@@ -1673,3 +1673,8 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .consult .form-row.area select { width: 100%; }
 .consult .form-row.area #dong { grid-column: 1 / -1; }
 .consult .form-row.area select:disabled { color: var(--muted); background: var(--bg); }
+
+/* ===== 문의 page: tile maps for every region (12 Nov 2026) ===== */
+.area-map .tile-gu { line-height: 1.15; word-break: keep-all; overflow: hidden; }
+.area-map .tile-gu small { display: block; font-size: 10px; opacity: .7; font-weight: 400; }
+.area-map.c7 .tile-gu { font-size: 11.5px; }
