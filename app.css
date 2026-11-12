@@ -1666,3 +1666,10 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .fb-book { animation: fbFloatFlat 8s ease-in-out infinite; box-shadow: 0 0 0 1px rgba(0, 0, 0, .14), 0 12px 24px rgba(0, 0, 0, .22); }
 @keyframes fbFloatFlat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .fb-book::before, .fb-book::after { display: none; }
+
+/* ===== 문의 page: 시/도, 시·군·구 and 읍·면·동 (12 Nov 2026) =====
+   The first two sit side by side and the 동 list takes the whole row below, so long names are never cut. */
+.consult .form-row.area { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.consult .form-row.area select { width: 100%; }
+.consult .form-row.area #dong { grid-column: 1 / -1; }
+.consult .form-row.area select:disabled { color: var(--muted); background: var(--bg); }

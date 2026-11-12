@@ -396,7 +396,7 @@
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
         <img class="ask-pose" src="assets/friends/pose3.webp" alt="">
-        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</b> <span class="dim">${L('시·구를 고르고 문의를 남기면 담당 교육센터에서 답해 드려요', 'Pick your city and district, leave a question, and the local education centre answers')}</span></div>
+        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</b> <span class="dim">${L('지역을 고르고 문의를 남기면 담당 교육센터에서 답해 드려요', 'Pick your area, leave a question, and the local education centre answers')}</span></div>
         <a class="btn primary" href="#/consult" style="margin-left:auto">${L('상담 문의하기', 'Ask a question')}</a>
       </div>
       ${''/* The four points about how the platform works inside (what opens, child profiles, parent area, school version) were taken out on 11 Nov 2026: not for customers yet. */}
@@ -865,7 +865,7 @@
         <div class="panel stat"><b>${counselors.length}</b><span>${L('상담 선생님', 'Counsellors')}</span></div>
       </div>
       <div class="panel scroll"><h2>${L('문의 목록', 'Inquiries')}</h2><table><tr><th>${L('번호', 'No.')}</th><th>${L('날짜', 'Date')}</th><th>${L('지역', 'Area')}</th><th>${L('보호자', 'Parent')}</th><th>${L('상태', 'Status')}</th><th>${L('담당', 'Counsellor')}</th></tr>
-      ${items.map(q => `<tr class="${q.counselor ? '' : 'row-alert'}"><td>${q.id}</td><td>${q.at}</td><td>${q.sido} ${q.gu}</td><td>${esc(q.name)}</td><td>${statusBadge(q)}</td><td>${opt(q)}</td></tr>`).join('')}</table></div>
+      ${items.map(q => `<tr class="${q.counselor ? '' : 'row-alert'}"><td>${q.id}</td><td>${q.at}</td><td>${areaText(q)}</td><td>${esc(q.name)}</td><td>${statusBadge(q)}</td><td>${opt(q)}</td></tr>`).join('')}</table></div>
       <div class="panel"><h2>${L('서울 담당 지역', 'Seoul coverage')}</h2>${seoulMap(gu => covered.has('서울특별시 ' + gu) ? 'on' : '', null)}
         <p class="note" style="margin-top:10px">${L('색칠된 구는 담당 선생님이 있어요. 선생님은 GP가 모집해서 지역을 맡겨요.', 'Coloured districts have a counsellor. GP recruits counsellors and gives each one areas.')}</p></div>
       <div class="panel"><h2>${L('상담 선생님', 'Counsellors')} <button class="btn" data-x>${L('선생님 추가', 'Add a counsellor')}</button></h2><table>${counselors.map(c => `<tr><td>${c.name}</td><td>${c.areas.map(a => a.replace('서울특별시 ', '서울 ')).join(', ')}</td></tr>`).join('')}</table></div>`;
@@ -1118,10 +1118,11 @@
   const METHODS = { phone: () => L('전화', 'Phone call'), sms: () => L('문자', 'Text message'), email: () => L('이메일', 'Email'), site: () => L('사이트에서 답변', 'Answer on the site') };
   const AGES = ['3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
   const ageText = a => L('만 ' + a + '세', 'age ' + a);
+  const areaText = q => [q.sido, q.gu, q.dong].filter(Boolean).join(' ');
   const statusBadge = q => q.status === 'answered' ? `<span class="badge ok">${L('답변 완료', 'Answered')}</span>` : `<span class="badge warn">${L('답변 대기', 'Waiting')}</span>`;
   function inquiryCard(q, parentView) {
     const counselor = q.counselor ? (API.raw().counselors.find(c => c.id === q.counselor) || {}).name : L('GP 본사', 'GP head office');
-    return `<div class="panel inquiry"><div class="iq-head"><b>${q.id}</b> <span class="dim">${q.at} · ${q.sido} ${q.gu} · ${ageText(q.child)}</span> ${statusBadge(q)}</div>
+    return `<div class="panel inquiry"><div class="iq-head"><b>${q.id}</b> <span class="dim">${q.at} · ${areaText(q)} · ${ageText(q.child)}</span> ${statusBadge(q)}</div>
       <p class="iq-text">${esc(q.text)}</p>
       ${q.products && q.products.length ? `<div>${q.products.map(id => `<span class="chip ${id}">${prod(id) ? prod(id).name : id}</span>`).join(' ')}</div>` : ''}
       ${q.status === 'answered' ? `<div class="iq-reply"><b>${esc(counselor)}</b> <span class="dim">${q.replyAt}</span><p>${esc(q.reply)}</p></div>`
@@ -1131,12 +1132,13 @@
   function seoulMap(cls, picked) {
     return `<div class="seoul" role="group" aria-label="${L('서울 지도', 'Map of Seoul')}">${R.seoulTiles.map(([g, c, r]) => `<button type="button" class="tile-gu ${cls(g)} ${g === picked ? 'picked' : ''}" style="grid-column:${c + 1};grid-row:${r + 1}" data-gu="${g}">${g.replace(/구$/, '')}</button>`).join('')}</div>`;
   }
-  const consultState = { sido: '서울특별시', gu: '' };
+  const consultState = { sido: '서울특별시', gu: '', dong: '' };
   async function consult() {
     const s = API.session();
     const fam = s && s.role === 'parent' ? await API.family() : null;
     const st = consultState;
     const gus = R.gu[st.sido] || [];
+    const dongs = (st.gu || !gus.length) ? (R.dong[(st.sido + ' ' + st.gu).trim()] || []) : [];
     const c = st.gu ? API.counselorFor(st.sido, st.gu) : null;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap consult">
@@ -1148,12 +1150,13 @@
       <div class="consult-grid">
         <section class="panel">
           <h2>1. ${L('지역 고르기', 'Pick your area')}</h2>
-          <div class="form-row">
+          <div class="form-row area">
             <select id="sido" aria-label="${L('시/도', 'City or province')}">${R.sido.map(x => `<option ${x === st.sido ? 'selected' : ''}>${x}</option>`).join('')}</select>
-            <select id="gu" aria-label="${L('시·군·구', 'District')}"><option value="">${gus.length ? L('시·군·구 고르기', 'Pick a district') : L('전체 지역', 'Whole area')}</option>${gus.map(x => `<option ${x === st.gu ? 'selected' : ''}>${x}</option>`).join('')}</select>
+            <select id="gu" aria-label="${L('시·군·구', 'District')}" ${gus.length ? '' : 'disabled'}><option value="">${gus.length ? L('시·군·구 고르기', 'Pick a district') : L('시·군·구 없음', 'No districts')}</option>${gus.map(x => `<option ${x === st.gu ? 'selected' : ''}>${x}</option>`).join('')}</select>
+            <select id="dong" aria-label="${L('읍·면·동', 'Neighbourhood')}" ${dongs.length ? '' : 'disabled'}><option value="">${dongs.length ? L('읍·면·동 고르기', 'Pick a neighbourhood') : L('읍·면·동 (시·군·구를 먼저 골라 주세요)', 'Neighbourhood (pick a district first)')}</option>${dongs.map(x => `<option ${x === st.dong ? 'selected' : ''}>${x}</option>`).join('')}</select>
           </div>
           ${st.sido === '서울특별시' ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${seoulMap(g => API.counselorFor('서울특별시', g) ? 'on' : '', st.gu)}` : ''}
-          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 교육센터가 없어서 GP 본사에서 답해 드려요.`, `No education centre for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구 없이 한 지역이에요. GP 본사에서 답해 드려요.`, `${st.sido} is one area without districts. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 교육센터가 있어요.', 'Coloured districts already have an education centre.') : L('시·군·구를 고르면 담당 교육센터가 있는지 알려 드려요.', 'Pick a district to see whether it has an education centre.')}</div>
+          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 교육센터가 없어서 GP 본사에서 답해 드려요.`, `No education centre for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구가 없어서 읍·면·동만 고르면 돼요. GP 본사에서 답해 드려요.`, `${st.sido} has no districts, so just pick the neighbourhood. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 교육센터가 있어요.', 'Coloured districts already have an education centre.') : L('시·군·구를 고르면 담당 교육센터가 있는지 알려 드려요.', 'Pick a district to see whether it has an education centre.')}</div>
         </section>
         <form class="panel" id="qform" novalidate>
           <h2>2. ${L('문의 남기기', 'Leave your question')}</h2>
@@ -1177,23 +1180,25 @@
       </div>
     </main>${foot()}`;
     bindCommon();
-    document.getElementById('sido').onchange = e => { st.sido = e.target.value; st.gu = ''; consult(); };
-    document.getElementById('gu').onchange = e => { st.gu = e.target.value; consult(); };
-    $app.querySelectorAll('.seoul [data-gu]').forEach(b => b.onclick = () => { st.gu = b.dataset.gu; consult(); });
+    document.getElementById('sido').onchange = e => { st.sido = e.target.value; st.gu = ''; st.dong = ''; consult(); };
+    document.getElementById('gu').onchange = e => { st.gu = e.target.value; st.dong = ''; consult(); };
+    document.getElementById('dong').onchange = e => { st.dong = e.target.value; };
+    $app.querySelectorAll('.seoul [data-gu]').forEach(b => b.onclick = () => { st.gu = b.dataset.gu; st.dong = ''; consult(); });
     document.getElementById('qform').onsubmit = async e => {
       e.preventDefault();
       const v = id => document.getElementById(id).value.trim();
       if (!st.gu && (R.gu[st.sido] || []).length) { toast(L('지역(시·군·구)을 골라 주세요', 'Please pick a district')); return; }
+      if (!st.dong && dongs.length) { toast(L('읍·면·동을 골라 주세요', 'Please pick a neighbourhood')); return; }
       if (!v('qn') || !v('qc') || !v('qt')) { toast(L('이름, 연락처, 문의 내용을 적어 주세요', 'Please fill in name, contact and question')); return; }
       if (!document.getElementById('qok').checked) { toast(L('개인정보 수집·이용에 동의해야 보낼 수 있어요', 'Please agree to the data use to send')); return; }
       document.getElementById('qsend').disabled = true;
-      const res = await API.addInquiry({ sido: st.sido, gu: st.gu || L('(지역 미정)', '(area not listed)'), name: v('qn'), contact: v('qc'), child: v('qa'), method: v('qm'),
+      const res = await API.addInquiry({ sido: st.sido, gu: st.gu, dong: st.dong, name: v('qn'), contact: v('qc'), child: v('qa'), method: v('qm'),
         products: [...document.querySelectorAll('.prods input:checked')].map(i => i.value).filter(id => prod(id)), text: v('qt') });
       modal(`<h2>${L('문의를 받았어요', 'We have your question')}</h2>
         <p style="margin:0">${L(`접수 번호 <b>${res.id}</b>. 답변 담당: ${res.counselor ? res.counselor.name : 'GP 본사'}`, `Reference <b>${res.id}</b>. ${res.counselor ? res.counselor.name : 'GP head office'} will answer.`)}</p>
         <p class="note">${L('답변까지 걸리는 시간은 아직 정하는 중이에요 (예: 영업일 1~2일).', 'How fast we answer is still to decide (for example 1-2 working days).')}</p>
         <button class="btn primary big" id="ok">${L('확인', 'OK')}</button>`);
-      document.getElementById('ok').onclick = () => { closeModal(); st.gu = ''; location.hash = s && s.role === 'parent' ? '#/family/consults' : '#/'; };
+      document.getElementById('ok').onclick = () => { closeModal(); st.gu = ''; st.dong = ''; location.hash = s && s.role === 'parent' ? '#/family/consults' : '#/'; };
     };
   }
 
@@ -1306,7 +1311,7 @@
       case 'activities': return activities();
       case 'programs': return home();   // opens at the top, with the banner (until 11 Nov it slid down to the programme cards)
       case 'books': return parts[1] ? book(parts[1]) : books(q.get('p'), q.get('l'));
-      case 'consult': return consult();
+      case 'consult': ['sido', 'gu', 'dong'].forEach(k => { if (q.get(k) !== null) consultState[k] = q.get(k); }); return consult();   // #/consult?sido=경기도&gu=수원시 장안구 opens with an area picked (for pictures)
       case 'counselor': if (!need('counselor')) return; return counselor(parts[1]);
       case 'kid': return kid();
       default: return home();

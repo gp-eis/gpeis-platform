@@ -48,11 +48,11 @@
       ],
       // Inquiries parents leave on the 교육센터 page. family = the parent's account if they were logged in.
       inquiries: [
-        { id: 'Q-0003', at: '2027-03-14', sido: '부산광역시', gu: '해운대구', name: '정하늘', contact: '010-0000-3333', method: 'phone', child: '7', products: ['library'],
+        { id: 'Q-0003', at: '2027-03-14', sido: '부산광역시', gu: '해운대구', dong: '우1동', name: '정하늘', contact: '010-0000-3333', method: 'phone', child: '7', products: ['library'],
           text: '초등 1학년인데 GB Magic Library 레벨을 어떻게 고르나요?', status: 'new', counselor: null, family: null },
-        { id: 'Q-0002', at: '2027-03-13', sido: '서울특별시', gu: '마포구', name: '오민지', contact: 'minji@example.com', method: 'email', child: '4', products: ['phonics', 'math'],
+        { id: 'Q-0002', at: '2027-03-13', sido: '서울특별시', gu: '마포구', dong: '서교동', name: '오민지', contact: 'minji@example.com', method: 'email', child: '4', products: ['phonics', 'math'],
           text: '만 4세 아이가 영어를 처음 시작해요. Let’s Go Readers와 Fresh Math 중 무엇부터 하면 좋을까요?', status: 'new', counselor: 'cs2', family: null },
-        { id: 'Q-0001', at: '2027-03-10', sido: '서울특별시', gu: '강남구', name: '김지민', contact: 'parent@example.com', method: 'site', child: '5', products: ['phonics'],
+        { id: 'Q-0001', at: '2027-03-10', sido: '서울특별시', gu: '강남구', dong: '삼성1동', name: '김지민', contact: 'parent@example.com', method: 'site', child: '5', products: ['phonics'],
           text: '둘째가 Let’s Go Readers를 시작하면 첫째와 같은 계정을 써도 되나요?', status: 'answered', counselor: 'cs1', family: 'kim',
           reply: '네, 한 계정에 아이를 4명까지 등록할 수 있어요. 부모님 화면 › 가족 프로필에서 둘째를 추가하신 뒤 Let’s Go Readers를 구독하시면 됩니다.', replyAt: '2027-03-11' }
       ],
