@@ -396,7 +396,7 @@
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
         <img class="ask-pose" src="assets/friends/pose3.webp" alt="">
-        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 선생님께 상담받기', 'Ask a teacher near you')}</b> <span class="dim">${L('시·구를 고르고 문의를 남기면 담당 선생님이 답해 드려요', 'Pick your city and district, leave a question, and the local teacher answers')}</span></div>
+        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</b> <span class="dim">${L('시·구를 고르고 문의를 남기면 담당 교육센터에서 답해 드려요', 'Pick your city and district, leave a question, and the local education centre answers')}</span></div>
         <a class="btn primary" href="#/consult" style="margin-left:auto">${L('상담 문의하기', 'Ask a question')}</a>
       </div>
       ${''/* The four points about how the platform works inside (what opens, child profiles, parent area, school version) were taken out on 11 Nov 2026: not for customers yet. */}
@@ -1142,18 +1142,18 @@
     <main class="wrap consult">
       <section class="hero" style="padding-block:32px 8px">
         <span class="eyebrow">${L('교육센터', 'Education centres')}</span>
-        <h1>${L('우리 동네 선생님께 상담받기', 'Ask a teacher near you')}</h1>
-        <p>${L('지역을 고르고 궁금한 점을 남겨 주세요. 그 지역 담당 선생님이 답해 드려요. 회원이 아니어도 문의할 수 있어요.', 'Pick your area and leave your question. The teacher for that area will answer. You do not need an account.')}</p>
+        <h1>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</h1>
+        <p>${L('지역을 고르고 궁금한 점을 남겨 주세요. 그 지역 담당 교육센터에서 답해 드려요. 회원이 아니어도 문의할 수 있어요.', 'Pick your area and leave your question. The education centre for that area will answer. You do not need an account.')}</p>
       </section>
       <div class="consult-grid">
         <section class="panel">
           <h2>1. ${L('지역 고르기', 'Pick your area')}</h2>
           <div class="form-row">
             <select id="sido" aria-label="${L('시/도', 'City or province')}">${R.sido.map(x => `<option ${x === st.sido ? 'selected' : ''}>${x}</option>`).join('')}</select>
-            <select id="gu" aria-label="${L('시·군·구', 'District')}"><option value="">${gus.length ? L('시·군·구 고르기', 'Pick a district') : L('목록 준비 중 (샘플)', 'List coming (sample)')}</option>${gus.map(x => `<option ${x === st.gu ? 'selected' : ''}>${x}</option>`).join('')}</select>
+            <select id="gu" aria-label="${L('시·군·구', 'District')}"><option value="">${gus.length ? L('시·군·구 고르기', 'Pick a district') : L('전체 지역', 'Whole area')}</option>${gus.map(x => `<option ${x === st.gu ? 'selected' : ''}>${x}</option>`).join('')}</select>
           </div>
           ${st.sido === '서울특별시' ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${seoulMap(g => API.counselorFor('서울특별시', g) ? 'on' : '', st.gu)}` : ''}
-          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 선생님이 없어서 GP 본사에서 답해 드려요.`, `No counsellor for ${st.gu} yet, so GP head office will answer.`)) : L('색칠된 구에는 담당 선생님이 있어요.', 'Coloured districts already have a counsellor.')}</div>
+          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 교육센터가 없어서 GP 본사에서 답해 드려요.`, `No education centre for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구 없이 한 지역이에요. GP 본사에서 답해 드려요.`, `${st.sido} is one area without districts. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 교육센터가 있어요.', 'Coloured districts already have an education centre.') : L('시·군·구를 고르면 담당 교육센터가 있는지 알려 드려요.', 'Pick a district to see whether it has an education centre.')}</div>
         </section>
         <form class="panel" id="qform" novalidate>
           <h2>2. ${L('문의 남기기', 'Leave your question')}</h2>
@@ -1172,7 +1172,7 @@
           <label class="full">${L('문의 내용', 'Your question')}<textarea id="qt" rows="5" required placeholder="${L('예: 만 5세 아이에게 어떤 프로그램이 맞을까요?', 'e.g. Which programme suits my 5-year-old?')}"></textarea></label>
           <label class="switch consent"><input type="checkbox" id="qok"> <span>${L('[필수] 상담을 위해 이름, 연락처, 아이 나이, 문의 내용을 수집·이용하는 데 동의해요. 상담이 끝나고 1년 뒤 지워요. 동의하지 않으면 문의할 수 없어요.', '[Required] I agree that my name, contact, child\'s age and question are collected and used to answer me. They are deleted 1 year after the consultation. Without this, the question cannot be sent.')}</span></label>
           <button class="btn primary big" id="qsend">${L('문의 보내기', 'Send my question')}</button>
-          <p class="note">${L('샘플이라 실제로 보내지지 않아요. 실제 버전에서는 담당 선생님에게 알림이 가고, 답변은 선택한 방법으로 와요.', 'Nothing is really sent in the sample. The real version notifies the counsellor, and the answer comes the way you chose.')}</p>
+          <p class="note">${L('샘플이라 실제로 보내지지 않아요. 실제 버전에서는 담당 교육센터에 알림이 가고, 답변은 선택한 방법으로 와요.', 'Nothing is really sent in the sample. The real version notifies the education centre, and the answer comes the way you chose.')}</p>
         </form>
       </div>
     </main>${foot()}`;

@@ -1660,3 +1660,9 @@ html[lang="en"] .bp-col header h3 { font-size: 21px; }
 html[lang="en"] .bp-lead { max-width: 36em; }
 /* English, small laptops: price above the buttons on every card alike (some fitted on one line and some did not) */
 @media (min-width: 761px) and (max-width: 1090px) { html[lang="en"] .pbelow { flex-direction: column; align-items: flex-start; } html[lang="en"] .pbelow .actions { margin-left: 0; } }
+
+/* ===== GB card book straight, not slanted (boss, 12 Nov 2026) =====
+   The opening, page-turning book stays; the tilt in space and the page-block edges are gone. It still floats gently up and down. */
+.fb-book { animation: fbFloatFlat 8s ease-in-out infinite; box-shadow: 0 0 0 1px rgba(0, 0, 0, .14), 0 12px 24px rgba(0, 0, 0, .22); }
+@keyframes fbFloatFlat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.fb-book::before, .fb-book::after { display: none; }
