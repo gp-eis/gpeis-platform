@@ -1688,3 +1688,29 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .logo .dots.six b:nth-child(4) { animation-delay: 2.4s; } .logo .dots.six b:nth-child(5) { animation-delay: 2.7s; } .logo .dots.six b:nth-child(6) { animation-delay: 3s; }
 @keyframes logoHop { 0%, 50%, 100% { transform: translateY(0); } 25% { transform: translateY(-5px); } }
 @media (prefers-reduced-motion: reduce) { .logo .dots.six b { animation: none; } }
+
+/* ===== Home-screen guide page, #/app (13 Nov 2026) ===== */
+.ag { padding-block: 34px 56px; }
+.ag-hero { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-bottom: 24px; }
+.ag-hero h1 { margin: 6px 0 10px; font-size: clamp(28px, 4vw, 44px); line-height: 1.15; }
+.ag-hero p { margin: 0; max-width: 46ch; color: var(--muted); font-size: 17px; line-height: 1.6; word-break: keep-all; }
+.ag-icon { margin: 0; flex: none; text-align: center; font: 500 13px var(--sans); color: var(--ink); }
+.ag-icon img { display: block; width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 10px 22px rgba(21, 30, 75, .22); margin-bottom: 8px; }
+.ag-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.ag-card h2, .ag-help h2 { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ag-card.me { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.ag-mine { font: 700 12px var(--sans); background: var(--ink); color: #fff; border-radius: 999px; padding: 4px 10px; }
+.ag-sub { margin: 4px 0 14px; color: var(--muted); font-size: 14px; }
+.ag-steps { list-style: none; margin: 0; padding: 0; counter-reset: ag; display: grid; gap: 12px; }
+.ag-steps li { counter-increment: ag; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 16px; line-height: 1.55; word-break: keep-all; }
+.ag-steps li::before { content: counter(ag); width: 30px; height: 30px; border-radius: 50%; background: var(--hl-y); color: var(--ink); font: 700 15px/30px var(--round); text-align: center; }
+.ag-steps li span { padding-top: 3px; }
+.ag-ic { width: 20px; height: 20px; vertical-align: -4px; }
+.ag-alt { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--bg); font-size: 14px; line-height: 1.55; color: var(--muted); word-break: keep-all; }
+.ag-alt b { color: var(--ink); }
+.ag-help { margin-top: 18px; }
+.ag-help dl { margin: 14px 0 0; display: grid; gap: 14px; }
+.ag-help dt { font-weight: 700; font-size: 15.5px; }
+.ag-help dd { margin: 3px 0 0; color: var(--muted); font-size: 15px; line-height: 1.6; word-break: keep-all; }
+.ag-help dd b { color: var(--ink); }
+@media (max-width: 760px) { .ag-grid { grid-template-columns: 1fr; } .ag-hero { align-items: flex-start; } .ag-icon img { width: 72px; height: 72px; border-radius: 17px; } }

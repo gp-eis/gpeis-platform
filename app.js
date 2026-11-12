@@ -342,13 +342,46 @@
       <div class="foot-main">
         <div><a class="logo" href="#/">${LOGO_DOTS}GPEIS</a>
           <p>Listen More, Understand More, Speak Naturally.</p></div>
-        <nav aria-label="${L('바닥 메뉴', 'Footer')}"><a href="#/about">${L('GPEIS 소개', 'About GPEIS')}</a><a href="#/books">${L('책', 'Books')}</a><a href="#/activities">${L('활동', 'Activities')}</a><a href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a><a href="#/school-login">${L('기관 로그인', 'School log-in')}</a></nav>
+        <nav aria-label="${L('바닥 메뉴', 'Footer')}"><a href="#/about">${L('GPEIS 소개', 'About GPEIS')}</a><a href="#/books">${L('책', 'Books')}</a><a href="#/activities">${L('활동', 'Activities')}</a><a href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a><a href="#/school-login">${L('기관 로그인', 'School log-in')}</a><a href="#/app">${L('홈 화면에 추가하기', 'Add to home screen')}</a></nav>
       </div>
       <p class="foot-legal">${L('상호 (예시) · 대표 OOO · 사업자등록번호 000-00-00000 · 통신판매업 신고 제0000-서울-0000호 · 주소 · 고객센터 · 이용약관 · 개인정보 처리방침 · 환불 정책. 결제 회사가 사이트를 심사할 때 이 정보가 모두 보여야 해요. (샘플)',
         'Company name (example) · CEO OOO · Business no. 000-00-00000 · Online sales reg. no. 0000-Seoul-0000 · Address · Customer service · Terms · Privacy notice · Refund policy. The payment company checks that all of this is visible before it approves the site. (sample)')}</p>
     </div>
     <svg class="foot-art" viewBox="0 0 420 220" aria-hidden="true"><circle cx="330" cy="150" r="80" fill="var(--hl-y)"/><path d="M150 220l70-120 70 120z" fill="var(--hl-p)"/><rect x="40" y="130" width="90" height="90" rx="18" fill="var(--hl-b)"/><circle cx="238" cy="62" r="26" fill="var(--hl-g)"/></svg>
   </footer>`;
+
+  /* ---------- Home-screen guide: how to add GPEIS to a phone or tablet ---------- */
+  function appGuide() {
+    const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
+    const mine = `<span class="ag-mine">${L('지금 쓰는 기기', 'Your device')}</span>`;
+    const steps = list => `<ol class="ag-steps">${list.map(x => `<li><span>${x}</span></li>`).join('')}</ol>`;
+    const share = '<svg class="ag-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4l4 4M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const a = `<section class="panel ag-card ${android ? 'me' : ''}"><h2>Android ${android ? mine : ''}</h2><p class="ag-sub">${L('Chrome 브라우저', 'Chrome browser')}</p>
+      ${steps([L('Chrome에서 GPEIS를 열어요.', 'Open GPEIS in Chrome.'), L('오른쪽 위 <b>⋮</b> 메뉴를 눌러요.', 'Tap the <b>⋮</b> menu at the top right.'), L('<b>홈 화면에 추가</b> 또는 <b>앱 설치</b>를 눌러요.', 'Tap <b>Add to Home screen</b> or <b>Install app</b>.'), L('<b>추가</b>(또는 <b>설치</b>)를 누르면 홈 화면에 아이콘이 생겨요.', 'Tap <b>Add</b> (or <b>Install</b>). The icon appears on your home screen.')])}
+      <p class="ag-alt">${L('<b>삼성 인터넷</b>에서는 아래 <b>☰</b> 메뉴 → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 눌러요.', 'In <b>Samsung Internet</b>: the <b>☰</b> menu at the bottom → <b>Add page to</b> → <b>Home screen</b>.')}</p></section>`;
+    const i = `<section class="panel ag-card ${ios ? 'me' : ''}"><h2>iPhone · iPad ${ios ? mine : ''}</h2><p class="ag-sub">${L('Safari 브라우저', 'Safari browser')}</p>
+      ${steps([L('Safari에서 GPEIS를 열어요.', 'Open GPEIS in Safari.'), L(`공유 버튼 ${share}을 눌러요.`, `Tap the Share button ${share}.`), L('아래로 내려 <b>홈 화면에 추가</b>를 눌러요.', 'Scroll down and tap <b>Add to Home Screen</b>.'), L('오른쪽 위 <b>추가</b>를 누르면 홈 화면에 아이콘이 생겨요.', 'Tap <b>Add</b> at the top right. The icon appears on your home screen.')])}
+      <p class="ag-alt">${L('iPhone과 iPad에서는 <b>Safari</b>로 여는 것이 가장 확실해요.', 'On iPhone and iPad, <b>Safari</b> is the surest way.')}</p></section>`;
+    $app.innerHTML = topbar(authNav()) + `
+    <main class="wrap ag">
+      <section class="ag-hero">
+        <div><span class="eyebrow">${L('홈 화면에 추가', 'Add to home screen')}</span>
+          <h1>${L('홈 화면에 GPEIS 추가하기', 'Put GPEIS on your home screen')}</h1>
+          <p>${L('휴대폰이나 태블릿 홈 화면에 GPEIS 아이콘을 만들어 두면 앱처럼 한 번에 열 수 있어요. 앱 스토어에서 내려받을 필요가 없어요.', 'Add a GPEIS icon to the home screen of your phone or tablet and open it in one tap, like an app. Nothing to download from an app store.')}</p></div>
+        <figure class="ag-icon"><img src="assets/icons/icon-192.png" alt="${L('GPEIS 아이콘', 'GPEIS icon')}" width="96" height="96"><figcaption>GPEIS</figcaption></figure>
+      </section>
+      <div class="ag-grid">${ios ? i + a : a + i}</div>
+      <section class="panel ag-help"><h2>${L('잘 안 될 때', 'If it does not work')}</h2>
+        <dl>
+          <dt>${L('카카오톡이나 네이버 앱에서 링크를 열었어요', 'I opened the link inside KakaoTalk or Naver')}</dt><dd>${L('그 안에서는 추가할 수 없어요. 메뉴에서 <b>다른 브라우저로 열기</b>를 눌러 Chrome이나 Safari에서 다시 열어 주세요.', 'It cannot be added from there. Choose <b>Open in another browser</b> in the menu and open it in Chrome or Safari.')}</dd>
+          <dt>${L('‘설치’를 눌러도 아이콘이 안 생겨요', 'I tapped Install but no icon appeared')}</dt><dd>${L('먼저 앱 목록에서 GPEIS를 찾아보세요. 없으면 <b>홈 화면에 추가</b>에서 <b>바로가기 만들기</b>를 골라 주세요.', 'Look for GPEIS in the full app list first. If it is not there, choose <b>Create shortcut</b> under <b>Add to Home screen</b>.')}</dd>
+          <dt>${L('아이콘이 회색 바탕에 G로 보여요', 'The icon is a grey square with a G')}</dt><dd>${L('그 아이콘을 지우고, 사이트를 새로 고친 뒤 다시 추가해 주세요.', 'Delete that icon, refresh the site, then add it again.')}</dd>
+          <dt>${L('메뉴에 ‘홈 화면에 추가’가 없어요', 'There is no Add to Home screen in the menu')}</dt><dd>${L('시크릿 모드에서는 추가할 수 없어요. 일반 탭에서 열어 주세요.', 'It cannot be added in a private tab. Open the site in a normal tab.')}</dd>
+        </dl>
+      </section>
+    </main>${foot()}`;
+    bindCommon();
+  }
 
   /* ---------- Front door ---------- */
   async function home() {
@@ -1317,6 +1350,7 @@
       case 'staff': if (!need('staff')) return; return staff(parts[1], parts[2]);
       case 'about': { about(); const t = q.get('p') && document.querySelector('.program.' + q.get('p')); if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
       case 'activities': return activities();
+      case 'app': return appGuide();
       case 'programs': return home();   // opens at the top, with the banner (until 11 Nov it slid down to the programme cards)
       case 'books': return parts[1] ? book(parts[1]) : books(q.get('p'), q.get('l'));
       case 'consult': ['sido', 'gu', 'dong'].forEach(k => { if (q.get(k) !== null) consultState[k] = q.get(k); }); return consult();   // #/consult?sido=경기도&gu=수원시 장안구 opens with an area picked (for pictures)
