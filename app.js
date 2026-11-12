@@ -49,6 +49,8 @@
 
   function toast(msg) { $toast.textContent = msg; $toast.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => $toast.hidden = true, 2600); }
   function modal(html) { $modal.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`; $modal.hidden = false; }
+  // Start PBL, Let's Go Readers, Fresh Math / GB Magic Library, Math Lab, Logic Essay
+  const LOGO_DOTS = '<span class="dots six">' + ['#e8343d', '#8ccbff', '#b9e59c', '#f5c21a', '#f47c6c', '#f3ddd0'].map(c => `<b style="background:${c}"></b>`).join('') + '</span>';
   function closeModal() { $modal.hidden = true; $modal.innerHTML = ''; }
   $modal.addEventListener('click', e => { if (e.target === $modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$modal.hidden) closeModal(); });
@@ -56,7 +58,7 @@
 
   const topbar = (right) => `
     <header class="top"><div class="wrap">
-      <a class="logo" href="#/"><span class="dots"><b style="background:var(--gb-2)"></b><b style="background:var(--math)"></b><b style="background:var(--phonics)"></b><b style="background:var(--pbl)"></b></span>GPEIS</a>
+      <a class="logo" href="#/">${LOGO_DOTS}GPEIS</a>
       <nav>${right}</nav>
     </div></header>`;
   const ROLE_HOME = { parent: '#/family', teacher: '#/teacher', admin: '#/admin', staff: '#/staff', counselor: '#/counselor' };
@@ -338,7 +340,7 @@
 
   const foot = () => `<footer class="foot"><div class="wrap">
       <div class="foot-main">
-        <div><a class="logo" href="#/"><span class="dots"><b style="background:var(--hl-y)"></b><b style="background:var(--hl-g)"></b><b style="background:var(--hl-p)"></b><b style="background:var(--hl-b)"></b></span>GPEIS</a>
+        <div><a class="logo" href="#/">${LOGO_DOTS}GPEIS</a>
           <p>Listen More, Understand More, Speak Naturally.</p></div>
         <nav aria-label="${L('바닥 메뉴', 'Footer')}"><a href="#/about">${L('GPEIS 소개', 'About GPEIS')}</a><a href="#/books">${L('책', 'Books')}</a><a href="#/activities">${L('활동', 'Activities')}</a><a href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a><a href="#/school-login">${L('기관 로그인', 'School log-in')}</a></nav>
       </div>
