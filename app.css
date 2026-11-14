@@ -1778,3 +1778,9 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .k-only { display: inline-block; margin: 0 0 8px; padding: 6px 14px; border-radius: 999px; background: var(--ink); color: #fff; font: 700 14.5px var(--sans); }
 .ptabs { display: grid; gap: 12px; } .ptabs-g { width: 100%; }   /* one row per section: Kindergarten, GPKIS, GPGB, GPPIS */
 .k-only { justify-self: start; width: fit-content; }
+
+/* Kindergarten is its own section above GPKIS (14 Nov 2026, evening) */
+.pgroup.g-kindergarten .kbox { margin: 14px 0 20px; }
+.pgroup.g-kindergarten .kbox-t p { font: 700 19px/1.45 var(--sans); }
+.pgroup.g-kindergarten h2 b .klogo { font-size: 1em; font-weight: 600; color: inherit; }
+.pgroup.g-kindergarten h2 b .klogo { font-size: 1.2em; }   /* a bit bigger than the GPKIS heading (user, 14 Nov) */

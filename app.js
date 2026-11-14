@@ -418,9 +418,9 @@
         <h2><b>${code}</b> <span>${name}</span>${doodle('arrow', 'g-d')}</h2>
         <div class="products">${cards.join('')}</div>${after}
       </section>`;
-    // The fourth box in GPKIS: the books partner schools already use. They are shown, not sold (CEO, 14 Nov 2026).
+    // Kindergarten: its own section above GPKIS (boss, 14 Nov evening). The books partner schools already use; shown, not sold.
     const kinderBox = () => `<a class="kbox" href="#/books?p=k-pbl">
-        <div class="kbox-t">${KLOGO}<p>${PARTNER()}</p><span class="kbox-more">${EYE}<span>${L('자세히 보기', 'See more')}</span></span></div>
+        <div class="kbox-t"><p>${PARTNER()}</p><span class="kbox-more">${EYE}<span>${L('자세히 보기', 'See more')}</span></span></div>
         <div class="kbox-covers" aria-hidden="true">${['assets/books/ees-park-ranger.webp', 'assets/books/ees-athlete.webp', 'assets/catalog/pw-a-7.webp', 'assets/catalog/math-a-4.webp', 'assets/books/els-k.webp', 'assets/books/ees-animal-friends.webp'].map(u => `<img src="${u}" alt="">`).join('')}</div>
       </a>`;
     $app.innerHTML = topbar(authNav()) + `
@@ -433,7 +433,11 @@
         </div>
         ${heroBook()}
       </section>
-      ${group('GPKIS', L('유치부 프로그램', 'Kindergarten programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], kinderBox())}
+      <section class="pgroup g-kindergarten" aria-label="Kindergarten">
+        <h2><b>${KLOGO}</b> <span>${L('협력 교육기관 교재', 'Books for partner schools')}</span>${doodle('arrow', 'g-d')}</h2>
+        ${kinderBox()}
+      </section>
+      ${group('GPKIS', L('유치부 프로그램', 'Kindergarten programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('초등부 프로그램', 'Primary programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
