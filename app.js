@@ -50,6 +50,8 @@
   function toast(msg) { $toast.textContent = msg; $toast.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => $toast.hidden = true, 2600); }
   function modal(html) { $modal.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`; $modal.hidden = false; }
   // Start PBL, Let's Go Readers, Fresh Math / GB Magic Library, Math Lab, Logic Essay
+  const KLOGO = '<span class="klogo" role="img" aria-label="Kindergarten">' + [...'Kindergarten'].map((c, k) => `<i style="color:${['#e8343d', '#2f6fd0', '#2e9a55', '#f0a51a', '#f47c6c', '#7a4fb5'][k % 6]}">${c}</i>`).join('') + '</span>';
+  const PARTNER = () => L('GP 협력 교육기관에서만 만날 수 있습니다.', 'Only available at GP partner schools.');
   const LOGO_DOTS = '<span class="dots six">' + ['#e8343d', '#8ccbff', '#b9e59c', '#f5c21a', '#f47c6c', '#f3ddd0'].map(c => `<b style="background:${c}"></b>`).join('') + '</span>';
   function closeModal() { $modal.hidden = true; $modal.innerHTML = ''; }
   $modal.addEventListener('click', e => { if (e.target === $modal) closeModal(); });
@@ -67,7 +69,7 @@
     const here = (location.hash.slice(2).split(/[/?]/)[0]) || '';
     const tab = (to, ko, en) => `<a class="tab ${here === to ? 'on' : ''}" href="#/${to}">${L(ko, en)}</a>`;
     const tabs = `<div class="tabs">${tab('about', 'GPEIS 소개', 'About')}${tab('programs', '프로그램', 'Programs')}${tab('books', '책', 'Books')}${tab('activities', '활동', 'Activities')}</div>`;
-    const ask = `<a class="btn util ask" href="#/consult"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor"/></svg>${L('교육센터 상담', 'Ask a centre')}</a>`;
+    const ask = `<a class="btn util ask" href="#/consult"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor"/></svg>${L('MOM INSIGHT 상담', 'Ask a mentor')}</a>`;
     if (!s) return tabs + `<div class="utils">${ask}<a class="util-link" href="#/school-login">${L('기관 로그인', 'School log-in')}</a><a class="btn primary" href="#/login">${L('로그인 / 가입', 'Log in / Sign up')}</a></div>`;
     const name = { parent: L('우리 가족', 'My family'), teacher: L('선생님 화면', 'Teacher'), admin: L('기관 관리', 'School admin'), staff: L('GP 운영', 'GP staff'), counselor: L('상담 선생님', 'Counsellor') }[s.role];
     return (s.role === 'parent' ? tabs : '') + `<div class="utils">${s.role === 'parent' ? ask : ''}<a class="btn" href="${ROLE_HOME[s.role]}">${name}</a><button class="util-link" data-logout>${L('로그아웃', 'Log out')}</button></div>`;
@@ -142,6 +144,7 @@
   const pileDeal = (id, ns) => `<div class="pm pm-pile" aria-hidden="true">${ns.map(n => wsImg(id, n)).join('')}</div>`;            // Fresh Math
   const wsHalf = (id, n, side) => `<b style="background-image:url(assets/worksheets/${id}-${n}.png)" class="${side}"></b>`;
   const counterRoll = (id, ns) => `<div class="pm pm-roll" aria-hidden="true"><div class="up"><div>${[...ns, ns[0]].map(n => wsHalf(id, n, 'l')).join('')}</div></div><div class="down"><div>${[ns[0], ...ns.slice(1).reverse(), ns[0]].map(n => wsHalf(id, n, 'r')).join('')}</div></div></div>`;   // Math Lab
+  const readPan = (id, ns) => `<div class="pm pm-read" aria-hidden="true">${ns.map(n => `<b style="background-image:url(assets/worksheets/${id}-${n}.png)"></b>`).join('')}</div>`;   // Let's Go Readers
   const padFlip = (id, ns) => `<div class="pm pm-pad" aria-hidden="true"><i></i>${ns.map(n => wsImg(id, n)).join('')}</div>`;        // Logic Essay
   const slideH = (id = 'ees-park-ranger', ns = [1, 2, 3, 4, 1]) => `<div class="sh ${ns.length === 4 ? 'sh3' : ''}" aria-hidden="true"><div class="sh-track">${ns.map(n => `<img src="assets/worksheets/${id}-${n}.png" alt="">`).join('')}</div></div>`;
 
@@ -342,7 +345,7 @@
       <div class="foot-main">
         <div><a class="logo" href="#/">${LOGO_DOTS}GPEIS</a>
           <p>Listen More, Understand More, Speak Naturally.</p></div>
-        <nav aria-label="${L('바닥 메뉴', 'Footer')}"><a href="#/about">${L('GPEIS 소개', 'About GPEIS')}</a><a href="#/books">${L('책', 'Books')}</a><a href="#/activities">${L('활동', 'Activities')}</a><a href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a><a href="#/school-login">${L('기관 로그인', 'School log-in')}</a><a href="#/app">${L('홈 화면에 추가하기', 'Add to home screen')}</a></nav>
+        <nav aria-label="${L('바닥 메뉴', 'Footer')}"><a href="#/about">${L('GPEIS 소개', 'About GPEIS')}</a><a href="#/books">${L('책', 'Books')}</a><a href="#/activities">${L('활동', 'Activities')}</a><a href="#/consult">${L('GP MOM INSIGHT 상담', 'Ask GP MOM INSIGHT')}</a><a href="#/school-login">${L('기관 로그인', 'School log-in')}</a><a href="#/app">${L('홈 화면에 추가하기', 'Add to home screen')}</a></nav>
       </div>
       <p class="foot-legal">${L('상호 (예시) · 대표 OOO · 사업자등록번호 000-00-00000 · 통신판매업 신고 제0000-서울-0000호 · 주소 · 고객센터 · 이용약관 · 개인정보 처리방침 · 환불 정책. 결제 회사가 사이트를 심사할 때 이 정보가 모두 보여야 해요. (샘플)',
         'Company name (example) · CEO OOO · Business no. 000-00-00000 · Online sales reg. no. 0000-Seoul-0000 · Address · Customer service · Terms · Privacy notice · Refund policy. The payment company checks that all of this is visible before it approves the site. (sample)')}</p>
@@ -401,7 +404,7 @@
         </div>`;
     const ABOUT_OF = { library: 'p-gb', math: 'p-fm', phonics: 'p-lgr' };
     const buyCard = p => cell('stripe-' + art(p.id),
-      (p.id === 'library' ? flipBook() : p.id === 'math' ? pileDeal('fresh-math', [1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
+      (p.id === 'library' ? flipBook() : p.id === 'math' ? pileDeal('fresh-math', [1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', [1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
       plogo(p.id, p.name), ABOUT_OF[p.id], p.price,
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
       `<a class="btn" href="#/play/${p.id}?sample=1">${L('맛보기', 'Sample')}</a>`);
@@ -410,28 +413,34 @@
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll(key, [1, 2, 8]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
         `<span class="badge muted">${L('준비 중', 'Coming soon')}</span>`); };
-    const group = (code, name, cards) => `
-      <section class="pgroup" aria-label="${code}">
+    const group = (code, name, cards, after = '') => `
+      <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
         <h2><b>${code}</b> <span>${name}</span>${doodle('arrow', 'g-d')}</h2>
-        <div class="products">${cards.join('')}</div>
+        <div class="products">${cards.join('')}</div>${after}
       </section>`;
+    // The fourth box in GPKIS: the books partner schools already use. They are shown, not sold (CEO, 14 Nov 2026).
+    const kinderBox = () => `<a class="kbox" href="#/books?p=k-pbl">
+        <div class="kbox-t">${KLOGO}<p>${PARTNER()}</p><span class="kbox-more">${EYE}<span>${L('자세히 보기', 'See more')}</span></span></div>
+        <div class="kbox-covers" aria-hidden="true">${['assets/books/ees-park-ranger.webp', 'assets/books/ees-athlete.webp', 'assets/catalog/pw-a-7.webp', 'assets/catalog/math-a-4.webp', 'assets/books/els-k.webp', 'assets/books/ees-animal-friends.webp'].map(u => `<img src="${u}" alt="">`).join('')}</div>
+      </a>`;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap">
       <section class="hero vibe-hero">
         <div>
-          <span class="eyebrow">${L('유치부 GPKIS · 초등부 GPPIS', 'Kinder GPKIS · Primary GPPIS')}</span>
+          <span class="eyebrow">${L('유치부 GPKIS · 독서 GPGB · 초등부 GPPIS', 'Kindergarten GPKIS · Reading GPGB · Primary GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
-          <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('교육센터 상담', 'Ask a centre')}</a></div>
+          <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('MOM INSIGHT 상담', 'Ask a mentor')}</a></div>
         </div>
         ${heroBook()}
       </section>
-      ${group('GPKIS', L('GP 유치부 국제학교', 'GP Kinder International School'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
-      ${group('GPPIS', L('GP 초등부 국제학교', 'GP Primary International School'), [buyCard(prod('library')), soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
+      ${group('GPKIS', L('유치부 프로그램', 'Kindergarten programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], kinderBox())}
+      ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
+      ${group('GPPIS', L('초등부 프로그램', 'Primary programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
         <img class="ask-pose" src="assets/friends/pose3.webp" alt="">
-        <div><span class="eyebrow">${L('교육센터', 'Education centres')}</span><br><b>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</b> <span class="dim">${L('지역을 고르고 문의를 남기면 담당 교육센터에서 답해 드려요', 'Pick your area, leave a question, and the local education centre answers')}</span></div>
+        <div><span class="eyebrow">GP MOM INSIGHT</span><br><b>${L('우리 동네 GP MOM INSIGHT에게 상담받기', 'Ask the GP MOM INSIGHT near you')}</b> <span class="dim">${L('자녀를 훌륭하게 키운 선배 엄마들이 교육 경험과 노하우를 나눠 드려요', 'Mothers who have raised their children well share their experience and know-how')}</span></div>
         <a class="btn primary" href="#/consult" style="margin-left:auto">${L('상담 문의하기', 'Ask a question')}</a>
       </div>
       ${''/* The four points about how the platform works inside (what opens, child profiles, parent area, school version) were taken out on 11 Nov 2026: not for customers yet. */}
@@ -479,7 +488,7 @@
         <button data-role="admin"><b>${L('원장님으로 보기 (예시)', 'View as principal (example)')}</b><span>${L('해바라기 영어유치원 · 반, 선생님, 원생, 시간표, 이용권', '해바라기 영어유치원 · classes, teachers, children, timetable, licence')}</span></button>
         <button data-role="teacher"><b>${L('선생님으로 보기 (예시)', 'View as teacher (example)')}</b><span>${L('이선생님 · 해바라기반 12명의 진도', '이선생님 · progress of 12 children in 해바라기반')}</span></button>
         <a class="btn" href="#/kid" style="justify-content:center">${L('아이 입장 화면 보기 (교실 태블릿)', 'Child log-in screen (classroom tablet)')}</a>
-        <button data-role="counselor"><b>${L('상담 선생님으로 보기 (예시)', 'View as counsellor (example)')}</b><span>${L('윤선생님 · 서울 강남·서초·송파·강동 교육센터 문의에 답변', '윤선생님 · answers inquiries for 강남, 서초, 송파 and 강동 in Seoul')}</span></button>
+        <button data-role="counselor"><b>${L('상담 선생님으로 보기 (예시)', 'View as counsellor (example)')}</b><span>${L('윤선생님 · 서울 강남·서초·송파·강동 GP MOM INSIGHT 문의에 답변', '윤선생님 · answers inquiries for 강남, 서초, 송파 and 강동 in Seoul')}</span></button>
         <button data-role="staff"><b>${L('GP 운영자로 보기 (예시)', 'View as GP staff (example)')}</b><span>${L('모든 기관·가정 회원·결제·열람 기록·데이터. 실제로는 GP 전용 주소와 2단계 로그인', 'All schools, families, payments, access log, data. Real version: a GP-only address and two-step login')}</span></button>
       </div>
       <p class="note">${L('단체 구매 문의: 견적서 → 세금계산서 → 계좌이체. 2~4주 무료 체험반 가능 (예시).', 'Group purchase: quote → tax invoice → bank transfer. A 2-4 week free trial class is possible (example).')}</p>
@@ -608,7 +617,7 @@
         ${fam.children.length < 4 ? `<button class="kid add" id="addKid"><span class="plus">+</span><b>${L('아이 추가', 'Add a child')}</b></button>` : ''}</div></div>`;
     } else if (tab === 'consults') {
       const mine = await API.myInquiries();
-      body = `<h1>${L('상담 문의', 'My questions')}</h1><p class="sub">${L('교육센터에 남긴 문의와 선생님의 답변이에요.', 'Questions you left for an education centre, and the answers.')}</p>
+      body = `<h1>${L('상담 문의', 'My questions')}</h1><p class="sub">${L('GP MOM INSIGHT에 남긴 문의와 답변이에요.', 'Questions you left for GP MOM INSIGHT, and the answers.')}</p>
       ${mine.map(q => inquiryCard(q, true)).join('') || `<p class="dim">${L('아직 남긴 문의가 없어요.', 'No questions yet.')}</p>`}
       <a class="btn primary" href="#/consult" style="justify-self:start">${L('새 상담 문의', 'Ask a new question')}</a>`;
     } else if (tab === 'privacy') {
@@ -820,7 +829,7 @@
   const shown = new Set();
   async function staff(tab = '', arg) {
     const o = await API.staffOverview();
-    const TABS = [['', L('한눈에 보기', 'Overview')], ['schools', L('기관', 'Schools')], ['families', L('가정 회원', 'Families')], ['payments', L('결제', 'Payments')], ['consults', L('교육센터 문의', 'Centre inquiries')], ['log', L('열람 기록', 'Access log')], ['data', L('데이터 보기', 'Data')]];
+    const TABS = [['', L('한눈에 보기', 'Overview')], ['schools', L('기관', 'Schools')], ['families', L('가정 회원', 'Families')], ['payments', L('결제', 'Payments')], ['consults', L('MOM INSIGHT 문의', 'MOM INSIGHT inquiries')], ['log', L('열람 기록', 'Access log')], ['data', L('데이터 보기', 'Data')]];
     const side = `<aside class="side"><div class="who"><b>${L('GP 운영자', 'GP staff')}</b>${L('모든 기관·가정 · 2단계 로그인', 'All schools and families · two-step login')}</div>
       ${TABS.map(([k, n]) => `<a href="#/staff${k ? '/' + k : ''}" class="${k === tab || (k === 'schools' && tab === 'school') || (k === 'families' && tab === 'family') ? 'on' : ''}">${n}</a>`).join('')}</aside>`;
     const allReceipts = o.families.flatMap(f => f.receipts.map(r => ({ ...r, fam: f.name, famId: f.id })));
@@ -893,7 +902,7 @@
       const { items, counselors } = await API.allInquiries();
       const covered = new Set(counselors.flatMap(c => c.areas));
       const opt = q => `<select data-assign-q="${q.id}" aria-label="${q.id}"><option value="">${L('본사 (미배정)', 'GP head office (none)')}</option>${counselors.map(c => `<option value="${c.id}" ${q.counselor === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}</select>`;
-      body = `<h1>${L('교육센터 문의', 'Centre inquiries')}</h1><p class="sub">${L('모든 지역의 상담 문의예요. 담당 선생님이 없는 지역은 본사가 답하거나 선생님을 배정해요.', 'Inquiries from every area. Where no counsellor covers an area, GP head office answers or assigns one.')}</p>
+      body = `<h1>${L('MOM INSIGHT 문의', 'MOM INSIGHT inquiries')}</h1><p class="sub">${L('모든 지역의 상담 문의예요. 담당 선생님이 없는 지역은 본사가 답하거나 선생님을 배정해요.', 'Inquiries from every area. Where no counsellor covers an area, GP head office answers or assigns one.')}</p>
       <div class="grid3">
         <div class="panel stat"><b>${items.filter(q => q.status === 'new').length}</b><span>${L('답변 기다리는 문의', 'Waiting for an answer')}</span></div>
         <div class="panel stat"><b>${items.filter(q => !q.counselor).length}</b><span>${L('담당 선생님 없음', 'No counsellor yet')}</span></div>
@@ -1006,7 +1015,7 @@
       <section class="closing">
         <h2>${L('배움의 깊이는 질문에서,<br>성장은 <mark class="hl-g">표현</mark>에서 시작됩니다.', 'Deep learning starts with questions;<br>growth starts with <mark class="hl-g">expression</mark>.')}</h2>
         <p>${L('GP는 아이 스스로 배우고 연결하며 세상을 이해하도록 돕습니다.', 'GP helps children learn, connect and understand the world for themselves.')}</p>
-        <div class="form-row" style="justify-content:center"><a class="btn primary big" href="#/">${L('프로그램 보기', 'See the programmes')}</a><a class="btn big" href="#/consult">${L('교육센터 상담', 'Ask an education centre')}</a></div>
+        <div class="form-row" style="justify-content:center"><a class="btn primary big" href="#/">${L('프로그램 보기', 'See the programmes')}</a><a class="btn big" href="#/consult">${L('GP MOM INSIGHT 상담', 'Ask GP MOM INSIGHT')}</a></div>
       </section>
       <p class="note">${L('샘플: 문구는 GP 영어교육·통합교육 자료(2026-11-05)에서 가져왔어요. Start PBL = GP THEME PBL SERIES, Math Lab = GP English Math로 보고 옮겼으니 확인이 필요해요.', 'Sample: the text comes from the GP English and integrated learning document (5 Nov 2026). Start PBL is taken as the GP THEME PBL SERIES and Math Lab as GP English Math; please confirm.')}</p>
     </main>${foot()}`;
@@ -1027,9 +1036,12 @@
     return `<${tag} class="blevel"><b>${SER[b.series].name}</b> ${b.level === 'K' ? 'K' : 'Level ' + b.level}</${tag}>`;
   };
   /* Programme information (was on 소개): one entry per programme, used by the Books page */
-  const PLOGOS = { 'p-pbl': 'start-pbl.png', 'p-lgr': 'lets-go-readers.png', 'p-fm': 'fresh-math.png', 'p-gb': 'gb-magic-library.webp', 'p-ml': 'math-lab.png', 'p-le': 'logic-essay.png' };
+  const PLOGOS = { 'k-pbl': 'start-pbl.png', 'k-lgr': 'lets-go-readers.png', 'k-fm': 'fresh-math.png', 'p-pbl': 'start-pbl.png', 'p-lgr': 'lets-go-readers.png', 'p-fm': 'fresh-math.png', 'p-gb': 'gb-magic-library.webp', 'p-ml': 'math-lab.png', 'p-le': 'logic-essay.png' };
   const progList = () => {
     const out = []; let group = '';
+    const KNAME = { 'p-pbl': { label: 'EES / ELS', name: 'EES / ELS', line: L('GP English Emotion School · GP English Logic School 교재', 'GP English Emotion School and GP English Logic School books') },
+      'p-lgr': { label: 'EES Readers Series', name: 'EES Readers Series', line: L('Active Literacy, Active Readers, Phonics Writing 교재', 'Active Literacy, Active Readers and Phonics Writing books') },
+      'p-fm': { label: 'EES Literacy and Math', name: 'EES Literacy and Math', line: L('Literacy and Math 교재', 'Literacy and Math books') } };
     const steps = items => `<ol class="flow">${items.map(([en, ko]) => `<li><b>${en}</b><span>${ko}</span></li>`).join('')}</ol>`;
     const prog = (cls, name, line, extra) => out.push({ cls, name, line, extra: extra || '', group });
     group = 'GPKIS'; prog('p-pbl', 'Start PBL', L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!'),
@@ -1037,7 +1049,8 @@
     group = 'GPKIS'; prog('p-lgr', "Let’s Go Readers", L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.'), `<p class="dim">${L('자세한 소개는 준비 중이에요.', 'More about it soon.')}</p>`);
     group = 'GPKIS'; prog('p-fm', 'Fresh Math', L('숲에서 발견하는 수학, 놀이로 키우는 사고력', 'Maths found in the forest, thinking grown through play'),
           `<p>${L('자연물을 살펴보고 직접 비교하고 분류하며 수학 개념을 경험합니다.', 'Children look closely at things from nature, compare and sort them, and meet maths ideas.')}</p>` + steps([['Count', L('세어 보기', 'count')], ['Compare', L('크기·길이 비교하기', 'compare size and length')], ['Sort', L('모양과 특징에 따라 분류하기', 'sort by shape and feature')], ['Find patterns', L('자연 속 규칙 찾기', 'find patterns in nature')], ['Measure & build', L('재고 구성하며 만들기', 'measure and build')]]));
-    group = 'GPPIS'; prog('p-gb', 'GB Magic Library', L('144권의 책에서 시작하는 읽기·탐구·영어 글쓰기', 'Reading, exploring and English writing, starting from 144 books'),
+    out.filter(p => p.group === 'GPKIS').forEach(p => out.push({ ...p, cls: 'k' + p.cls.slice(1), group: 'Kindergarten', as: p.cls, ...KNAME[p.cls], extra: `<p class="k-only">${PARTNER()}</p><p>${L('유치부 협력 기관에서 쓰는 GP 교재예요. 레벨과 번호에 따라 볼 수 있어요.', 'The GP books used at partner kindergartens, by level and number.')}</p>` }));
+    group = 'GPGB'; prog('p-gb', 'GB Magic Library', L('144권의 책에서 시작하는 읽기·탐구·영어 글쓰기', 'Reading, exploring and English writing, starting from 144 books'),
           `<p>${L('다양한 그림책과 동화를 읽고 이야기의 의미와 관점을 살펴보며 자신의 생각을 말과 글로 표현합니다.', 'Children read picture books and stories, look at their meaning and points of view, and put their own thoughts into speech and writing.')}</p>` +
           steps([['Read', L('내용 파악', 'understand the story')], ['Question', L('인물·사건·주제에 대해 질문 만들기', 'ask about characters, events and themes')], ['Discuss', L('근거를 들어 생각 나누기', 'share ideas with reasons')], ['Write', L('자신의 관점과 생각을 영어로 표현하기', 'write their view in English')]]) +
           `<p class="ib">${L('GB는 IB 인증 과정이나 공식 IB 프로그램이 아니라, 탐구·성찰·비판적 사고의 교육 방향을 참고해 자체 개발하는 독서 기반 프로그램입니다.', 'GB is not an IB-certified course or an official IB programme. It is a reading-based programme GP develops itself, drawing on the ideas of inquiry, reflection and critical thinking.')}</p>`);
@@ -1061,41 +1074,41 @@
     const levels = (CAT[cur.cls] || {}).levels || [];
     const lv = levels.find(x => x.key === String(level || '').toUpperCase()) || levels.find(x => x.key === bookLevel[cur.cls]) || levels[0];
     if (lv) bookLevel[cur.cls] = lv.key;
-    const soon = `<span class="bp-soon">${L('준비 중', 'Coming soon')}</span>`, open = `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
+    const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
+    const soon = kTab ? '' : `<span class="bp-soon">${L('준비 중', 'Coming soon')}</span>`, open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
     const cover = (b, cls = '') => { const inner = `<figure><img src="${b.img}" alt="">${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;
-      return hasSheets(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
+      return canOpen(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
     // Start PBL, Level A and B: four theme blocks, three numbers in each, a phonics pad with every number
     const themeView = v => `<div class="bp-themes">${v.themes.map((t, k) => `<section class="bp-theme" style="--c:${t.c};${t.t ? '--t:' + t.t : ''}">
         <div class="bp-side"><div><div class="n">PBL ${k + 1}</div><h3>${L(t.ko, t.en)}</h3><div class="job">${t.job}</div></div><div class="nos">Level ${v.key} · ${t.from} – ${t.to}</div></div>
-        <div class="bp-groups">${t.groups.map(g => `<div class="bp-group ${g.books.length === 1 ? 'one' : ''}"><div class="bp-no"><b>${g.no}</b>${g.books.some(b => hasSheets(b.id)) ? open : soon}</div>
+        <div class="bp-groups">${t.groups.map(g => `<div class="bp-group ${g.books.length === 1 ? 'one' : ''}"><div class="bp-no"><b>${g.no}</b>${g.books.some(b => canOpen(b.id)) ? open : soon}</div>
           <div class="bp-covers">${g.books.map(b => cover(b, b.t === 'Big Book' ? 'big' : '')).join('')}${cover(g.phonics, 'ph')}</div></div>`).join('')}</div>
       </section>`).join('')}</div>`;
     // Start PBL, Level C: four subject columns, then the Speech Book and phonics strips
     const cycleView = v => `<div class="bp-cols">${v.cycle.map(c => `<section class="bp-col" style="--c:${c.c}"><header><div class="n">${c.skill.toUpperCase()}</div><h3>${L(c.ko, c.en)}</h3><p>${L(c.en, c.ko)}</p></header>
-        <ul>${c.books.map(b => { const can = hasSheets(b.id), inner = `<img src="${b.img}" alt=""><span><b>${b.t}</b>${can ? open : soon}</span>`; return `<li>${can ? `<a href="#/books/${b.id}">${inner}</a>` : `<div>${inner}</div>`}</li>`; }).join('')}</ul></section>`).join('')}</div>
+        <ul>${c.books.map(b => { const can = canOpen(b.id), inner = `<img src="${b.img}" alt=""><span><b>${b.t}</b>${can ? open : soon}</span>`; return `<li>${can ? `<a href="#/books/${b.id}">${inner}</a>` : `<div>${inner}</div>`}</li>`; }).join('')}</ul></section>`).join('')}</div>
       ${v.strips.map(st => `<section class="bp-strip"><div><div class="n">${st.tag}</div><h3>${L(st.title[0], st.title[1])}</h3><p>${L(st.text[0], st.text[1])}</p></div><div class="bp-strip-row ${st.wide ? 'wide' : ''}">${st.books.map(b => cover(b)).join('')}</div></section>`).join('')}`;
     // every other programme: shelves of covers
-    const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${sh.books.some(b => hasSheets(b.id)) ? open : ''}</div>
+    const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${sh.books.some(b => canOpen(b.id)) ? open : ''}</div>
         <div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b)).join('') : `<div class="bp-empty">${L('표지 준비 중', 'Cover coming')}</div>`}</div></section>`).join('')}</div>`;
-    // GB Magic Library: one row per number: the Reading Book and Workbook covers first, then that number's four stories
-    const gbView = v => `<div class="bp-rows">${v.rows.map(r => `<section class="bp-row"><div class="bp-row-h"><b>${r.no}</b><span>Level ${v.key} · ${r.no}</span></div>
-        <div class="bp-row-books">${[['Reading Book', r.rb], ['Workbook', r.wb]].map(([t, cv]) => `<figure class="bp-cover"><img src="${cv.img}" alt=""><figcaption>${t}${cv.soft ? `<i>${L('임시', 'stand-in')}</i>` : ''}</figcaption></figure>`).join('')}</div>
-        <div class="bp-row-stories">${r.stories.length ? r.stories.map(b => `<figure class="bp-cover"><img src="${b.img}" alt=""></figure>`).join('') : `<div class="bp-empty wide">${L('이야기 네 편 준비 중', 'Four stories coming')}</div>`}</div></section>`).join('')}</div>`;
+    // GB Magic Library: one card per number with its two books, Reading Book and Reading Literacy (boss, 14 Nov: no story covers)
+    const gbView = v => `<div class="bp-rows two">${v.rows.map(r => `<section class="bp-row"><div class="bp-row-h"><b>${r.no}</b><span>Level ${v.key} · ${r.no}</span></div>
+        <div class="bp-row-books">${[['Reading Book', r.rb], ['Reading Literacy', r.wb]].map(([t, cv]) => `<figure class="bp-cover"><img src="${cv.img}" alt=""><figcaption>${t}${cv.soft ? `<i>${L('임시', 'stand-in')}</i>` : ''}</figcaption></figure>`).join('')}</div></section>`).join('')}</div>`;
     const body = !lv ? `<p class="bk-none">${L('책은 준비 중이에요.', 'Books are being prepared.')}</p>` : `
         <div class="bp-bar"><div class="bp-pills">${levels.length < 2 ? '' : levels.map(x => `<button class="bp-pill ${x === lv ? 'on' : ''}" data-plevel="${x.key}">Level ${x.key}${x.age[0] ? `<small>${L(x.age[0], x.age[1])}</small>` : ''}</button>`).join('')}</div></div>
         ${lv.lead ? `<p class="bp-lead">${L(lv.lead[0], lv.lead[1])}</p>` : ''}
         ${lv.themes ? themeView(lv) : lv.cycle ? cycleView(lv) : lv.rows ? gbView(lv) : shelfView(lv)}`;
-    const tabs = code => `<div class="ptabs-g"><span>${code}</span>${P.filter(p => p.group === code).map(p => `<button class="ptab ${p.cls === cur.cls ? 'on' : ''}" data-ptab="${p.cls}" aria-label="${p.name}"><img src="assets/logos/${PLOGOS[p.cls]}" alt=""></button>`).join('')}</div>`;
+    const tabs = code => `<div class="ptabs-g"><span>${code === 'Kindergarten' ? KLOGO : code}</span>${P.filter(p => p.group === code).map(p => `<button class="ptab ${p.cls === cur.cls ? 'on' : ''}" data-ptab="${p.cls}" aria-label="${p.name}">${p.label ? `<b>${p.label}</b>` : `<img src="assets/logos/${PLOGOS[p.cls]}" alt="">`}</button>`).join('')}</div>`;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap books byprog">
       <section class="books-head"><h1>${L('책', 'Books')}</h1>
-        <p>${L('프로그램마다 어떤 책으로 배우는지 레벨별로 볼 수 있어요.', 'See which books each programme uses, level by level.')}</p></section>
-      <nav class="ptabs" aria-label="${L('프로그램', 'Programmes')}">${tabs('GPKIS')}${tabs('GPPIS')}</nav>
-      <article class="bprog ${cur.cls}" id="${cur.cls}">
-        <div class="bprog-info"><h3><img class="prog-logo" src="assets/logos/${PLOGOS[cur.cls]}" alt="${cur.name}"></h3><div class="bprog-text"><p class="lead">${cur.line}</p>${cur.extra}</div></div>
+        <p>${L('프로그램마다 어떤 책과 워크시트로 배우는지 볼 수 있어요.', 'See the books and worksheets each programme uses.')}</p></section>
+      <nav class="ptabs" aria-label="${L('프로그램', 'Programmes')}">${tabs('Kindergarten')}${tabs('GPKIS')}${tabs('GPGB')}${tabs('GPPIS')}</nav>
+      <article class="bprog ${cur.cls} ${cur.as || ''}" id="${cur.cls}">
+        <div class="bprog-info"><h3>${cur.label ? `<span class="prog-name">${cur.label}</span>` : `<img class="prog-logo" src="assets/logos/${PLOGOS[cur.cls]}" alt="${cur.name}">`}</h3><div class="bprog-text"><p class="lead">${cur.line}</p>${cur.extra}</div></div>
         ${body}
       </article>
-      <p class="note">${L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 지금은 디자인이 확정된 책만 열리고, 나머지는 준비 중이에요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. For now only books with confirmed designs open; the rest are coming soon. Soft covers are temporary pictures taken from the briefing slides.')}</p>
+      <p class="note">${cur.group === 'Kindergarten' ? L('GP 협력 교육기관에서만 만날 수 있는 교재예요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'These books are only available at GP partner schools. Soft covers are temporary pictures taken from the briefing slides.') : L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 지금은 디자인이 확정된 책만 열리고, 나머지는 준비 중이에요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. For now only books with confirmed designs open; the rest are coming soon. Soft covers are temporary pictures taken from the briefing slides.')}</p>
     </main>${foot()}`;
     bindCommon();
     const go = (p, l) => { const y = window.scrollY; history.replaceState(null, '', '#/books?p=' + p + (l ? '&l=' + l : '')); books(p, l); window.scrollTo(0, y); };
@@ -1134,7 +1147,7 @@
             <h3><mark class="hl-b">${L('이 책은', 'About this book')}</mark></h3>
             <ul class="facts">${b.facts ? b.facts.map(f => `<li>${L(f[0], f[1])}</li>`).join('') : `<li>${ser.name} · ${ser.full}</li><li>${esc(b.kind)}</li><li>${b.level === 'K' ? 'K' : 'Level ' + b.level} · ${b.no}</li>${b.pages ? `<li>${L(b.pages + '쪽', b.pages + ' pages')}</li>` : ''}`}</ul>
             <h3><mark class="hl-g">${L('만나는 방법', 'Where to find it')}</mark></h3>
-            <ul class="links">${b.prog ? `<li><a href="#/play/${b.prog}?sample=1">${L('GB Magic Library에서 보기', 'See it in GB Magic Library')}</a></li>` : ''}<li><a href="#/consult">${L('교육센터에 문의하기', 'Ask an education centre')}</a></li><li><a href="#/school-login">${L('기관 단체 구매', 'Schools and group orders')}</a></li><li><button class="linkish" id="buyBook">${L('실물 책 구매 (준비 중)', 'Buy the printed book (soon)')}</button></li></ul>
+            <ul class="links">${b.prog ? `<li><a href="#/play/${b.prog}?sample=1">${L('GB Magic Library에서 보기', 'See it in GB Magic Library')}</a></li>` : ''}<li><a href="#/consult">${L('GP MOM INSIGHT에 문의하기', 'Ask GP MOM INSIGHT')}</a></li><li><a href="#/school-login">${L('기관 단체 구매', 'Schools and group orders')}</a></li><li><button class="linkish" id="buyBook">${L('실물 책 구매 (준비 중)', 'Buy the printed book (soon)')}</button></li></ul>
           </aside>
         </div>
         <nav class="book-nav"><a href="#/books/${prev.id}">← ${esc(prev.title)}</a><a href="#/books/${next.id}">${esc(next.title)} →</a></nav>
@@ -1184,9 +1197,10 @@
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap consult">
       <section class="hero" style="padding-block:32px 8px">
-        <span class="eyebrow">${L('교육센터', 'Education centres')}</span>
-        <h1>${L('우리 동네 교육센터에서 상담받기', 'Ask an education centre near you')}</h1>
-        <p>${L('지역을 고르고 궁금한 점을 남겨 주세요. 그 지역 담당 교육센터에서 답해 드려요. 회원이 아니어도 문의할 수 있어요.', 'Pick your area and leave your question. The education centre for that area will answer. You do not need an account.')}</p>
+        <span class="eyebrow">GP MOM INSIGHT</span>
+        <h1>${L('우리 동네 GP MOM INSIGHT에게 상담받기', 'Ask the GP MOM INSIGHT near you')}</h1>
+        <p>${L('지역을 고르고 궁금한 점을 남겨 주세요. 그 지역의 GP MOM INSIGHT가 답해 드려요. 회원이 아니어도 문의할 수 있어요.', 'Pick your area and leave your question. The GP MOM INSIGHT for that area will answer. You do not need an account.')}</p>
+        <div class="mi-about"><b>GP MOM INSIGHT <small>${L('지피 맘 인사이트 · 프리미엄 학부모 교육 멘토링', 'Premium mentoring for parents')}</small></b><p>${L('자녀를 훌륭하게 성장시킨 엄마들이 교육 경험과 통찰을 나누고, 다음 세대 부모에게 실질적인 교육 노하우를 전하는 학부모 멘토링 프로그램입니다.', 'A mentoring programme for parents: mothers who have raised their children well share their experience and insight, and pass real know-how on to the next generation of parents.')}</p><em>${L('먼저 경험한 엄마에게 배우는 자녀교육의 지혜', 'Wisdom about raising children, from mothers who have been there')}</em></div>
       </section>
       <div class="consult-grid">
         <section class="panel">
@@ -1197,7 +1211,7 @@
             <select id="dong" aria-label="${L('읍·면·동', 'Neighbourhood')}" ${dongs.length ? '' : 'disabled'}><option value="">${dongs.length ? L('읍·면·동 고르기', 'Pick a neighbourhood') : L('읍·면·동 (시·군·구를 먼저 골라 주세요)', 'Neighbourhood (pick a district first)')}</option>${dongs.map(x => `<option ${x === st.dong ? 'selected' : ''}>${x}</option>`).join('')}</select>
           </div>
           ${st.sido === '서울특별시' ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${seoulMap(g => API.counselorFor('서울특별시', g) ? 'on' : '', st.gu)}` : R.tiles[st.sido] ? `<p class="dim" style="font-size:13px;margin:12px 0 6px">${L('지도에서 시·군·구를 눌러도 돼요 (간단한 지도, 샘플)', 'Or tap a district on the map (simplified, sample)')}</p>${areaMap(st.sido, g => API.counselorFor(st.sido, g) ? 'on' : '', st.gu)}` : ''}
-          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 교육센터가 없어서 GP 본사에서 답해 드려요.`, `No education centre for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구가 없어서 읍·면·동만 고르면 돼요. GP 본사에서 답해 드려요.`, `${st.sido} has no districts, so just pick the neighbourhood. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 교육센터가 있어요.', 'Coloured districts already have an education centre.') : L('시·군·구를 고르면 담당 교육센터가 있는지 알려 드려요.', 'Pick a district to see whether it has an education centre.')}</div>
+          <div class="note" style="margin-top:12px">${st.gu ? (c ? L(`${st.sido} ${st.gu} 담당: <b>${c.name}</b>`, `Counsellor for ${st.gu}: <b>${c.name}</b>`) : L(`${st.gu}에는 아직 담당 GP MOM INSIGHT가 없어서 GP 본사에서 답해 드려요.`, `No GP MOM INSIGHT for ${st.gu} yet, so GP head office will answer.`)) : !gus.length ? L(`${st.sido}는 시·군·구가 없어서 읍·면·동만 고르면 돼요. GP 본사에서 답해 드려요.`, `${st.sido} has no districts, so just pick the neighbourhood. GP head office will answer.`) : st.sido === '서울특별시' ? L('색칠된 구에는 담당 GP MOM INSIGHT가 있어요.', 'Coloured districts already have a GP MOM INSIGHT.') : L('시·군·구를 고르면 담당 GP MOM INSIGHT가 있는지 알려 드려요.', 'Pick a district to see whether it has a GP MOM INSIGHT.')}</div>
         </section>
         <form class="panel" id="qform" novalidate>
           <h2>2. ${L('문의 남기기', 'Leave your question')}</h2>
@@ -1216,7 +1230,7 @@
           <label class="full">${L('문의 내용', 'Your question')}<textarea id="qt" rows="5" required placeholder="${L('예: 만 5세 아이에게 어떤 프로그램이 맞을까요?', 'e.g. Which programme suits my 5-year-old?')}"></textarea></label>
           <label class="switch consent"><input type="checkbox" id="qok"> <span>${L('[필수] 상담을 위해 이름, 연락처, 아이 나이, 문의 내용을 수집·이용하는 데 동의해요. 상담이 끝나고 1년 뒤 지워요. 동의하지 않으면 문의할 수 없어요.', '[Required] I agree that my name, contact, child\'s age and question are collected and used to answer me. They are deleted 1 year after the consultation. Without this, the question cannot be sent.')}</span></label>
           <button class="btn primary big" id="qsend">${L('문의 보내기', 'Send my question')}</button>
-          <p class="note">${L('샘플이라 실제로 보내지지 않아요. 실제 버전에서는 담당 교육센터에 알림이 가고, 답변은 선택한 방법으로 와요.', 'Nothing is really sent in the sample. The real version notifies the education centre, and the answer comes the way you chose.')}</p>
+          <p class="note">${L('샘플이라 실제로 보내지지 않아요. 실제 버전에서는 담당 GP MOM INSIGHT에 알림이 가고, 답변은 선택한 방법으로 와요.', 'Nothing is really sent in the sample. The real version notifies the GP MOM INSIGHT, and the answer comes the way you chose.')}</p>
         </form>
       </div>
     </main>${foot()}`;
@@ -1247,7 +1261,7 @@
   async function counselor(view) {
     const { me, items } = await API.counselorInbox('cs1');
     const show = view === 'done' ? items.filter(q => q.status === 'answered') : items.filter(q => q.status !== 'answered');
-    const side = `<aside class="side"><div class="who"><b>${me.name}</b>${L('교육센터 상담 선생님', 'Education centre counsellor')}</div>
+    const side = `<aside class="side"><div class="who"><b>${me.name}</b>${L('GP MOM INSIGHT 멘토', 'GP MOM INSIGHT mentor')}</div>
       <a href="#/counselor" class="${view !== 'done' ? 'on' : ''}">${L('새 문의', 'New')} <span class="badge warn">${items.filter(q => q.status !== 'answered').length}</span></a>
       <a href="#/counselor/done" class="${view === 'done' ? 'on' : ''}">${L('답변 완료', 'Answered')}</a>
       <div class="note" style="margin-top:10px">${L('맡은 지역', 'Your areas')}: ${me.areas.map(a => a.replace('서울특별시 ', '')).join(', ')}</div></aside>`;

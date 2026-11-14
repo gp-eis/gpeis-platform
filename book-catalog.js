@@ -47,10 +47,17 @@
   const ws = (id, first, titles) => titles.map((t, k) => ({ img: `assets/worksheets/${id}-${first + k}.png`, t }));
   const thumbs = (id, first, titles) => titles.map((t, k) => bk(`${k + 1} · ${t}`, `assets/worksheets/${id}-${first + k}.png`, id));
   Object.assign(window.SERIES = window.SERIES || {}, {
-    ml: { name: 'Math Lab', full: 'GP Primary International School', color: '#1c2b4d', tint: '#ffd2ca' },
-    le: { name: 'Logic Essay', full: 'GP Primary International School', color: '#222a3a', tint: '#f3ddd0' },
-    fm: { name: 'Fresh Math', full: 'GP Kinder International School', color: 'var(--c-fm)', tint: '#e3f1dc' } });
+    ml: { name: 'Math Lab', full: 'GPPIS', color: '#1c2b4d', tint: '#ffd2ca' },
+    le: { name: 'Logic Essay', full: 'GPPIS', color: '#222a3a', tint: '#f3ddd0' },
+    fm: { name: 'Fresh Math', full: 'GPKIS', color: 'var(--c-fm)', tint: '#e3f1dc' },
+    lgr: { name: "Let's Go Readers", full: 'GPKIS', color: '#223a8f', tint: '#dbeeff' } });
+  const PRS = ['The Cat on the Mat', 'Who Is in My House?', 'Fun in the Sun'];
   (window.BOOKS = window.BOOKS || []).push(
+    { id: 'phonics-reading-story', series: 'lgr', level: '', no: '', title: 'Phonics Reading Story', kind: 'Active Readers', cover: cat('phonics-reading-story-cover'), talk: [], seal: ['Stories', '3'],
+      ko: '짧은 이야기를 읽고, 내용을 묻는 질문에 답하고, 이야기 속 소리로 파닉스 활동을 해요.',
+      en: 'Children read a short story, answer questions about it, and do a phonics activity with the sounds from the story.',
+      note: ['표지 옆 장들은 Phonics Reading Story 샘플이에요. 이야기 한 편마다 Reading Comprehension과 Phonics Activity가 함께 있어요.', 'The pages beside the cover are sample Phonics Reading Story pages. Each story comes with Reading Comprehension and a Phonics Activity.'],
+      facts: [["Let's Go Readers · GPKIS", "Let's Go Readers · GPKIS"], ['이야기 + 이해 질문 + 파닉스', 'Story + questions + phonics'], ['샘플 3편', '3 sample stories']], sheets: ws('phonics-reading-story', 1, PRS) },
     { id: 'math-lab', series: 'ml', level: '', no: '', title: 'Math Lab: Think Beyond Numbers!', kind: 'Workbook', cover: cat('math-lab-cover'), talk: [], seal: ['Themes', '12'],
       ko: '수를 넘어 생각하는 힘을 키우는 열두 가지 주제예요. 주제마다 두 쪽 워크시트에서 생각하고, 찾아보고, 이유를 설명해요.',
       en: 'Twelve themes for thinking beyond numbers. Each theme has a two-page worksheet for thinking, discovering and explaining why.',
@@ -107,10 +114,30 @@
     /* GB Magic Library: every number has a Reading Book, a Workbook and four stories. Covers come from make-gb-covers.cjs:
        real ones where the book exists, stand-ins ("soft") in the colour plan's colours where it does not yet. Story covers: numbers 1, 7, 8, 9 from our own book files, the rest cut from the yearly story list (make-gb-stories.cjs). */
     'p-gb': { levels: ['a', 'b', 'c'].map(l => ({ key: l.toUpperCase(), age: ['', ''],
-      lead: ['번호마다 <mark>Reading Book</mark>과 <mark>Workbook</mark>, 그리고 이야기 네 편이 있어요.', 'Every number has a <mark>Reading Book</mark>, a <mark>Workbook</mark> and four stories.'],
+      lead: ['번호마다 <mark>Reading Book</mark>과 <mark>Reading Literacy</mark>로 구성되어 있습니다.', 'Every number is a <mark>Reading Book</mark> and a <mark>Reading Literacy</mark> book.'],
       rows: Array.from({ length: 12 }, (x, i) => i + 1).map(n => ({ no: n,
         rb: { img: n === 8 ? `assets/covers/front-gb-${l}8.webp` : cat(`gb-rb-${l}${n}`), soft: ![1, 7, 8, 9].includes(n) },
         wb: { img: n === 8 && l === 'b' ? 'assets/covers/front-gb-wb-b8.webp' : cat(`gb-wb-${l}${n}`), soft: !(n === 7 || (n === 8 && l === 'b')) },
         stories: gb(l, n) })) })) }
   };
+
+  /* ---- 14 Nov 2026: worksheet sets with covers of their own; the GP books move to the "Kindergarten" row ---- */
+  const B = window.BOOKS, by = id => B.find(b => b.id === id) || {}, sheetsOf = (...ids) => ids.flatMap(id => by(id).sheets || []);
+  const wsBook = (id, from, o) => ({ ...by(from), id, no: '', pages: undefined, cover: cat(id + '-cover'), ...o });
+  B.push(
+    wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Worksheets', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: sheetsOf('ees-park-ranger', 'ees-park-ranger-2'),
+      facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level A · 10', 'Level A · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
+    wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Worksheets', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2'),
+      facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level B · 10', 'Level B · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
+    wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Worksheets', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'],
+      facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['도형 · 시계 · 무게', 'Shapes · time · weight'], ['워크시트 3장', '3 worksheets']] }));
+  const C = window.CATALOG, one = (title, list) => ({ key: '', age: ['', ''], shelves: [shelf(title, '', list)] });
+  // the GP books, as they were
+  C['k-pbl'] = C['p-pbl']; C['k-lgr'] = C['p-lgr']; C['k-fm'] = C['p-fm'];
+  C['k-lgr'].levels.forEach(l => { l.shelves = l.shelves.filter(sh => sh.books.length); });   // the empty Active Readers row is hidden for now (user, 14 Nov)
+  // the programme pages: worksheet covers only
+  C['p-pbl'] = { levels: [one(L => 'Worksheets', [bk('Level A · 10 · Park Ranger', cat('ws-park-ranger-cover'), 'ws-park-ranger'), bk('Level B · 10 · Cave Explorer', cat('ws-cave-explorer-cover'), 'ws-cave-explorer')])] };
+  C['p-pbl'].levels[0].shelves[0].title = 'Worksheets';
+  C['p-lgr'] = { levels: [one('Worksheets', [bk('Phonics Reading Story', cat('phonics-reading-story-cover'), 'phonics-reading-story')])] };
+  C['p-fm'] = { levels: [one('Worksheets', [bk('Shapes · Time · Weight', cat('ws-fresh-math-cover'), 'ws-fresh-math')])] };
 })();

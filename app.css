@@ -1714,3 +1714,67 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .ag-help dd { margin: 3px 0 0; color: var(--muted); font-size: 15px; line-height: 1.6; word-break: keep-all; }
 .ag-help dd b { color: var(--ink); }
 @media (max-width: 760px) { .ag-grid { grid-template-columns: 1fr; } .ag-hero { align-items: flex-start; } .ag-icon img { width: 72px; height: 72px; border-radius: 17px; } }
+
+/* ===== 14 Nov 2026 (boss): GB list is Reading Book + Reading Literacy only; GP MOM INSIGHT note on the 문의 page ===== */
+.bp-rows.two { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+.bp-rows.two .bp-row, .bp-rows.two .bp-row:first-child { grid-template-columns: 1fr; gap: 16px; padding: 20px 22px 22px; border: 2px solid var(--line); border-radius: 22px; background: var(--paper); }
+.bp-rows.two .bp-row-h { grid-auto-flow: column; justify-content: start; align-items: center; }
+.bp-rows.two .bp-row-books { justify-content: center; gap: 20px; }
+.bp-rows.two .bp-row-books img { height: 150px; max-width: 100%; }
+.mi-about { margin-top: 16px; max-width: 760px; padding: 16px 20px; border-radius: 16px; background: var(--paper); border: 2px solid var(--line); display: grid; gap: 6px; }
+.mi-about b { font: 600 19px var(--round); color: var(--ink); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.mi-about b small { font: 500 13px var(--sans); color: var(--muted); }
+.mi-about p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--ink); word-break: keep-all; }
+.mi-about em { font-style: normal; font-weight: 700; font-size: 15px; color: var(--ink); background: linear-gradient(transparent 58%, var(--hl-y) 58%); justify-self: start; }
+
+/* ===== Let's Go Readers card: worksheet pages (14 Nov 2026) =====
+   Its own movement: each page is shown a little enlarged and "read" from the top left to the bottom right, then the next page fades in. */
+.pm-read { overflow: hidden; border: 2px solid var(--pk, #151e4b); border-radius: 10px; background: #fff; box-sizing: border-box; }
+.pm-read b { position: absolute; inset: 0; background-size: 138% auto; background-repeat: no-repeat; background-position: 0 0; opacity: 0; animation: pmRead 18s linear infinite; }
+.pm-read b:nth-child(2) { animation-delay: -12s; } .pm-read b:nth-child(3) { animation-delay: -6s; }
+@keyframes pmRead {
+  0%        { opacity: 0; background-position: 0 0; }
+  2.5%, 8%  { opacity: 1; background-position: 0 0; }
+  27%, 33.3% { opacity: 1; background-position: 100% 100%; }
+  36%, 100% { opacity: 0; background-position: 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .pm-read b { animation: none; } .pm-read b:first-child { opacity: 1; } }
+/* GB cards: long captions ("Reading Literacy" + the stand-in tag) wrap under the cover instead of pushing out of the card */
+.bp-rows.two .bp-row-books figure.bp-cover { flex: 1 1 0; min-width: 0; justify-items: center; }
+.bp-rows.two .bp-row-books figcaption { white-space: normal; text-align: center; line-height: 1.5; }
+.bp-rows.two .bp-row-books figcaption i { display: inline-block; margin-left: 4px; }
+
+/* ===== 책 page: the three tab rows line up (Kindergarten, GPKIS, GPPIS), 14 Nov 2026 ===== */
+.ptabs-g > span { min-width: 104px; }
+@media (max-width: 520px) { .ptabs-g > span { min-width: 0; flex-basis: 100%; } }
+
+/* Kindergarten tabs have names, not logos (14 Nov 2026) */
+.ptab b { font: 600 19px/1.1 var(--round); color: var(--ink); white-space: nowrap; letter-spacing: -.005em; }
+.bprog .prog-name { display: block; font: 600 clamp(30px, 3.6vw, 44px)/1.1 var(--round); color: var(--ink); letter-spacing: -.01em; }
+@media (max-width: 760px) { .ptab b { font-size: 15px; } }
+
+/* Front page: the Kindergarten line above GPKIS, with a button to the GP books (14 Nov 2026) */
+.pgroup.kgroup { padding-bottom: 0; }
+.pgroup.kgroup h2 { align-items: center; margin-bottom: 0; }
+.pgroup.kgroup .kbtn { margin-left: 12px; font: 600 15px var(--sans); background: var(--ink); color: #fff; border-color: var(--ink); white-space: nowrap; }
+@media (max-width: 520px) { .pgroup.kgroup .kbtn { margin-left: 0; } }
+
+/* ===== CEO, 14 Nov 2026: Kindergarten box inside GPKIS, its small logo, and the partner-school line ===== */
+.klogo { display: inline-flex; font: 600 1em/1 Fredoka, var(--round); letter-spacing: .01em; white-space: nowrap; }
+.klogo i { font-style: normal; display: inline-block; }
+.klogo i:nth-child(odd) { transform: translateY(-.04em) rotate(-3deg); } .klogo i:nth-child(even) { transform: translateY(.04em) rotate(3deg); }
+.kbox { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: center; gap: 24px; margin: 6px 0 22px; padding: 22px 28px; border-radius: 26px; background: #fffdf6; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); color: var(--ink); text-decoration: none; overflow: hidden; transition: transform .2s; }
+.kbox:hover { transform: translateY(-3px); }
+.kbox-t { display: grid; gap: 10px; justify-items: start; }
+.kbox .klogo { font-size: 40px; }
+.kbox-t p { margin: 0; font: 500 16px/1.5 var(--sans); color: var(--ink); word-break: keep-all; }
+.kbox-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding: 8px 16px; border-radius: 999px; border: 2px solid var(--ink); font: 700 14px var(--sans); background: #fff; }
+.kbox-covers { display: flex; justify-content: flex-end; align-items: center; gap: 12px; min-width: 0; }
+.kbox-covers img { height: 104px; width: auto; max-width: 22%; object-fit: contain; border-radius: 6px; box-shadow: 0 6px 14px rgba(21, 30, 75, .18); flex: 0 1 auto; min-width: 0; }
+.kbox-covers img:nth-child(odd) { transform: rotate(-2deg); } .kbox-covers img:nth-child(even) { transform: rotate(2deg) translateY(4px); }
+@media (max-width: 900px) { .kbox { grid-template-columns: 1fr; gap: 16px; padding: 20px; } .kbox-covers { justify-content: flex-start; } .kbox-covers img { height: 78px; } .kbox .klogo { font-size: 32px; } }
+@media (max-width: 520px) { .kbox-covers img:nth-child(n+5) { display: none; } .kbox-covers img { max-width: 24%; } }
+.ptabs-g .klogo { font-size: 17px; }
+.k-only { display: inline-block; margin: 0 0 8px; padding: 6px 14px; border-radius: 999px; background: var(--ink); color: #fff; font: 700 14.5px var(--sans); }
+.ptabs { display: grid; gap: 12px; } .ptabs-g { width: 100%; }   /* one row per section: Kindergarten, GPKIS, GPGB, GPPIS */
+.k-only { justify-self: start; width: fit-content; }
