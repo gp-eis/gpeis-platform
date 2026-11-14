@@ -1784,3 +1784,9 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .pgroup.g-kindergarten .kbox-t p { font: 700 19px/1.45 var(--sans); }
 .pgroup.g-kindergarten h2 b .klogo { font-size: 1em; font-weight: 600; color: inherit; }
 .pgroup.g-kindergarten h2 b .klogo { font-size: 1.2em; }   /* a bit bigger than the GPKIS heading (user, 14 Nov) */
+
+/* Fresh Math card: one page at a time, sliding upward (14 Nov 2026). Same frame as the Start PBL card, other direction. */
+.sh.su .sh-track { flex-direction: column; animation: suUp 12s cubic-bezier(.6, 0, .3, 1) infinite; }
+.sh.su .sh-track img { height: 100%; width: 100%; }
+@keyframes suUp { 0%, 26% { transform: translateY(0); } 33%, 59% { transform: translateY(-100%); } 66%, 92% { transform: translateY(-200%); } 100% { transform: translateY(-300%); } }
+@media (prefers-reduced-motion: reduce) { .sh.su .sh-track { animation: none; } }

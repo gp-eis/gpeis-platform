@@ -144,6 +144,7 @@
   const pileDeal = (id, ns) => `<div class="pm pm-pile" aria-hidden="true">${ns.map(n => wsImg(id, n)).join('')}</div>`;            // Fresh Math
   const wsHalf = (id, n, side) => `<b style="background-image:url(assets/worksheets/${id}-${n}.png)" class="${side}"></b>`;
   const counterRoll = (id, ns) => `<div class="pm pm-roll" aria-hidden="true"><div class="up"><div>${[...ns, ns[0]].map(n => wsHalf(id, n, 'l')).join('')}</div></div><div class="down"><div>${[ns[0], ...ns.slice(1).reverse(), ns[0]].map(n => wsHalf(id, n, 'r')).join('')}</div></div></div>`;   // Math Lab
+  const slideUp = (id, ns) => `<div class="sh su" aria-hidden="true"><div class="sh-track">${[...ns, ns[0]].map(n => `<img src="assets/worksheets/${id}-${n}.png" alt="">`).join('')}</div></div>`;   // Fresh Math
   const readPan = (id, ns) => `<div class="pm pm-read" aria-hidden="true">${ns.map(n => `<b style="background-image:url(assets/worksheets/${id}-${n}.png)"></b>`).join('')}</div>`;   // Let's Go Readers
   const padFlip = (id, ns) => `<div class="pm pm-pad" aria-hidden="true"><i></i>${ns.map(n => wsImg(id, n)).join('')}</div>`;        // Logic Essay
   const slideH = (id = 'ees-park-ranger', ns = [1, 2, 3, 4, 1]) => `<div class="sh ${ns.length === 4 ? 'sh3' : ''}" aria-hidden="true"><div class="sh-track">${ns.map(n => `<img src="assets/worksheets/${id}-${n}.png" alt="">`).join('')}</div></div>`;
@@ -404,7 +405,7 @@
         </div>`;
     const ABOUT_OF = { library: 'p-gb', math: 'p-fm', phonics: 'p-lgr' };
     const buyCard = p => cell('stripe-' + art(p.id),
-      (p.id === 'library' ? flipBook() : p.id === 'math' ? pileDeal('fresh-math', [1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', [1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
+      (p.id === 'library' ? flipBook() : p.id === 'math' ? slideUp('fresh-math', [1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', [1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
       plogo(p.id, p.name), ABOUT_OF[p.id], p.price,
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
       `<a class="btn" href="#/play/${p.id}?sample=1">${L('맛보기', 'Sample')}</a>`);
