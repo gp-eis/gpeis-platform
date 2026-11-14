@@ -1790,3 +1790,28 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .sh.su .sh-track img { height: 100%; width: 100%; }
 @keyframes suUp { 0%, 26% { transform: translateY(0); } 33%, 59% { transform: translateY(-100%); } 66%, 92% { transform: translateY(-200%); } 100% { transform: translateY(-300%); } }
 @media (prefers-reduced-motion: reduce) { .sh.su .sh-track { animation: none; } }
+
+/* ===== Play Kinder card (boss, 14 Nov 2026): colour and the same card design as the programme cards ===== */
+.pgroup .pcard.stripe-kinder { --pc: #ffd95e; --pk: #5a3aa6; --blk: radial-gradient(circle at 14% 24%, #ff9f8c 0 22px, transparent 23px), linear-gradient(90deg, #7a4fb5 0 58%, #ffd95e 58%); }
+.pcell.stripe-kinder { --k: #5a3aa6; }
+.kcovers { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; }
+.kcovers img { height: 62%; width: auto; max-width: 30%; object-fit: contain; border-radius: 6px; box-shadow: 0 8px 16px rgba(21, 30, 75, .28); animation: mvBob 3.6s ease-in-out infinite; }
+.kcovers img:nth-child(2) { animation-delay: -.9s; } .kcovers img:nth-child(3) { animation-delay: -1.8s; } .kcovers img:nth-child(4) { animation-delay: -2.7s; }
+.kcovers img:nth-child(odd) { transform-origin: 50% 100%; rotate: -3deg; } .kcovers img:nth-child(even) { rotate: 3deg; }
+.pgroup .pcard.stripe-kinder .body h3 .klogo { font-size: clamp(34px, 3.6vw, 46px); }
+.pcell.stripe-kinder .konly { font: 700 15.5px/1.45 var(--sans); color: var(--ink); word-break: keep-all; }
+@media (prefers-reduced-motion: reduce) { .kcovers img { animation: none; } }
+/* Play Kinder card works like the Start PBL card (user, 14 Nov): one school-book cover at a time, sliding sideways in the same frame */
+.sh.kslide { background: #fffdf6; }
+.sh.kslide .sh-track img { object-fit: contain; padding: 10px; box-sizing: border-box; background: #fffdf6; }
+/* Play Kinder card shows inside pages of the school books, one at a time (boss, 14 Nov 4:44 PM); the frame takes the page's own shape */
+.sh.kslide { aspect-ratio: 2056 / 1628; width: auto; height: 100%; max-width: 100%; }
+.sh.kslide .sh-track img { object-fit: cover; padding: 0; }
+/* Play Kinder card: every book page is shown whole and centred (user, 14 Nov). The frame is the same 16:10 frame as the Start PBL card;
+   the page keeps its own shape inside it, with an even cream margin left and right. */
+.sh.kslide { aspect-ratio: 16 / 10; width: min(100%, 300px); height: auto; max-width: 100%; background: #fffdf6; }
+.sh.kslide .sh-track { height: 100%; }
+.sh.kslide .sh-track img { width: 100%; height: 100%; flex: none; object-fit: contain; object-position: center; padding: 6px 0; box-sizing: border-box; background: #fffdf6; }
+/* the frame takes the page's own shape (760:594) at the same height as the other cards' frames, so the page fills it with no cut and no empty bands */
+.sh.kslide { aspect-ratio: 760 / 594; width: min(100%, 240px); }
+.sh.kslide .sh-track img { object-fit: cover; padding: 0; }

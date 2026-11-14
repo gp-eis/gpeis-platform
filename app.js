@@ -50,7 +50,7 @@
   function toast(msg) { $toast.textContent = msg; $toast.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => $toast.hidden = true, 2600); }
   function modal(html) { $modal.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`; $modal.hidden = false; }
   // Start PBL, Let's Go Readers, Fresh Math / GB Magic Library, Math Lab, Logic Essay
-  const KLOGO = '<span class="klogo" role="img" aria-label="Kindergarten">' + [...'Kindergarten'].map((c, k) => `<i style="color:${['#e8343d', '#2f6fd0', '#2e9a55', '#f0a51a', '#f47c6c', '#7a4fb5'][k % 6]}">${c}</i>`).join('') + '</span>';
+  const KLOGO = '<span class="klogo" role="img" aria-label="Play Kinder">' + [...'Play Kinder'].map((c, k) => c === ' ' ? '<i>&nbsp;</i>' : `<i style="color:${['#e8343d', '#2f6fd0', '#2e9a55', '#f0a51a', '#f47c6c', '#7a4fb5'][k % 6]}">${c}</i>`).join('') + '</span>';
   const PARTNER = () => L('GP 협력 교육기관에서만 만날 수 있습니다.', 'Only available at GP partner schools.');
   const LOGO_DOTS = '<span class="dots six">' + ['#e8343d', '#8ccbff', '#b9e59c', '#f5c21a', '#f47c6c', '#f3ddd0'].map(c => `<b style="background:${c}"></b>`).join('') + '</span>';
   function closeModal() { $modal.hidden = true; $modal.innerHTML = ''; }
@@ -420,10 +420,13 @@
         <div class="products">${cards.join('')}</div>${after}
       </section>`;
     // Kindergarten: its own section above GPKIS (boss, 14 Nov evening). The books partner schools already use; shown, not sold.
-    const kinderBox = () => `<a class="kbox" href="#/books?p=k-pbl">
-        <div class="kbox-t"><p>${PARTNER()}</p><span class="kbox-more">${EYE}<span>${L('자세히 보기', 'See more')}</span></span></div>
-        <div class="kbox-covers" aria-hidden="true">${['assets/books/ees-park-ranger.webp', 'assets/books/ees-athlete.webp', 'assets/catalog/pw-a-7.webp', 'assets/catalog/math-a-4.webp', 'assets/books/els-k.webp', 'assets/books/ees-animal-friends.webp'].map(u => `<img src="${u}" alt="">`).join('')}</div>
-      </a>`;
+    const kinderBox = () => `<div class="pcell stripe-kinder">
+          <article class="pcard stripe-kinder">
+            <div class="pic"><div class="sh kslide" aria-hidden="true"><div class="sh-track">${[1, 2, 3, 4, 1].map(n => `<img src="assets/kinder/page-${n}.webp" alt="">`).join('')}</div></div></div>
+            <a class="pmore" href="#/books?p=k-pbl">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
+            <div class="body"><h3>${KLOGO}</h3></div>
+          </article>
+        </div>`;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap">
       <section class="hero vibe-hero">
@@ -435,8 +438,8 @@
         ${heroBook()}
       </section>
       <section class="pgroup g-kindergarten" aria-label="Kindergarten">
-        <h2><b>${KLOGO}</b> <span>${L('협력 교육기관 교재', 'Books for partner schools')}</span>${doodle('arrow', 'g-d')}</h2>
-        ${kinderBox()}
+        <h2><b>Play Kinder</b> <span>${L('킨더 협력 교육기관 프로그램', 'Programme for partner kindergartens')}</span>${doodle('arrow', 'g-d')}</h2>
+        <div class="products">${kinderBox()}</div>
       </section>
       ${group('GPKIS', L('유치부 프로그램', 'Kindergarten programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
