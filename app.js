@@ -433,7 +433,7 @@
     <main class="wrap">
       <section class="hero vibe-hero">
         <div>
-          <span class="eyebrow">${L('유치부 GPKIS · 독서 GPGB · 초등부 GPPIS', 'Kindergarten GPKIS · Reading GPGB · Primary GPPIS')}</span>
+          <span class="eyebrow">${L('사고력 GPKIS · 독서 GPGB · 미래역량 GPPIS', 'Thinking GPKIS · Reading GPGB · Future skills GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
           <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('MOM INSIGHT 상담', 'Ask a mentor')}</a></div>
         </div>
@@ -443,9 +443,9 @@
         <h2><b>Play Kinder</b> <span>${L('킨더 협력 교육기관 프로그램', 'Programme for partner kindergartens')}</span>${doodle('arrow', 'g-d')}</h2>
         <div class="products">${kinderBox()}</div>
       </section>
-      ${group('GPKIS', L('유치부 프로그램', 'Kindergarten programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
+      ${group('GPKIS', L('사고력 프로그램', 'Thinking-skills programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
-      ${group('GPPIS', L('초등부 프로그램', 'Primary programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
+      ${group('GPPIS', L('초등부 미래역량 프로그램', 'Future-skills programmes for primary'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
@@ -1118,7 +1118,7 @@
         <div class="bprog-info"><h3>${cur.label ? `<span class="prog-name">${cur.label}</span>` : `<img class="prog-logo" src="assets/logos/${PLOGOS[cur.cls]}" alt="${cur.name}">`}</h3><div class="bprog-text"><p class="lead">${cur.line}</p>${cur.extra}</div></div>
         ${body}
       </article>
-      <p class="note">${cur.group === 'Kindergarten' ? L('GP 협력 교육기관에서만 만날 수 있는 교재예요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'These books are only available at GP partner schools. Soft covers are temporary pictures taken from the briefing slides.') : L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 지금은 디자인이 확정된 책만 열리고, 나머지는 준비 중이에요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. For now only books with confirmed designs open; the rest are coming soon. Soft covers are temporary pictures taken from the briefing slides.')}</p>
+      <p class="note">${cur.group === 'Kindergarten' ? L('GP 협력 교육기관에서만 만날 수 있는 교재예요.', 'These books are only available at GP partner schools.') : L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 지금은 디자인이 확정된 책만 열리고, 나머지는 준비 중이에요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. For now only books with confirmed designs open; the rest are coming soon. Soft covers are temporary pictures taken from the briefing slides.')}</p>
     </main>${foot()}`;
     bindCommon();
     const go = (p, l) => { const y = window.scrollY; history.replaceState(null, '', '#/books?p=' + p + (l ? '&l=' + l : '')); books(p, l); window.scrollTo(0, y); };

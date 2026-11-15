@@ -136,6 +136,43 @@
   const C = window.CATALOG, one = (title, list) => ({ key: '', age: ['', ''], shelves: [shelf(title, '', list)] });
   // the GP books, as they were
   C['k-pbl'] = C['p-pbl']; C['k-lgr'] = C['p-lgr']; C['k-fm'] = C['p-fm'];
+  /* ---- 16 Nov 2026: real front covers for every school book we have (assets/catalog/k, made by make-kinder-covers.cjs from D:\GP Books).
+     Where the drive has no file (Athlete A7-A8, Big Book A9, Active Literacy A7-A8) the earlier cover stays. ---- */
+  {
+    const kc = n => `assets/catalog/k/${n}.webp`;
+    const TWO = { a: [1, 2, 4, 5, 10, 11], b: [1, 2, 4, 5, 7, 8, 10, 11] }, BIG = { a: [3, 6, 12], b: [3, 6, 9, 12] };
+    C['k-pbl'].levels.forEach(lv => {
+      const l = lv.key.toLowerCase();
+      if (lv.themes) lv.themes.forEach(t => t.groups.forEach(g => {
+        g.phonics = bk('Phonics', kc(`ph-${l}${g.no}`));
+        if (TWO[l].includes(g.no)) g.books = g.books.map((b, i) => bk(b.t, kc(`pbl-${l}${g.no}-${i + 1}`)));
+        if (BIG[l].includes(g.no)) g.books = [bk('Big Book', kc(`big-${l}${g.no}`))];
+      }));
+      if (lv.cycle) {
+        lv.cycle.forEach(col => { col.books = col.books.map(b => ({ ...b, img: kc('c' + b.no), soft: false, id: '' })); });
+        lv.strips[0].books = Array.from({ length: 12 }, (x, i) => ({ ...bk('', kc('sp' + (i + 1))), t: `${i + 1} · ${SPEECH[i % 4]}` }));
+        lv.strips[1].books = Array.from({ length: 12 }, (x, i) => bk('Level C · ' + (i + 1), kc('ph-c' + (i + 1))));
+      }
+    });
+    const nums = (list, key, label) => list.map(n => bk(label(n), kc(key + n)));
+    const ALA = [1, 2, 3, 4, 5, 10], ALB = [1, 2, 3, 4, 5, 7, 8, 10];
+    const al = (L, list, extra) => [...list.map(n => [n, bk(lv(L, n), kc(`al-${L.toLowerCase()}${n}`))]), ...extra].sort((p, q) => p[0] - q[0]).map(p => p[1]);
+    C['k-lgr'] = { levels: [
+      { key: 'A', age: ['만 3세', 'age 3'], shelves: [
+        shelf('Active Literacy', '', al('A', ALA, [[7, bk(lv('A', 7), old('ees-athlete'))], [8, bk(lv('A', 8), cat('al-a-8'))]])),
+        shelf('Active Readers', '', nums(ALA, 'ar-a', n => lv('A', n))),
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-a', n => lv('A', n))) ] },
+      { key: 'B', age: ['만 4세', 'age 4'], shelves: [
+        shelf('Active Literacy', '', al('B', ALB, [])),
+        shelf('Active Readers', '', nums(ALB, 'ar-b', n => lv('B', n))),
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-b', n => lv('B', n))) ] },
+      { key: 'C', age: ['만 5세', 'age 5'], shelves: [
+        shelf('ELS K', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'k', n => 'K · ' + n)),
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-c', n => lv('C', n))) ] } ] };
+    const TOPIC = ['', 'Vertices', 'Lines', 'Surfaces', 'Lengths', 'Area', 'Weight', 'Rule', 'Category', 'Time', 'Calculation'];
+    C['k-fm'] = { levels: [['A', '만 3세', 'age 3'], ['B', '만 4세', 'age 4'], ['C', '만 5세', 'age 5']].map(([L, ko, en]) => ({ key: L, age: [ko, en], shelves: [
+      shelf('Literacy and Math', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'lm-' + L.toLowerCase(), n => n + ' · ' + TOPIC[n])) ] })) };
+  }
   C['k-lgr'].levels.forEach(l => { l.shelves = l.shelves.filter(sh => sh.books.length); });   // the empty Active Readers row is hidden for now (user, 14 Nov)
   // the programme pages: worksheet covers only
   C['p-pbl'] = { levels: [one(L => 'Worksheets', [bk('Level A · 10 · Park Ranger', cat('ws-park-ranger-cover'), 'ws-park-ranger'), bk('Level B · 10 · Cave Explorer', cat('ws-cave-explorer-cover'), 'ws-cave-explorer')])] };

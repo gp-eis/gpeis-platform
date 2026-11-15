@@ -1829,3 +1829,7 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 /* the frame takes the page's own shape (760:594) at the same height as the other cards' frames, so the page fills it with no cut and no empty bands */
 .sh.kslide { aspect-ratio: 760 / 594; width: min(100%, 240px); }
 .sh.kslide .sh-track img { object-fit: cover; padding: 0; }
+/* Play Kinder shelves hold up to 12 covers: smaller covers so a whole row fits (16 Nov 2026) */
+.bprog.k-lgr .bp-shelf-row, .bprog.k-fm .bp-shelf-row { gap: 20px 18px; }
+.bprog.k-lgr .bp-shelf-row .bp-cover img, .bprog.k-fm .bp-shelf-row .bp-cover img { height: 132px; }
+@media (max-width: 560px) { .bprog.k-lgr .bp-shelf-row .bp-cover img, .bprog.k-fm .bp-shelf-row .bp-cover img { height: 104px; } }
