@@ -53,6 +53,8 @@
     lgr: { name: "Let's Go Readers", full: 'GPKIS', color: '#223a8f', tint: '#dbeeff' } });
   const PRS = ['The Cat on the Mat', 'Who Is in My House?', 'Fun in the Sun'];
   // contents (목차) spread of each programme, shown first beside the cover (worksheets/contents, 15 Nov 2026)
+  // Math Art Lab pages (worksheets/math-art-lab, 16 Nov 2026), shown first to show Math Lab's higher level: two single pages per picture
+  const MAL = ['Animals from Solids · Nets', 'Volume and Size · Solid Shapes', 'A 3D Person · My 3D Zoo'];
   const toc = name => ({ img: `assets/worksheets/contents-${name}.png`, t: 'Contents: lessons 1–12' });
   (window.BOOKS = window.BOOKS || []).push(
     { id: 'phonics-reading-story', series: 'lgr', level: '', no: '', title: 'Phonics Reading Story', kind: 'Active Readers', cover: cat('phonics-reading-story-cover'), talk: [], seal: ['Stories', '3'],
@@ -63,8 +65,8 @@
     { id: 'math-lab', series: 'ml', level: '', no: '', title: 'Math Lab: Think Beyond Numbers!', kind: 'Workbook', cover: cat('math-lab-cover'), talk: [], seal: ['Themes', '12'],
       ko: '수를 넘어 생각하는 힘을 키우는 열두 가지 주제예요. 주제마다 두 쪽 워크시트에서 생각하고, 찾아보고, 이유를 설명해요.',
       en: 'Twelve themes for thinking beyond numbers. Each theme has a two-page worksheet for thinking, discovering and explaining why.',
-      note: ['표지 옆 장들은 열두 주제의 워크시트예요. 영어로 배우는 수학 개념과 사고력을 한 주제씩 직접 풀고 써 보며 익혀요.', 'The pages beside the cover are the worksheets for the twelve themes: maths ideas and thinking, learned in English, one theme at a time.'],
-      facts: [['Math Lab · GPPIS', 'Math Lab · GPPIS'], ['12가지 주제', '12 themes'], ['주제마다 워크시트 2쪽', 'A two-page worksheet per theme']], sheets: ws('math-lab', 2, ML) },
+      note: ['처음 세 장은 Math Art Lab 워크시트예요. 입체도형, 전개도, 부피처럼 한 단계 높은 수학을 미술 활동으로 풀어요. 그다음은 열두 주제의 워크시트예요.', 'The first three are Math Art Lab worksheets: higher-level maths such as solid shapes, nets and volume, worked out through art. After them come the worksheets for the twelve themes.'],
+      facts: [['Math Lab · GPPIS', 'Math Lab · GPPIS'], ['12가지 주제', '12 themes'], ['주제마다 워크시트 2쪽', 'A two-page worksheet per theme']], sheets: [...ws('math-art-lab', 1, MAL), ...ws('math-lab', 2, ML)] },
     { id: 'logic-essay', series: 'le', level: '', no: '', title: 'Logic Essay: Think. Reason. Argue. Write.', kind: 'Workbook', cover: cat('logic-essay-cover'), talk: [], seal: ['Themes', '12'],
       ko: '생각하는 힘이 논리가 되고, 논리가 글이 됩니다. 열두 가지 주제를 따라 생각을 정리하고 영어로 글을 써요.',
       en: 'The power to think becomes logic, and logic becomes writing. Twelve themes for organising ideas and writing them in English.',

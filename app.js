@@ -414,7 +414,7 @@
     const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 35000,
       `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
-      return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll(key, [1, 2, 8]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
+      return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll('math-art-lab', [1, 2, 3]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
         `<span class="badge muted">${L('준비 중', 'Coming soon')}</span>`); };
     const group = (code, name, cards, after = '') => `
       <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
