@@ -52,12 +52,14 @@
     fm: { name: 'Fresh Math', full: 'GPKIS', color: 'var(--c-fm)', tint: '#e3f1dc' },
     lgr: { name: "Let's Go Readers", full: 'GPKIS', color: '#223a8f', tint: '#dbeeff' } });
   const PRS = ['The Cat on the Mat', 'Who Is in My House?', 'Fun in the Sun'];
+  // contents (목차) spread of each programme, shown first beside the cover (worksheets/contents, 15 Nov 2026)
+  const toc = name => ({ img: `assets/worksheets/contents-${name}.png`, t: 'Contents: lessons 1–12' });
   (window.BOOKS = window.BOOKS || []).push(
     { id: 'phonics-reading-story', series: 'lgr', level: '', no: '', title: 'Phonics Reading Story', kind: 'Active Readers', cover: cat('phonics-reading-story-cover'), talk: [], seal: ['Stories', '3'],
       ko: '짧은 이야기를 읽고, 내용을 묻는 질문에 답하고, 이야기 속 소리로 파닉스 활동을 해요.',
       en: 'Children read a short story, answer questions about it, and do a phonics activity with the sounds from the story.',
       note: ['표지 옆 장들은 Phonics Reading Story 샘플이에요. 이야기 한 편마다 Reading Comprehension과 Phonics Activity가 함께 있어요.', 'The pages beside the cover are sample Phonics Reading Story pages. Each story comes with Reading Comprehension and a Phonics Activity.'],
-      facts: [["Let's Go Readers · GPKIS", "Let's Go Readers · GPKIS"], ['이야기 + 이해 질문 + 파닉스', 'Story + questions + phonics'], ['샘플 3편', '3 sample stories']], sheets: ws('phonics-reading-story', 1, PRS) },
+      facts: [["Let's Go Readers · GPKIS", "Let's Go Readers · GPKIS"], ['이야기 + 이해 질문 + 파닉스', 'Story + questions + phonics'], ['샘플 3편', '3 sample stories']], sheets: [toc('lets-go-readers'), ...ws('phonics-reading-story', 1, PRS)] },
     { id: 'math-lab', series: 'ml', level: '', no: '', title: 'Math Lab: Think Beyond Numbers!', kind: 'Workbook', cover: cat('math-lab-cover'), talk: [], seal: ['Themes', '12'],
       ko: '수를 넘어 생각하는 힘을 키우는 열두 가지 주제예요. 주제마다 두 쪽 워크시트에서 생각하고, 찾아보고, 이유를 설명해요.',
       en: 'Twelve themes for thinking beyond numbers. Each theme has a two-page worksheet for thinking, discovering and explaining why.',
@@ -125,11 +127,11 @@
   const B = window.BOOKS, by = id => B.find(b => b.id === id) || {}, sheetsOf = (...ids) => ids.flatMap(id => by(id).sheets || []);
   const wsBook = (id, from, o) => ({ ...by(from), id, no: '', pages: undefined, cover: cat(id + '-cover'), ...o });
   B.push(
-    wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Worksheets', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: sheetsOf('ees-park-ranger', 'ees-park-ranger-2'),
+    wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Worksheets', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: [toc('start-pbl'), ...sheetsOf('ees-park-ranger', 'ees-park-ranger-2')],
       facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level A · 10', 'Level A · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
-    wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Worksheets', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2'),
+    wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Worksheets', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: [toc('start-pbl'), ...sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2')],
       facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level B · 10', 'Level B · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
-    wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Worksheets', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'],
+    wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Worksheets', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'], sheets: [toc('fresh-math'), ...(by('fresh-math-a').sheets || [])],
       facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['도형 · 시계 · 무게', 'Shapes · time · weight'], ['워크시트 3장', '3 worksheets']] }));
   const C = window.CATALOG, one = (title, list) => ({ key: '', age: ['', ''], shelves: [shelf(title, '', list)] });
   // the GP books, as they were

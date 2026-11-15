@@ -1739,6 +1739,16 @@ html[lang="en"] .bp-lead { max-width: 36em; }
   36%, 100% { opacity: 0; background-position: 100% 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .pm-read b { animation: none; } .pm-read b:first-child { opacity: 1; } }
+/* four pages (contents first, 15 Nov 2026): same movement, 6 s per page */
+.pm-read4 b { animation-name: pmRead4; animation-duration: 24s; }
+.pm-read4 b:nth-child(2) { animation-delay: -18s; } .pm-read4 b:nth-child(3) { animation-delay: -12s; } .pm-read4 b:nth-child(4) { animation-delay: -6s; }
+@keyframes pmRead4 {
+  0%        { opacity: 0; background-position: 0 0; }
+  1.9%, 6%  { opacity: 1; background-position: 0 0; }
+  20%, 25%  { opacity: 1; background-position: 100% 100%; }
+  27%, 100% { opacity: 0; background-position: 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .pm-read4 b { animation: none; } }
 /* GB cards: long captions ("Reading Literacy" + the stand-in tag) wrap under the cover instead of pushing out of the card */
 .bp-rows.two .bp-row-books figure.bp-cover { flex: 1 1 0; min-width: 0; justify-items: center; }
 .bp-rows.two .bp-row-books figcaption { white-space: normal; text-align: center; line-height: 1.5; }
@@ -1790,6 +1800,10 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .sh.su .sh-track img { height: 100%; width: 100%; }
 @keyframes suUp { 0%, 26% { transform: translateY(0); } 33%, 59% { transform: translateY(-100%); } 66%, 92% { transform: translateY(-200%); } 100% { transform: translateY(-300%); } }
 @media (prefers-reduced-motion: reduce) { .sh.su .sh-track { animation: none; } }
+/* four pages (contents first, 15 Nov 2026) */
+.sh.su.su4 .sh-track { animation-name: suUp4; animation-duration: 16s; }
+@keyframes suUp4 { 0%, 19% { transform: translateY(0); } 25%, 44% { transform: translateY(-100%); } 50%, 69% { transform: translateY(-200%); } 75%, 94% { transform: translateY(-300%); } 100% { transform: translateY(-400%); } }
+@media (prefers-reduced-motion: reduce) { .sh.su.su4 .sh-track { animation: none; } }
 
 /* ===== Play Kinder card (boss, 14 Nov 2026): colour and the same card design as the programme cards ===== */
 .pgroup .pcard.stripe-kinder { --pc: #ffd95e; --pk: #5a3aa6; --blk: radial-gradient(circle at 14% 24%, #ff9f8c 0 22px, transparent 23px), linear-gradient(90deg, #7a4fb5 0 58%, #ffd95e 58%); }
