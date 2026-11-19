@@ -185,7 +185,7 @@
   /* ---- 19 Nov 2026: the new GP EPS books on the GPFIS programme pages, 12 places each (covers from D:\GP Books\GP EPS ..., made by make-kinder-covers.cjs).
      To add a book later: run make-kinder-covers.cjs with the new PDF on the drive and put its number in EPS_HAVE. ---- */
   {
-    const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9], de: [1,2,3,4,5,7,8,9], lm: [1,2,3,4,5,6,7,8,9] };
+    const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9], de: [1,2,3,4,5,7,8,9], lm: [1,2,3,4,5,6,7,8,9], ecs: [1,2,3,4,5,6,7,8,9,10,11,12] };
     const DE = ['', 'School', 'Spring', 'Family', 'Neighborhood', 'Summer', '', 'Fall', 'Countries', 'Reading'];   // titles from the file names (6 is not on the drive yet)
     const twelve = (p, cap) => Array.from({ length: 12 }, (x, i) => i + 1).map(n => EPS_HAVE[p].includes(n) ? bk(cap(n), `assets/catalog/k/eps-${p}${n}.webp`) : { t: cap(n), img: '', id: '', soft: false, ph: n });
     // 20 Nov: the EPS books live on their own tab, EPS / ECS, over 24 numbers (they no longer sit on the Start PBL, Let's Go Readers and Fresh Math pages)
@@ -194,7 +194,7 @@
     C['p-eps'] = { levels: [{ key: '', age: ['', ''], lead: ['<mark>24개월</mark> 과정이에요. 1~12는 Literacy and Math와 Play and Speak, 13~24는 Daily Essay와 ECS 책으로 배워요.', 'A <mark>24-number</mark> course: 1-12 Literacy and Math with Play and Speak, 13-24 Daily Essay with the ECS books.'],
       shelves: [
         { title: '1 – 12', sub: 'Literacy and Math · Play and Speak', more: '', books: [], groups: nums(1, n => [one('lm', n, 'Literacy and Math ' + n), one('ps', n, 'Play and Speak ' + n)]) },
-        { title: '13 – 24', sub: 'Daily Essay · ECS', more: '', books: [], groups: nums(13, n => [one('de', n, 'Daily Essay ' + n + (DE[n] ? ' · ' + DE[n] : '')), one('ecs', n, 'ECS ' + n)]) } ] }] };
+        { title: '13 – 24', sub: 'Daily Essay · ECS', more: '', books: [], groups: nums(13, n => [one('de', n, 'Daily Essay ' + n + (DE[n] ? ' · ' + DE[n] : '')), one('ecs', n, 'ECS Level ' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16][n] + ' · ' + ['', 'Curator', 'Presentation', 'Debate'][Math.ceil(n / 4)])]) } ] }] };
     C['k-fm'].levels.forEach(l => l.shelves.forEach(s => { if (s.title === 'Literacy and Math') s.title = 'Literacy and Literature'; }));
   }
 
