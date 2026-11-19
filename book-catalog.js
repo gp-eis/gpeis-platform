@@ -194,7 +194,7 @@
     C['p-eps'] = { levels: [{ key: '', age: ['', ''], lead: ['<mark>24개월</mark> 과정이에요. 1~12는 Literacy and Math와 Play and Speak, 13~24는 Daily Essay와 ECS 책으로 배워요.', 'A <mark>24-number</mark> course: 1-12 Literacy and Math with Play and Speak, 13-24 Daily Essay with the ECS books.'],
       shelves: [
         { title: '1 – 12', sub: 'Literacy and Math · Play and Speak', more: '', books: [], groups: nums(1, n => [one('lm', n, 'Literacy and Math ' + n), one('ps', n, 'Play and Speak ' + n)]) },
-        { title: '13 – 24', sub: 'Daily Essay · ECS', more: '', books: [], groups: nums(13, n => [one('de', n, 'Daily Essay ' + n + (DE[n] ? ' · ' + DE[n] : '')), one('ecs', n, 'ECS Level ' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16][n] + ' · ' + ['', 'Curator', 'Presentation', 'Debate'][Math.ceil(n / 4)])]) } ] }] };
+        { title: '13 – 24', sub: 'Daily Essay · ECS', more: '', books: [], groups: nums(13, n => [one('de', n, 'Daily Essay ' + n + (DE[n] ? ' · ' + DE[n] : '')), one('ecs', n, 'ECS Level ' + n + ' · ' + ['', 'Curator', 'Presentation', 'Debate'][Math.ceil(n / 4)])]) } ] }] };
     C['k-fm'].levels.forEach(l => l.shelves.forEach(s => { if (s.title === 'Literacy and Math') s.title = 'Literacy and Literature'; }));
   }
 
