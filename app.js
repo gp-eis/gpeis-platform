@@ -432,7 +432,7 @@
       (p.id === 'library' ? flipBook() : p.id === 'math' ? slideUp('fresh-math', ['contents-fresh-math', 1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', ['contents-lets-go-readers', 1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
       plogo(p.id, p.name), ABOUT_OF[p.id], p.id === 'library' ? p.price : 0,   // GPFIS cards show no price; the section heading carries it
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
-      `<a class="btn" href="#/open?p=${p.id}">${L('맛보기', 'Sample')}</a>`);
+      `<a class="btn" href="${p.id === 'library' ? '#/play/library?sample=1' : '#/open?p=' + p.id}">${L('맛보기', 'Sample')}</a>`);   // GB Magic Library keeps its real sample
     const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 0,
       `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
@@ -700,7 +700,7 @@
       $app.innerHTML = topbar(authNav()) + `<main class="wrap"><div class="auth" style="text-align:center">
         <div style="font-size:42px">🔒</div><h1>${L(`${p.name}은(는) 구독 후 열려요`, `${p.name} opens after you subscribe`)}</h1>
         <p>${L('이 화면이 "구매한 상품만 열기"예요. 서버가 우리 가족의 구독을 확인한 뒤에만 내용을 보내 줘요.', 'This is "only what you bought opens": the server sends the content only after it has checked the family\'s subscription.')}</p>
-        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" href="#/open?p=${id}">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
+        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" href="${id === 'library' ? '#/play/library?sample=1' : '#/open?p=' + id}">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
       bindCommon();
       document.getElementById('sub').onclick = () => { if (!s || s.role !== 'parent') { sessionStorage.setItem('gpdemo.after', id); location.hash = '#/login'; } else checkout(id); };
       return;
