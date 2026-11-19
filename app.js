@@ -437,7 +437,7 @@
       `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll('math-art-lab', [1, 2, 3]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
-        `<a class="btn" href="#/open?p=${key}">${L('맛보기', 'Sample')}</a>`); };
+        `<span class="badge muted open27">${L('2027년 1월 OPEN', 'OPEN January 2027')}</span>`); };
     const group = (code, name, cards, after = '', big = '') => `
       <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
         <h2><b>${code}</b> ${big || `<span>${name}</span>`}${doodle('arrow', 'g-d')}</h2>
@@ -465,7 +465,7 @@
         <h2><b>Play Kinder</b> <span>${L('킨더 협력 교육기관 프로그램', 'Programme for partner kindergartens')}</span>${doodle('arrow', 'g-d')}</h2>
         <div class="products">${kinderBox()}</div>
       </section>
-      ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<b class="g-name">${L('사고력 프로그램', 'Thinking-skills programmes')}</b> <b class="g-price">${L('35,000원', '₩35,000')}<small>/${L('월', 'mo')}</small></b>`)}
+      ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('사고력 프로그램', 'Thinking-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('초등부 미래역량 프로그램', 'Future-skills programmes for primary'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}

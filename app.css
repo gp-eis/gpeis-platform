@@ -1857,3 +1857,20 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 @media (max-width: 760px) { .op-card { grid-template-columns: 1fr; min-height: 0; box-shadow: 6px 6px 0 var(--ink); } .op-l, .op-r { padding: 28px 24px; } .op-l::after { width: 150px; height: 150px; right: -50px; bottom: -50px; } }
 .op-dots .dots.six { display: inline-grid; } .op-dots .dots.six b { display: block; border-radius: 50%; animation: logoHop 4.8s ease-in-out infinite; }
 .op-r .op-btns .btn:not(.primary) { border: 2px solid var(--ink); }
+/* GPFIS heading (19 Nov): "GPFIS" exactly like the other section names; "사고력 프로그램" in the same face, weight and colour as the other
+   section labels (500, muted), only larger; the price keeps its red */
+.pgroup.g-gpfis h2 > b:first-child { font-size: 40px; }
+.pgroup.g-gpfis h2 .g-name { font-size: 30px; font-weight: 500; color: #5a638a; }
+.pgroup.g-gpfis h2 .g-price { font-size: 30px; font-weight: 600; }
+@media (max-width: 520px) { .pgroup.g-gpfis h2 .g-name, .pgroup.g-gpfis h2 .g-price { font-size: 24px; } }
+/* GPFIS price written like the card prices (₩50,000 / 월): Noto Sans KR bold in navy, a small muted "/ 월"; only larger (19 Nov) */
+.pgroup.g-gpfis h2 .g-price { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-weight: 700; color: #151e4b; }
+.pgroup.g-gpfis h2 .g-price small { font-size: .45em; font-weight: 400; color: #5a638a; margin-left: 2px; }
+.pgroup.g-gpfis h2 .g-price small { font-size: .62em; }   /* same proportion as the card prices (13 / 19 px) */
+/* GPFIS price: exactly the card price (₩50,000 / 월): 21 px bold, "/ 월" 13 px, 19 px on smaller screens (user, 19 Nov) */
+.pgroup.g-gpfis h2 .g-price { font: 700 21px var(--sans); color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pgroup.g-gpfis h2 .g-price small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 0; }
+@media (max-width: 1120px) { .pgroup.g-gpfis h2 .g-price { font-size: 19px; } }
+@media (max-width: 520px) { .pgroup.g-gpfis h2 .g-price { font-size: 19px; } }
+/* Math Lab and Logic Essay: a "2027년 1월 OPEN" tag where the button was (19 Nov) */
+.pbelow .badge.open27 { border-style: solid; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
