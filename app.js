@@ -356,6 +356,28 @@
     <svg class="foot-art" viewBox="0 0 420 220" aria-hidden="true"><circle cx="330" cy="150" r="80" fill="var(--hl-y)"/><path d="M150 220l70-120 70 120z" fill="var(--hl-p)"/><rect x="40" y="130" width="90" height="90" rx="18" fill="var(--hl-b)"/><circle cx="238" cy="62" r="26" fill="var(--hl-g)"/></svg>
   </footer>`;
 
+  /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
+  function openSoon(key) {
+    const logo = PROD_LOGO[key] ? `<img class="op-logo" src="${PROD_LOGO[key]}" alt="">` : '';
+    $app.innerHTML = topbar(authNav()) + `
+    <main class="wrap op">
+      <section class="op-card">
+        <div class="op-l">
+          <span class="op-dots" aria-hidden="true">${LOGO_DOTS}</span>
+          <p class="op-y">2027</p>
+          <p class="op-m">${L('1월', 'January')}</p>
+          <p class="op-open">OPEN</p>
+        </div>
+        <div class="op-r">
+          ${logo}
+          <h1>${L('2027년 1월 OPEN', 'OPEN in January 2027')}</h1>
+          <div class="op-btns"><a class="btn primary big" href="#/">${L('프로그램 둘러보기', 'See the programmes')}</a><a class="btn big" href="#/consult">${L('GP MOM INSIGHT 상담', 'Ask GP MOM INSIGHT')}</a></div>
+        </div>
+      </section>
+    </main>${foot()}`;
+    bindCommon();
+  }
+
   /* ---------- Home-screen guide: how to add GPEIS to a phone or tablet ---------- */
   function appGuide() {
     const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
@@ -403,25 +425,25 @@
             <a class="pmore" href="#/books?p=${about}">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
             <div class="body"><h3>${logo}</h3></div>
           </article>
-          <div class="pbelow"><div class="price">${won(price)} <small>/ ${L('월', 'mo')}</small></div><div class="actions">${actions}</div></div>
+          <div class="pbelow ${price ? '' : 'noprice'}">${price ? `<div class="price">${won(price)} <small>/ ${L('월', 'mo')}</small></div>` : ''}<div class="actions">${actions}</div></div>
         </div>`;
     const ABOUT_OF = { library: 'p-gb', math: 'p-fm', phonics: 'p-lgr' };
     const buyCard = p => cell('stripe-' + art(p.id),
       (p.id === 'library' ? flipBook() : p.id === 'math' ? slideUp('fresh-math', ['contents-fresh-math', 1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', ['contents-lets-go-readers', 1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
-      plogo(p.id, p.name), ABOUT_OF[p.id], p.price,
+      plogo(p.id, p.name), ABOUT_OF[p.id], p.id === 'library' ? p.price : 0,   // GPFIS cards show no price; the section heading carries it
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
-      `<a class="btn" href="#/play/${p.id}?sample=1">${L('맛보기', 'Sample')}</a>`);
-    const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 35000,
+      `<a class="btn" href="#/open?p=${p.id}">${L('맛보기', 'Sample')}</a>`);
+    const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 0,
       `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll('math-art-lab', [1, 2, 3]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
-        `<span class="badge muted">${L('준비 중', 'Coming soon')}</span>`); };
-    const group = (code, name, cards, after = '') => `
+        `<a class="btn" href="#/open?p=${key}">${L('맛보기', 'Sample')}</a>`); };
+    const group = (code, name, cards, after = '', big = '') => `
       <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
-        <h2><b>${code}</b> <span>${name}</span>${doodle('arrow', 'g-d')}</h2>
+        <h2><b>${code}</b> ${big || `<span>${name}</span>`}${doodle('arrow', 'g-d')}</h2>
         <div class="products">${cards.join('')}</div>${after}
       </section>`;
-    // Kindergarten: its own section above GPKIS (boss, 14 Nov evening). The books partner schools already use; shown, not sold.
+    // Kindergarten: its own section above GPFIS (boss, 14 Nov evening). The books partner schools already use; shown, not sold.
     const kinderBox = () => `<div class="pcell stripe-kinder">
           <article class="pcard stripe-kinder">
             <div class="pic"><div class="sh kslide" aria-hidden="true"><div class="sh-track">${[1, 2, 3, 4, 1].map(n => `<img src="assets/kinder/page-${n}.webp" alt="">`).join('')}</div></div></div>
@@ -433,7 +455,7 @@
     <main class="wrap">
       <section class="hero vibe-hero">
         <div>
-          <span class="eyebrow">${L('사고력 GPKIS · 독서 GPGB · 미래역량 GPPIS', 'Thinking GPKIS · Reading GPGB · Future skills GPPIS')}</span>
+          <span class="eyebrow">${L('사고력 GPFIS · 독서 GPGB · 미래역량 GPPIS', 'Thinking GPFIS · Reading GPGB · Future skills GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
           <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('MOM INSIGHT 상담', 'Ask a mentor')}</a></div>
         </div>
@@ -443,7 +465,7 @@
         <h2><b>Play Kinder</b> <span>${L('킨더 협력 교육기관 프로그램', 'Programme for partner kindergartens')}</span>${doodle('arrow', 'g-d')}</h2>
         <div class="products">${kinderBox()}</div>
       </section>
-      ${group('GPKIS', L('사고력 프로그램', 'Thinking-skills programmes'), [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))])}
+      ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<b class="g-name">${L('사고력 프로그램', 'Thinking-skills programmes')}</b> <b class="g-price">${L('35,000원', '₩35,000')}<small>/${L('월', 'mo')}</small></b>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('초등부 미래역량 프로그램', 'Future-skills programmes for primary'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
@@ -678,7 +700,7 @@
       $app.innerHTML = topbar(authNav()) + `<main class="wrap"><div class="auth" style="text-align:center">
         <div style="font-size:42px">🔒</div><h1>${L(`${p.name}은(는) 구독 후 열려요`, `${p.name} opens after you subscribe`)}</h1>
         <p>${L('이 화면이 "구매한 상품만 열기"예요. 서버가 우리 가족의 구독을 확인한 뒤에만 내용을 보내 줘요.', 'This is "only what you bought opens": the server sends the content only after it has checked the family\'s subscription.')}</p>
-        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" href="#/play/${id}?sample=1">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
+        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" href="#/open?p=${id}">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
       bindCommon();
       document.getElementById('sub').onclick = () => { if (!s || s.role !== 'parent') { sessionStorage.setItem('gpdemo.after', id); location.hash = '#/login'; } else checkout(id); };
       return;
@@ -1054,12 +1076,12 @@
       'p-fm': { label: 'EES Literacy and Math', name: 'EES Literacy and Math', line: L('Literacy and Math 교재', 'Literacy and Math books') } };
     const steps = items => `<ol class="flow">${items.map(([en, ko]) => `<li><b>${en}</b><span>${ko}</span></li>`).join('')}</ol>`;
     const prog = (cls, name, line, extra) => out.push({ cls, name, line, extra: extra || '', group });
-    group = 'GPKIS'; prog('p-pbl', 'Start PBL', L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!'),
+    group = 'GPFIS'; prog('p-pbl', 'Start PBL', L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!'),
           `<p>${L('주제를 중심으로 동화, 과학, 수학, 자연, 역사, 문화 등 다양한 영역을 연결합니다.', 'Each theme links stories, science, maths, nature, history and culture.')}</p>` + steps([['Listen', L('다양한 맥락에서 영어를 듣고', 'hear English in many contexts')], ['Understand', L('내용을 이해하고 지식을 넓히며', 'understand and widen knowledge')], ['Explore', L('질문하고 탐구하고', 'ask and explore')], ['Speak', L('자신의 생각을 영어로 표현합니다', 'say their own ideas in English')]]));
-    group = 'GPKIS'; prog('p-lgr', "Let’s Go Readers", L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.'), `<p class="dim">${L('자세한 소개는 준비 중이에요.', 'More about it soon.')}</p>`);
-    group = 'GPKIS'; prog('p-fm', 'Fresh Math', L('숲에서 발견하는 수학, 놀이로 키우는 사고력', 'Maths found in the forest, thinking grown through play'),
+    group = 'GPFIS'; prog('p-lgr', "Let’s Go Readers", L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.'), `<p class="dim">${L('자세한 소개는 준비 중이에요.', 'More about it soon.')}</p>`);
+    group = 'GPFIS'; prog('p-fm', 'Fresh Math', L('숲에서 발견하는 수학, 놀이로 키우는 사고력', 'Maths found in the forest, thinking grown through play'),
           `<p>${L('자연물을 살펴보고 직접 비교하고 분류하며 수학 개념을 경험합니다.', 'Children look closely at things from nature, compare and sort them, and meet maths ideas.')}</p>` + steps([['Count', L('세어 보기', 'count')], ['Compare', L('크기·길이 비교하기', 'compare size and length')], ['Sort', L('모양과 특징에 따라 분류하기', 'sort by shape and feature')], ['Find patterns', L('자연 속 규칙 찾기', 'find patterns in nature')], ['Measure & build', L('재고 구성하며 만들기', 'measure and build')]]));
-    out.filter(p => p.group === 'GPKIS').forEach(p => out.push({ ...p, cls: 'k' + p.cls.slice(1), group: 'Kindergarten', as: p.cls, ...KNAME[p.cls], extra: `<p class="k-only">${PARTNER()}</p><p>${L('유치부 협력 기관에서 쓰는 GP 교재예요. 레벨과 번호에 따라 볼 수 있어요.', 'The GP books used at partner kindergartens, by level and number.')}</p>` }));
+    out.filter(p => p.group === 'GPFIS').forEach(p => out.push({ ...p, cls: 'k' + p.cls.slice(1), group: 'Kindergarten', as: p.cls, ...KNAME[p.cls], extra: `<p class="k-only">${PARTNER()}</p><p>${L('유치부 협력 기관에서 쓰는 GP 교재예요. 레벨과 번호에 따라 볼 수 있어요.', 'The GP books used at partner kindergartens, by level and number.')}</p>` }));
     group = 'GPGB'; prog('p-gb', 'GB Magic Library', L('144권의 책에서 시작하는 읽기·탐구·영어 글쓰기', 'Reading, exploring and English writing, starting from 144 books'),
           `<p>${L('다양한 그림책과 동화를 읽고 이야기의 의미와 관점을 살펴보며 자신의 생각을 말과 글로 표현합니다.', 'Children read picture books and stories, look at their meaning and points of view, and put their own thoughts into speech and writing.')}</p>` +
           steps([['Read', L('내용 파악', 'understand the story')], ['Question', L('인물·사건·주제에 대해 질문 만들기', 'ask about characters, events and themes')], ['Discuss', L('근거를 들어 생각 나누기', 'share ideas with reasons')], ['Write', L('자신의 관점과 생각을 영어로 표현하기', 'write their view in English')]]) +
@@ -1113,7 +1135,7 @@
     <main class="wrap books byprog">
       <section class="books-head"><h1>${L('책', 'Books')}</h1>
         <p>${L('프로그램마다 어떤 책과 워크시트로 배우는지 볼 수 있어요.', 'See the books and worksheets each programme uses.')}</p></section>
-      <nav class="ptabs" aria-label="${L('프로그램', 'Programmes')}">${tabs('Kindergarten')}${tabs('GPKIS')}${tabs('GPGB')}${tabs('GPPIS')}</nav>
+      <nav class="ptabs" aria-label="${L('프로그램', 'Programmes')}">${tabs('Kindergarten')}${tabs('GPFIS')}${tabs('GPGB')}${tabs('GPPIS')}</nav>
       <article class="bprog ${cur.cls} ${cur.as || ''}" id="${cur.cls}">
         <div class="bprog-info"><h3>${cur.label ? `<span class="prog-name">${cur.label}</span>` : `<img class="prog-logo" src="assets/logos/${PLOGOS[cur.cls]}" alt="${cur.name}">`}</h3><div class="bprog-text"><p class="lead">${cur.line}</p>${cur.extra}</div></div>
         ${body}
@@ -1375,6 +1397,7 @@
       case 'about': { about(); const t = q.get('p') && document.querySelector('.program.' + q.get('p')); if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
       case 'activities': return activities();
       case 'app': return appGuide();
+      case 'open': return openSoon(q.get('p'));
       case 'programs': return home();   // opens at the top, with the banner (until 11 Nov it slid down to the programme cards)
       case 'books': return parts[1] ? book(parts[1]) : books(q.get('p'), q.get('l'));
       case 'consult': ['sido', 'gu', 'dong'].forEach(k => { if (q.get(k) !== null) consultState[k] = q.get(k); }); return consult();   // #/consult?sido=경기도&gu=수원시 장안구 opens with an area picked (for pictures)

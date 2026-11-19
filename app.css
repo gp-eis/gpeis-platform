@@ -1833,3 +1833,27 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .bprog.k-lgr .bp-shelf-row, .bprog.k-fm .bp-shelf-row { gap: 20px 18px; }
 .bprog.k-lgr .bp-shelf-row .bp-cover img, .bprog.k-fm .bp-shelf-row .bp-cover img { height: 132px; }
 @media (max-width: 560px) { .bprog.k-lgr .bp-shelf-row .bp-cover img, .bprog.k-fm .bp-shelf-row .bp-cover img { height: 104px; } }
+
+/* ===== 19 Nov 2026: GPFIS heading with name and price at full size; cards without a price; the 2027년 1월 OPEN page ===== */
+.pgroup h2 .g-name, .pgroup h2 .g-price { font: inherit; font-size: inherit; }
+.pgroup.g-gpfis h2 { align-items: baseline; gap: 4px 18px; }
+.pgroup.g-gpfis h2 b { font-size: clamp(30px, 3.4vw, 40px); }
+.pgroup.g-gpfis h2 .g-price { color: #d7232d; white-space: nowrap; }
+.pgroup.g-gpfis h2 .g-price small { font-size: .5em; font-weight: 600; margin-left: 3px; color: var(--muted); }
+.pbelow.noprice .actions { margin-left: 0; }
+.op { padding-block: 36px 64px; }
+.op-card { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); border-radius: 32px; overflow: hidden; border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); background: #fffdf6; min-height: 460px; }
+.op-l { background: var(--ink); color: #fff; padding: 40px 44px; display: grid; align-content: center; gap: 0; position: relative; overflow: hidden; }
+.op-l::after { content: ''; position: absolute; right: -70px; bottom: -70px; width: 220px; height: 220px; border-radius: 50%; background: #ffd23f; opacity: .95; }
+.op-dots { margin-bottom: 18px; } .op-dots .dots.six { grid-template-columns: repeat(3, 16px); gap: 8px 7px; } .op-dots .dots.six b { width: 16px; height: 16px; }
+.op-y { margin: 0; font: 600 clamp(64px, 9vw, 120px)/.9 var(--round); letter-spacing: -.02em; }
+.op-m { margin: 6px 0 0; font: 700 clamp(30px, 3.6vw, 46px)/1.1 var(--sans); color: #ffd23f; }
+.op-open { position: relative; z-index: 1; justify-self: start; margin: 22px 0 0; padding: 8px 26px; border-radius: 999px; background: #fff; color: var(--ink); font: 700 clamp(26px, 3vw, 38px)/1.1 var(--round); letter-spacing: .12em; }
+.op-r { padding: 44px 48px; display: grid; align-content: center; justify-items: start; gap: 16px; }
+.op-logo { max-height: 76px; max-width: 280px; width: auto; height: auto; }
+.op-r h1 { margin: 0; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.2; word-break: keep-all; }
+.op-r p { margin: 0; font-size: 17px; line-height: 1.65; color: var(--muted); max-width: 40ch; word-break: keep-all; }
+.op-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+@media (max-width: 760px) { .op-card { grid-template-columns: 1fr; min-height: 0; box-shadow: 6px 6px 0 var(--ink); } .op-l, .op-r { padding: 28px 24px; } .op-l::after { width: 150px; height: 150px; right: -50px; bottom: -50px; } }
+.op-dots .dots.six { display: inline-grid; } .op-dots .dots.six b { display: block; border-radius: 50%; animation: logoHop 4.8s ease-in-out infinite; }
+.op-r .op-btns .btn:not(.primary) { border: 2px solid var(--ink); }

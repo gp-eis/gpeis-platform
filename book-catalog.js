@@ -49,8 +49,8 @@
   Object.assign(window.SERIES = window.SERIES || {}, {
     ml: { name: 'Math Lab', full: 'GPPIS', color: '#1c2b4d', tint: '#ffd2ca' },
     le: { name: 'Logic Essay', full: 'GPPIS', color: '#222a3a', tint: '#f3ddd0' },
-    fm: { name: 'Fresh Math', full: 'GPKIS', color: 'var(--c-fm)', tint: '#e3f1dc' },
-    lgr: { name: "Let's Go Readers", full: 'GPKIS', color: '#223a8f', tint: '#dbeeff' } });
+    fm: { name: 'Fresh Math', full: 'GPFIS', color: 'var(--c-fm)', tint: '#e3f1dc' },
+    lgr: { name: "Let's Go Readers", full: 'GPFIS', color: '#223a8f', tint: '#dbeeff' } });
   const PRS = ['The Cat on the Mat', 'Who Is in My House?', 'Fun in the Sun'];
   // contents (목차) spread of each programme, shown first beside the cover (worksheets/contents, 15 Nov 2026)
   // Math Art Lab pages (worksheets/math-art-lab, 16 Nov 2026), shown first to show Math Lab's higher level: two single pages per picture
@@ -61,7 +61,7 @@
       ko: '짧은 이야기를 읽고, 내용을 묻는 질문에 답하고, 이야기 속 소리로 파닉스 활동을 해요.',
       en: 'Children read a short story, answer questions about it, and do a phonics activity with the sounds from the story.',
       note: ['표지 옆 장들은 Phonics Reading Story 샘플이에요. 이야기 한 편마다 Reading Comprehension과 Phonics Activity가 함께 있어요.', 'The pages beside the cover are sample Phonics Reading Story pages. Each story comes with Reading Comprehension and a Phonics Activity.'],
-      facts: [["Let's Go Readers · GPKIS", "Let's Go Readers · GPKIS"], ['이야기 + 이해 질문 + 파닉스', 'Story + questions + phonics'], ['샘플 3편', '3 sample stories']], sheets: [toc('lets-go-readers'), ...ws('phonics-reading-story', 1, PRS)] },
+      facts: [["Let's Go Readers · GPFIS", "Let's Go Readers · GPFIS"], ['이야기 + 이해 질문 + 파닉스', 'Story + questions + phonics'], ['샘플 3편', '3 sample stories']], sheets: [toc('lets-go-readers'), ...ws('phonics-reading-story', 1, PRS)] },
     { id: 'math-lab', series: 'ml', level: '', no: '', title: 'Math Lab: Think Beyond Numbers!', kind: 'Workbook', cover: cat('math-lab-cover'), talk: [], seal: ['Themes', '12'],
       ko: '수를 넘어 생각하는 힘을 키우는 열두 가지 주제예요. 주제마다 두 쪽 워크시트에서 생각하고, 찾아보고, 이유를 설명해요.',
       en: 'Twelve themes for thinking beyond numbers. Each theme has a two-page worksheet for thinking, discovering and explaining why.',
@@ -76,7 +76,7 @@
       ko: '도형, 시계, 무게를 그림으로 만나고 직접 그리고 써 보는 Fresh Math 워크시트예요.',
       en: 'Fresh Math worksheets: children meet shapes, the clock and weight in pictures, then draw and write.',
       note: ['표지 옆 장들은 Fresh Math 워크시트예요. 색종이 도형, 째깍째깍 시계, 뚱뚱해진 고양이 이야기로 수학 개념을 경험해요.', 'The pages beside the cover are Fresh Math worksheets: shapes on coloured paper, the tick-tock clock and the cat that got chubby.'],
-      facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['Literacy and Math', 'Literacy and Math'], ['Level ' + L + ' · 4', 'Level ' + L + ' · 4']], sheets: ws('fresh-math', 1, FM) })));
+      facts: [['Fresh Math · GPFIS', 'Fresh Math · GPFIS'], ['Literacy and Math', 'Literacy and Math'], ['Level ' + L + ' · 4', 'Level ' + L + ' · 4']], sheets: ws('fresh-math', 1, FM) })));
 
   window.CATALOG = {
     'p-pbl': { levels: [
@@ -130,11 +130,11 @@
   const wsBook = (id, from, o) => ({ ...by(from), id, no: '', pages: undefined, cover: cat(id + '-cover'), ...o });
   B.push(
     wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Worksheets', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: [toc('start-pbl'), ...sheetsOf('ees-park-ranger', 'ees-park-ranger-2')],
-      facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level A · 10', 'Level A · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
+      facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['Level A · 10', 'Level A · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
     wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Worksheets', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: [toc('start-pbl'), ...sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2')],
-      facts: [['Start PBL · GPKIS', 'Start PBL · GPKIS'], ['Level B · 10', 'Level B · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
+      facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['Level B · 10', 'Level B · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
     wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Worksheets', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'], sheets: [toc('fresh-math'), ...(by('fresh-math-a').sheets || [])],
-      facts: [['Fresh Math · GPKIS', 'Fresh Math · GPKIS'], ['도형 · 시계 · 무게', 'Shapes · time · weight'], ['워크시트 3장', '3 worksheets']] }));
+      facts: [['Fresh Math · GPFIS', 'Fresh Math · GPFIS'], ['도형 · 시계 · 무게', 'Shapes · time · weight'], ['워크시트 3장', '3 worksheets']] }));
   const C = window.CATALOG, one = (title, list) => ({ key: '', age: ['', ''], shelves: [shelf(title, '', list)] });
   // the GP books, as they were
   C['k-pbl'] = C['p-pbl']; C['k-lgr'] = C['p-lgr']; C['k-fm'] = C['p-fm'];
