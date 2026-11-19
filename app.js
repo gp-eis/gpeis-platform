@@ -711,8 +711,8 @@
       <div class="stage" style="${bg ? `background-image:url(${bg})` : 'background:linear-gradient(135deg,#ff8a65,#d65a3c)'}">
         <div class="card"><span class="chip ${id}" style="justify-self:center">${who ? esc(who) : L('구독 중', 'Subscribed')}</span>
           <h1 style="font:600 30px var(--round)">${p.name}</h1>
-          <p style="margin:0">${L(`여기서 ${p.name}이(가) 열려요. 이 샘플은 정문과 계정만 보여 주고, 상품 내용은 각 프로젝트에서 만들어요.`, `${p.name} opens here. This sample only shows the front door and accounts; each product is built in its own project.`)}</p>
-          ${id === 'library' ? `<a class="btn primary big" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('지금 있는 데모 열기', 'Open the current demo')} ↗</a>` : `<span class="dim">${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers 준비 중)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
+          ${id === 'library' ? '' : `<p style="margin:0">${L(`여기서 ${p.name}이(가) 열려요. 이 샘플은 정문과 계정만 보여 주고, 상품 내용은 각 프로젝트에서 만들어요.`, `${p.name} opens here. This sample only shows the front door and accounts; each product is built in its own project.`)}</p>`}
+          ${id === 'library' ? `<a class="btn primary big" style="justify-self:center" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('데모 열기', 'Open the demo')} ↗</a>` : `<span class="dim">${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers 준비 중)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
         </div></div></div>`;
     bindCommon();
   }
