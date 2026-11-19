@@ -15,7 +15,7 @@
       line: '숲에서 발견하는 수학, 놀이로 키우는 사고력. 자연물을 세고 비교하고 분류하며 수학을 경험해요.', unit: '트레일', total: 4,
       lineEn: 'Maths found in the forest, thinking grown through play: count, compare and sort things from nature.', unitEn: ' trails' },
     { id: 'phonics', name: 'Let’s Go Readers', ko: '렛츠 고 리더스', price: 35000, color: 'phonics',
-      line: 'Reading Phonics가 함께 들어 있는 읽기 프로그램이에요. 자세한 내용은 준비 중이에요.', unit: '활동', total: 8,
+      line: 'Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', unit: '활동', total: 8,
       lineEn: 'A reading programme that includes Reading Phonics. Details are being prepared.', unitEn: ' activities' }
   ];
   const BUNDLE = 99000;   // example only: the three subscribable programmes cost 120,000 separately (GPKIS 35,000 each, GPPIS 50,000 each)

@@ -1874,3 +1874,17 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 @media (max-width: 520px) { .pgroup.g-gpfis h2 .g-price { font-size: 19px; } }
 /* Math Lab and Logic Essay: a "2027년 1월 OPEN" tag where the button was (19 Nov) */
 .pbelow .badge.open27 { border-style: solid; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
+
+/* ===== 19 Nov 2026: GPFIS is one website: one button row above its three cards; Play Kinder's three link buttons ===== */
+.pgroup .g-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 6px; }
+.pgroup .g-actions .btn { padding: 9px 18px; white-space: nowrap; border: 2px solid var(--ink); background: #fff; color: var(--ink); }
+.pgroup .g-actions .btn.primary { background: var(--ink); color: #fff; }
+.pcell.stripe-kinder .kbtns .actions { gap: 8px; }
+.pcell.stripe-kinder .kbtns .btn { white-space: nowrap; }
+.op-logos { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; } .op-logos img { max-height: 54px; max-width: 150px; width: auto; height: auto; }
+.pcell.stripe-kinder .kbtns .actions { gap: 6px; flex-wrap: nowrap; }
+.pcell.stripe-kinder .kbtns .btn { padding: 7px 11px; font-size: 13.5px; }
+@media (max-width: 1000px) and (min-width: 521px) { .pcell.stripe-kinder .kbtns .actions { flex-wrap: wrap; } }
+.pcell.stripe-kinder { min-width: 0; }
+.pcell.stripe-kinder .kbtns .actions { gap: 5px; }
+.pcell.stripe-kinder .kbtns .btn { padding: 6px 9px; font-size: 13px; }

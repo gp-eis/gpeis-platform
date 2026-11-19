@@ -358,19 +358,20 @@
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
   function openSoon(key) {
-    const logo = PROD_LOGO[key] ? `<img class="op-logo" src="${PROD_LOGO[key]}" alt="">` : '';
+    const sep = key === 'math-lab' || key === 'logic-essay';   // GPPIS opens in September 2027 (boss, 19 Nov)
+    const logo = key === 'gpfis' ? `<div class="op-logos">${['pbl', 'phonics', 'math'].map(k => `<img src="${PROD_LOGO[k]}" alt="">`).join('')}</div>` : PROD_LOGO[key] ? `<img class="op-logo" src="${PROD_LOGO[key]}" alt="">` : '';
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap op">
       <section class="op-card">
         <div class="op-l">
           <span class="op-dots" aria-hidden="true">${LOGO_DOTS}</span>
           <p class="op-y">2027</p>
-          <p class="op-m">${L('1월', 'January')}</p>
+          <p class="op-m">${sep ? L('9월', 'September') : L('1월', 'January')}</p>
           <p class="op-open">OPEN</p>
         </div>
         <div class="op-r">
           ${logo}
-          <h1>${L('2027년 1월 OPEN', 'OPEN in January 2027')}</h1>
+          <h1>${sep ? L('2027년 9월 OPEN', 'OPEN in September 2027') : L('2027년 1월 OPEN', 'OPEN in January 2027')}</h1>
           <div class="op-btns"><a class="btn primary big" href="#/">${L('프로그램 둘러보기', 'See the programmes')}</a><a class="btn big" href="#/consult">${L('GP MOM INSIGHT 상담', 'Ask GP MOM INSIGHT')}</a></div>
         </div>
       </section>
@@ -425,22 +426,22 @@
             <a class="pmore" href="#/books?p=${about}">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
             <div class="body"><h3>${logo}</h3></div>
           </article>
-          <div class="pbelow ${price ? '' : 'noprice'}">${price ? `<div class="price">${won(price)} <small>/ ${L('월', 'mo')}</small></div>` : ''}<div class="actions">${actions}</div></div>
+          ${price || actions ? `<div class="pbelow ${price ? '' : 'noprice'}">${price ? `<div class="price">${won(price)} <small>/ ${L('월', 'mo')}</small></div>` : ''}<div class="actions">${actions}</div></div>` : ''}
         </div>`;
     const ABOUT_OF = { library: 'p-gb', math: 'p-fm', phonics: 'p-lgr' };
     const buyCard = p => cell('stripe-' + art(p.id),
       (p.id === 'library' ? flipBook() : p.id === 'math' ? slideUp('fresh-math', ['contents-fresh-math', 1, 2, 3]) : p.id === 'phonics' ? readPan('phonics-reading-story', ['contents-lets-go-readers', 1, 2, 3]) : motif(PROD_MOTIF[p.id])) + (owned(p.id) ? `<span class="badge ok">${L('구독 중', 'Subscribed')}</span>` : ''),
       plogo(p.id, p.name), ABOUT_OF[p.id], p.id === 'library' ? p.price : 0,   // GPFIS cards show no price; the section heading carries it
+      p.id !== 'library' ? '' :   // the GPFIS cards have no buttons of their own: one row above them serves the whole website
       (owned(p.id) ? `<a class="btn primary" href="#/play/${p.id}">${L('열기', 'Open')}</a>` : `<button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button>`) +
-      `<a class="btn" href="${p.id === 'library' ? '#/play/library?sample=1' : '#/open?p=' + p.id}">${L('맛보기', 'Sample')}</a>`);   // GB Magic Library keeps its real sample
-    const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 0,
-      `<button class="btn primary" id="pbl">${L('Start PBL 사이트로', 'Start PBL site')} ↗</button>`);
+      `<a class="btn" href="#/play/library?sample=1">${L('맛보기', 'Sample')}</a>`);   // GB Magic Library keeps its real sample   // GB Magic Library keeps its real sample
+    const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 0, '');
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll('math-art-lab', [1, 2, 3]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
-        `<span class="badge muted open27">${L('2027년 1월 OPEN', 'OPEN January 2027')}</span>`); };
-    const group = (code, name, cards, after = '', big = '') => `
+        `<span class="badge muted open27">${L('2027년 9월 OPEN', 'OPEN September 2027')}</span>`); };
+    const group = (code, name, cards, after = '', big = '', top = '') => `
       <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
-        <h2><b>${code}</b> ${big || `<span>${name}</span>`}${doodle('arrow', 'g-d')}</h2>
+        <h2><b>${code}</b> ${big || `<span>${name}</span>`}${doodle('arrow', 'g-d')}</h2>${top}
         <div class="products">${cards.join('')}</div>${after}
       </section>`;
     // Kindergarten: its own section above GPFIS (boss, 14 Nov evening). The books partner schools already use; shown, not sold.
@@ -450,12 +451,13 @@
             <a class="pmore" href="#/books?p=k-pbl">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
             <div class="body"><h3>${KLOGO}</h3></div>
           </article>
+          <div class="pbelow noprice kbtns"><div class="actions">${[['ees', 'EES / ELS'], ['readers', 'Readers Series'], ['lm', 'Literacy and Math']].map(([k, t], i) => `<button class="btn ${i ? '' : 'primary'}" data-klink="${k}">${t}</button>`).join('')}</div></div>
         </div>`;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap">
       <section class="hero vibe-hero">
         <div>
-          <span class="eyebrow">${L('사고력 GPFIS · 독서 GPGB · 미래역량 GPPIS', 'Thinking GPFIS · Reading GPGB · Future skills GPPIS')}</span>
+          <span class="eyebrow">${L('창의사교력 GPFIS · 독서 GPGB · 미래역량 GPPIS', 'Creative social skills GPFIS · Reading GPGB · Future skills GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
           <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('MOM INSIGHT 상담', 'Ask a mentor')}</a></div>
         </div>
@@ -465,7 +467,8 @@
         <h2><b>Play Kinder</b> <span>${L('킨더 협력 교육기관 프로그램', 'Programme for partner kindergartens')}</span>${doodle('arrow', 'g-d')}</h2>
         <div class="products">${kinderBox()}</div>
       </section>
-      ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('사고력 프로그램', 'Thinking-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`)}
+      ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('창의사교력 프로그램', 'Creative social-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`,
+        `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="#/open?p=gpfis">${L('맛보기', 'Sample')}</a></div>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('초등부 미래역량 프로그램', 'Future-skills programmes for primary'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
@@ -482,7 +485,9 @@
     // for still pictures of the moving cards: #/?at=3.6 freezes their movements 3.6 seconds in
     const at = new URLSearchParams(location.hash.split('?')[1] || '').get('at');
     if (at) $app.querySelectorAll('.pm img, .pm-roll > div > div').forEach(e => { e.style.animationDelay = (parseFloat(getComputedStyle(e).animationDelay) || 0) - at + 's'; e.style.animationPlayState = 'paused'; });
-    document.getElementById('pbl').onclick = () => toast(L('실제 사이트에서는 Wix의 Start PBL 사이트로 이동해요', 'The real site goes to the Start PBL site on Wix'));
+    document.getElementById('gpfisBuy').onclick = () => toast(L('실제 사이트에서는 GPFIS(Start PBL · Let’s Go Readers · Fresh Math) 구독 결제로 이동해요', 'The real site goes to the GPFIS subscription (Start PBL, Let’s Go Readers and Fresh Math)'));
+    // Play Kinder links: EES / ELS goes to the existing Wix site; the other two links are not ready yet (19 Nov 2026)
+    $app.querySelectorAll('[data-klink]').forEach(b => b.onclick = () => toast(b.dataset.klink === 'ees' ? L('실제 사이트에서는 Wix의 EES / ELS 사이트로 이동해요', 'The real site goes to the EES / ELS site on Wix') : L('링크 준비 중이에요', 'This link is coming soon')));
     $app.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
       if (!API.session() || API.session().role !== 'parent') { sessionStorage.setItem('gpdemo.after', b.dataset.buy); location.hash = '#/login'; return; }
       checkout(b.dataset.buy);
@@ -712,7 +717,7 @@
         <div class="card"><span class="chip ${id}" style="justify-self:center">${who ? esc(who) : L('구독 중', 'Subscribed')}</span>
           <h1 style="font:600 30px var(--round)">${p.name}</h1>
           ${id === 'library' ? '' : `<p style="margin:0">${L(`여기서 ${p.name}이(가) 열려요. 이 샘플은 정문과 계정만 보여 주고, 상품 내용은 각 프로젝트에서 만들어요.`, `${p.name} opens here. This sample only shows the front door and accounts; each product is built in its own project.`)}</p>`}
-          ${id === 'library' ? `<a class="btn primary big" style="justify-self:center" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('데모 열기', 'Open the demo')} ↗</a>` : `<span class="dim">${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers 준비 중)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
+          ${id === 'library' ? `<a class="btn primary big" style="justify-self:center" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('데모 열기', 'Open the demo')} ↗</a>` : `<span class="dim" hidden>${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
         </div></div></div>`;
     bindCommon();
   }
@@ -1072,13 +1077,13 @@
   const progList = () => {
     const out = []; let group = '';
     const KNAME = { 'p-pbl': { label: 'EES / ELS', name: 'EES / ELS', line: L('GP English Emotion School · GP English Logic School 교재', 'GP English Emotion School and GP English Logic School books') },
-      'p-lgr': { label: 'EES Readers Series', name: 'EES Readers Series', line: L('Active Literacy, Active Readers, Phonics Writing 교재', 'Active Literacy, Active Readers and Phonics Writing books') },
-      'p-fm': { label: 'EES Literacy and Math', name: 'EES Literacy and Math', line: L('Literacy and Math 교재', 'Literacy and Math books') } };
+      'p-lgr': { label: 'Readers Series', name: 'Readers Series', line: L('Active Literacy, Active Readers, Phonics Writing 교재', 'Active Literacy, Active Readers and Phonics Writing books') },
+      'p-fm': { label: 'Literacy and Math', name: 'Literacy and Math', line: L('Literacy and Math 교재', 'Literacy and Math books') } };
     const steps = items => `<ol class="flow">${items.map(([en, ko]) => `<li><b>${en}</b><span>${ko}</span></li>`).join('')}</ol>`;
     const prog = (cls, name, line, extra) => out.push({ cls, name, line, extra: extra || '', group });
     group = 'GPFIS'; prog('p-pbl', 'Start PBL', L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!'),
           `<p>${L('주제를 중심으로 동화, 과학, 수학, 자연, 역사, 문화 등 다양한 영역을 연결합니다.', 'Each theme links stories, science, maths, nature, history and culture.')}</p>` + steps([['Listen', L('다양한 맥락에서 영어를 듣고', 'hear English in many contexts')], ['Understand', L('내용을 이해하고 지식을 넓히며', 'understand and widen knowledge')], ['Explore', L('질문하고 탐구하고', 'ask and explore')], ['Speak', L('자신의 생각을 영어로 표현합니다', 'say their own ideas in English')]]));
-    group = 'GPFIS'; prog('p-lgr', "Let’s Go Readers", L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.'), `<p class="dim">${L('자세한 소개는 준비 중이에요.', 'More about it soon.')}</p>`);
+    group = 'GPFIS'; prog('p-lgr', "Let’s Go Readers", L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.'), ``);
     group = 'GPFIS'; prog('p-fm', 'Fresh Math', L('숲에서 발견하는 수학, 놀이로 키우는 사고력', 'Maths found in the forest, thinking grown through play'),
           `<p>${L('자연물을 살펴보고 직접 비교하고 분류하며 수학 개념을 경험합니다.', 'Children look closely at things from nature, compare and sort them, and meet maths ideas.')}</p>` + steps([['Count', L('세어 보기', 'count')], ['Compare', L('크기·길이 비교하기', 'compare size and length')], ['Sort', L('모양과 특징에 따라 분류하기', 'sort by shape and feature')], ['Find patterns', L('자연 속 규칙 찾기', 'find patterns in nature')], ['Measure & build', L('재고 구성하며 만들기', 'measure and build')]]));
     out.filter(p => p.group === 'GPFIS').forEach(p => out.push({ ...p, cls: 'k' + p.cls.slice(1), group: 'Kindergarten', as: p.cls, ...KNAME[p.cls], extra: `<p class="k-only">${PARTNER()}</p><p>${L('유치부 협력 기관에서 쓰는 GP 교재예요. 레벨과 번호에 따라 볼 수 있어요.', 'The GP books used at partner kindergartens, by level and number.')}</p>` }));
@@ -1087,16 +1092,16 @@
           steps([['Read', L('내용 파악', 'understand the story')], ['Question', L('인물·사건·주제에 대해 질문 만들기', 'ask about characters, events and themes')], ['Discuss', L('근거를 들어 생각 나누기', 'share ideas with reasons')], ['Write', L('자신의 관점과 생각을 영어로 표현하기', 'write their view in English')]]) +
           `<p class="ib">${L('GB는 IB 인증 과정이나 공식 IB 프로그램이 아니라, 탐구·성찰·비판적 사고의 교육 방향을 참고해 자체 개발하는 독서 기반 프로그램입니다.', 'GB is not an IB-certified course or an official IB programme. It is a reading-based programme GP develops itself, drawing on the ideas of inquiry, reflection and critical thinking.')}</p>`);
     group = 'GPPIS'; prog('p-ml', 'Math Lab', L('영어로 배우는 수학 개념과 사고력', 'Maths ideas and thinking, learned in English'),
-          `<p>${L('수와 연산 · 도형과 공간 · 측정 · 규칙과 관계 · 문제 해결과 추론', 'Number and operations · shapes and space · measurement · patterns and relationships · problem solving and reasoning')}</p>` + steps([[L('개념 이해', 'Understand'), ''], [L('전략 탐색', 'Explore strategies'), ''], [L('문제 해결', 'Solve'), ''], [L('수학적 표현', 'Explain'), '']]) + `<p class="dim">${L('준비 중', 'Coming soon')}</p>`);
+          `<p>${L('수와 연산 · 도형과 공간 · 측정 · 규칙과 관계 · 문제 해결과 추론', 'Number and operations · shapes and space · measurement · patterns and relationships · problem solving and reasoning')}</p>` + steps([[L('개념 이해', 'Understand'), ''], [L('전략 탐색', 'Explore strategies'), ''], [L('문제 해결', 'Solve'), ''], [L('수학적 표현', 'Explain'), '']]) + ``);
     /* Logic Essay: from the boss's "GP LOGIC & ESSAY" 12-theme plan (11 Nov 2026); sample wording, please confirm */
     group = 'GPPIS'; prog('p-le', 'Logic Essay', L('생각하는 힘이 논리가 되고, 논리가 글이 됩니다.', 'The power to think becomes logic, and logic becomes writing.'),
           `<p>${L('논리적 사고 · 근거 제시 · 비판적 사고 · 주장과 설득 · 에세이 구성을 12개 주제로 배웁니다.', 'Logical thinking · reasons and evidence · critical thinking · argument and persuasion · essay structure, across 12 themes.')}</p>` +
           steps([['Think', L('생각을 정리하고 표현하기', 'organise and express ideas')], ['Reason', L('논리적으로 분석하고 근거 제시하기', 'analyse logically and give evidence')], ['Argue', L('주장하고 설득하기', 'make a claim and persuade')], ['Write', L('서론·본론·결론을 갖춘 에세이 완성하기', 'finish an essay with an introduction, body and conclusion')]]) +
-          `<p>${L('Level 1 · Think & Express → Level 2 · Logic & Reasoning → Level 3 · Argument & Essay', 'Level 1 · Think & Express → Level 2 · Logic & Reasoning → Level 3 · Argument & Essay')}</p><p class="dim">${L('준비 중', 'Coming soon')}</p>`);
+          `<p>${L('Level 1 · Think & Express → Level 2 · Logic & Reasoning → Level 3 · Argument & Essay', 'Level 1 · Think & Express → Level 2 · Logic & Reasoning → Level 3 · Argument & Essay')}</p>`);
     return out;
   };
   /* 책 page (rebuilt 11 Nov 2026 from the company book plan, see book-catalog.js): programme tabs, then level tabs, then that level's books.
-     A cover opens its own page only when that book has finished worksheets (pictures in books.js); every other book shows "준비 중". */
+     A cover opens its own page only when that book has finished worksheets (pictures in books.js); every other book is only shown. */
   const hasSheets = id => { const b = (window.BOOKS || []).find(x => x.id === id); return !!(b && (b.sheets || []).some(sh => sh.img)); };
   const EYE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>';
   let bookTab = ''; const bookLevel = {};
@@ -1107,7 +1112,8 @@
     const lv = levels.find(x => x.key === String(level || '').toUpperCase()) || levels.find(x => x.key === bookLevel[cur.cls]) || levels[0];
     if (lv) bookLevel[cur.cls] = lv.key;
     const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
-    const soon = kTab ? '' : `<span class="bp-soon">${L('준비 중', 'Coming soon')}</span>`, open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
+    const soon = '',   // no "준비 중" tags (boss, 19 Nov)
+      open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
     const cover = (b, cls = '') => { const inner = `<figure><img src="${b.img}" alt="">${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;
       return canOpen(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
     // Start PBL, Level A and B: four theme blocks, three numbers in each, a phonics pad with every number
@@ -1122,11 +1128,11 @@
       ${v.strips.map(st => `<section class="bp-strip"><div><div class="n">${st.tag}</div><h3>${L(st.title[0], st.title[1])}</h3><p>${L(st.text[0], st.text[1])}</p></div><div class="bp-strip-row ${st.wide ? 'wide' : ''}">${st.books.map(b => cover(b)).join('')}</div></section>`).join('')}`;
     // every other programme: shelves of covers
     const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${sh.books.some(b => canOpen(b.id)) ? open : ''}</div>
-        <div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b)).join('') : `<div class="bp-empty">${L('표지 준비 중', 'Cover coming')}</div>`}</div></section>`).join('')}</div>`;
+        <div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b)).join('') : ''}</div></section>`).join('')}</div>`;
     // GB Magic Library: one card per number with its two books, Reading Book and Reading Literacy (boss, 14 Nov: no story covers)
     const gbView = v => `<div class="bp-rows two">${v.rows.map(r => `<section class="bp-row"><div class="bp-row-h"><b>${r.no}</b><span>Level ${v.key} · ${r.no}</span></div>
         <div class="bp-row-books">${[['Reading Book', r.rb], ['Reading Literacy', r.wb]].map(([t, cv]) => `<figure class="bp-cover"><img src="${cv.img}" alt=""><figcaption>${t}${cv.soft ? `<i>${L('임시', 'stand-in')}</i>` : ''}</figcaption></figure>`).join('')}</div></section>`).join('')}</div>`;
-    const body = !lv ? `<p class="bk-none">${L('책은 준비 중이에요.', 'Books are being prepared.')}</p>` : `
+    const body = !lv ? `<p class="bk-none">${''}</p>` : `
         <div class="bp-bar"><div class="bp-pills">${levels.length < 2 ? '' : levels.map(x => `<button class="bp-pill ${x === lv ? 'on' : ''}" data-plevel="${x.key}">Level ${x.key}${x.age[0] ? `<small>${L(x.age[0], x.age[1])}</small>` : ''}</button>`).join('')}</div></div>
         ${lv.lead ? `<p class="bp-lead">${L(lv.lead[0], lv.lead[1])}</p>` : ''}
         ${lv.themes ? themeView(lv) : lv.cycle ? cycleView(lv) : lv.rows ? gbView(lv) : shelfView(lv)}`;
@@ -1140,7 +1146,7 @@
         <div class="bprog-info"><h3>${cur.label ? `<span class="prog-name">${cur.label}</span>` : `<img class="prog-logo" src="assets/logos/${PLOGOS[cur.cls]}" alt="${cur.name}">`}</h3><div class="bprog-text"><p class="lead">${cur.line}</p>${cur.extra}</div></div>
         ${body}
       </article>
-      <p class="note">${cur.group === 'Kindergarten' ? L('GP 협력 교육기관에서만 만날 수 있는 교재예요.', 'These books are only available at GP partner schools.') : L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 지금은 디자인이 확정된 책만 열리고, 나머지는 준비 중이에요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. For now only books with confirmed designs open; the rest are coming soon. Soft covers are temporary pictures taken from the briefing slides.')}</p>
+      <p class="note">${cur.group === 'Kindergarten' ? L('GP 협력 교육기관에서만 만날 수 있는 교재예요.', 'These books are only available at GP partner schools.') : L('표지를 누르면 책 소개와 워크시트를 볼 수 있어요. 흐릿한 표지는 설명회 자료에서 가져온 임시 그림이에요.', 'Click a cover to see the book and its worksheets. Soft covers are temporary pictures taken from the briefing slides.')}</p>
     </main>${foot()}`;
     bindCommon();
     const go = (p, l) => { const y = window.scrollY; history.replaceState(null, '', '#/books?p=' + p + (l ? '&l=' + l : '')); books(p, l); window.scrollTo(0, y); };
@@ -1179,7 +1185,7 @@
             <h3><mark class="hl-b">${L('이 책은', 'About this book')}</mark></h3>
             <ul class="facts">${b.facts ? b.facts.map(f => `<li>${L(f[0], f[1])}</li>`).join('') : `<li>${ser.name} · ${ser.full}</li><li>${esc(b.kind)}</li><li>${b.level === 'K' ? 'K' : 'Level ' + b.level} · ${b.no}</li>${b.pages ? `<li>${L(b.pages + '쪽', b.pages + ' pages')}</li>` : ''}`}</ul>
             <h3><mark class="hl-g">${L('만나는 방법', 'Where to find it')}</mark></h3>
-            <ul class="links">${b.prog ? `<li><a href="#/play/${b.prog}?sample=1">${L('GB Magic Library에서 보기', 'See it in GB Magic Library')}</a></li>` : ''}<li><a href="#/consult">${L('GP MOM INSIGHT에 문의하기', 'Ask GP MOM INSIGHT')}</a></li><li><a href="#/school-login">${L('기관 단체 구매', 'Schools and group orders')}</a></li><li><button class="linkish" id="buyBook">${L('실물 책 구매 (준비 중)', 'Buy the printed book (soon)')}</button></li></ul>
+            <ul class="links">${b.prog ? `<li><a href="#/play/${b.prog}?sample=1">${L('GB Magic Library에서 보기', 'See it in GB Magic Library')}</a></li>` : ''}<li><a href="#/consult">${L('GP MOM INSIGHT에 문의하기', 'Ask GP MOM INSIGHT')}</a></li><li><a href="#/school-login">${L('기관 단체 구매', 'Schools and group orders')}</a></li><li><button class="linkish" id="buyBook">${L('실물 책 구매', 'Buy the printed book')}</button></li></ul>
           </aside>
         </div>
         <nav class="book-nav"><a href="#/books/${prev.id}">← ${esc(prev.title)}</a><a href="#/books/${next.id}">${esc(next.title)} →</a></nav>
