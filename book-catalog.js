@@ -181,4 +181,17 @@
   C['p-pbl'].levels[0].shelves[0].title = 'Worksheets';
   C['p-lgr'] = { levels: [one('Worksheets', [bk('Phonics Reading Story', cat('phonics-reading-story-cover'), 'phonics-reading-story')])] };
   C['p-fm'] = { levels: [one('Worksheets', [bk('Shapes · Time · Weight', cat('ws-fresh-math-cover'), 'ws-fresh-math')])] };
+
+  /* ---- 19 Nov 2026: the new GP EPS books on the GPFIS programme pages, 12 places each (covers from D:\GP Books\GP EPS ..., made by make-kinder-covers.cjs).
+     To add a book later: run make-kinder-covers.cjs with the new PDF on the drive and put its number in EPS_HAVE. ---- */
+  {
+    const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9], de: [1,2,3,4,5,7,8,9], lm: [1,2,3,4,5,6,7,8,9] };
+    const DE = ['', 'School', 'Spring', 'Family', 'Neighborhood', 'Summer', '', 'Fall', 'Countries', 'Reading'];   // titles from the file names (6 is not on the drive yet)
+    const twelve = (p, cap) => Array.from({ length: 12 }, (x, i) => i + 1).map(n => EPS_HAVE[p].includes(n) ? bk(cap(n), `assets/catalog/k/eps-${p}${n}.webp`) : { t: cap(n), img: '', id: '', soft: false, ph: n });
+    const add = (key, title, list) => C[key].levels[0].shelves.unshift(shelf(title, '', list));
+    add('p-pbl', 'Play and Speak', twelve('ps', n => 'EPS ' + n));
+    add('p-lgr', 'Daily Essay', twelve('de', n => 'EPS ' + n + (DE[n] ? ' · ' + DE[n] : '')));
+    add('p-fm', 'EPS Literacy and Math', twelve('lm', n => 'EPS ' + n));
+    C['k-fm'].levels.forEach(l => l.shelves.forEach(s => { if (s.title === 'Literacy and Math') s.title = 'Literacy and Literature'; }));
+  }
 })();

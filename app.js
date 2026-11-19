@@ -1114,7 +1114,7 @@
     const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
     const soon = '',   // no "준비 중" tags (boss, 19 Nov)
       open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
-    const cover = (b, cls = '') => { const inner = `<figure><img src="${b.img}" alt="">${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;
+    const cover = (b, cls = '') => { const inner = `<figure>${b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b><i>${L('준비 중', 'Coming')}</i></span>`}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;   // a place without a cover yet
       return canOpen(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
     // Start PBL, Level A and B: four theme blocks, three numbers in each, a phonics pad with every number
     const themeView = v => `<div class="bp-themes">${v.themes.map((t, k) => `<section class="bp-theme" style="--c:${t.c};${t.t ? '--t:' + t.t : ''}">
