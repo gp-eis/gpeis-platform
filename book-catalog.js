@@ -188,10 +188,29 @@
     const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9], de: [1,2,3,4,5,7,8,9], lm: [1,2,3,4,5,6,7,8,9] };
     const DE = ['', 'School', 'Spring', 'Family', 'Neighborhood', 'Summer', '', 'Fall', 'Countries', 'Reading'];   // titles from the file names (6 is not on the drive yet)
     const twelve = (p, cap) => Array.from({ length: 12 }, (x, i) => i + 1).map(n => EPS_HAVE[p].includes(n) ? bk(cap(n), `assets/catalog/k/eps-${p}${n}.webp`) : { t: cap(n), img: '', id: '', soft: false, ph: n });
-    const add = (key, title, list) => C[key].levels[0].shelves.unshift(shelf(title, '', list));
-    add('p-pbl', 'Play and Speak', twelve('ps', n => 'EPS ' + n));
-    add('p-lgr', 'Daily Essay', twelve('de', n => 'EPS ' + n + (DE[n] ? ' · ' + DE[n] : '')));
-    add('p-fm', 'EPS Literacy and Math', twelve('lm', n => 'EPS ' + n));
+    // 20 Nov: the EPS books live on their own tab, EPS / ECS, over 24 numbers (they no longer sit on the Start PBL, Let's Go Readers and Fresh Math pages)
+    const one = (p, n, label) => EPS_HAVE[p] && EPS_HAVE[p].includes(n) ? bk(label, `assets/catalog/k/eps-${p}${n}.webp`) : { t: label, img: '', id: '', soft: false, ph: '' };
+    const nums = (from, f) => Array.from({ length: 12 }, (x, i) => ({ no: from + i, books: f(i + 1) }));
+    C['p-eps'] = { levels: [{ key: '', age: ['', ''], lead: ['<mark>24개월</mark> 과정이에요. 1~12는 Literacy and Math와 Play and Speak, 13~24는 Daily Essay와 ECS 책으로 배워요.', 'A <mark>24-number</mark> course: 1-12 Literacy and Math with Play and Speak, 13-24 Daily Essay with the ECS books.'],
+      shelves: [
+        { title: '1 – 12', sub: 'Literacy and Math · Play and Speak', more: '', books: [], groups: nums(1, n => [one('lm', n, 'Literacy and Math ' + n), one('ps', n, 'Play and Speak ' + n)]) },
+        { title: '13 – 24', sub: 'Daily Essay · ECS', more: '', books: [], groups: nums(13, n => [one('de', n, 'Daily Essay ' + n + (DE[n] ? ' · ' + DE[n] : '')), one('ecs', n, 'ECS ' + n)]) } ] }] };
     C['k-fm'].levels.forEach(l => l.shelves.forEach(s => { if (s.title === 'Literacy and Math') s.title = 'Literacy and Literature'; }));
+  }
+
+  /* ---- 20 Nov 2026 (boss): Active Literacy and Active Readers in one shelf, grouped by number: Literacy 1, Literacy 2, Readers 3 ---- */
+  {
+    const kc = n => `assets/catalog/k/${n}.webp`;
+    const HAVE = { a: { al: [1, 2, 3, 4, 5, 10], ar: [1, 2, 3, 4, 5, 10] }, b: { al: [1, 2, 3, 4, 5, 7, 8, 10], ar: [1, 2, 3, 4, 5, 7, 8, 10] } };
+    const OLD = { a: { 7: old('ees-athlete'), 8: cat('al-a-8') }, b: {} };   // earlier Active Literacy covers that are not on the drive
+    const empty = t => ({ t, img: '', id: '', soft: false, ph: '', land: true });
+    C['k-lgr'].levels.forEach(lvl => {
+      const l = lvl.key.toLowerCase(); if (!HAVE[l]) return;
+      const groups = Array.from({ length: 12 }, (x, i) => i + 1).map(n => ({ no: n, books: [
+        HAVE[l].al.includes(n) ? bk('Literacy 1', kc(`al-${l}${n}`)) : OLD[l][n] ? bk('Literacy 1', OLD[l][n]) : empty('Literacy 1'),
+        empty('Literacy 2'),
+        HAVE[l].ar.includes(n) ? bk('Readers 3', kc(`ar-${l}${n}`)) : empty('Readers 3') ] }));
+      lvl.shelves = [{ title: 'Active Literacy and Readers', sub: '', more: '', books: [], groups }, ...lvl.shelves.filter(s => !/^Active (Literacy|Readers)$/.test(s.title))];
+    });
   }
 })();
