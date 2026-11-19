@@ -487,7 +487,7 @@
     if (at) $app.querySelectorAll('.pm img, .pm-roll > div > div').forEach(e => { e.style.animationDelay = (parseFloat(getComputedStyle(e).animationDelay) || 0) - at + 's'; e.style.animationPlayState = 'paused'; });
     document.getElementById('gpfisBuy').onclick = () => toast(L('실제 사이트에서는 GPFIS(Start PBL · Let’s Go Readers · Fresh Math) 구독 결제로 이동해요', 'The real site goes to the GPFIS subscription (Start PBL, Let’s Go Readers and Fresh Math)'));
     // Play Kinder links: EES / ELS goes to the existing Wix site; the other two links are not ready yet (19 Nov 2026)
-    $app.querySelectorAll('[data-klink]').forEach(b => b.onclick = () => toast(b.dataset.klink === 'ees' ? L('실제 사이트에서는 Wix의 EES / ELS 사이트로 이동해요', 'The real site goes to the EES / ELS site on Wix') : L('링크 준비 중이에요', 'This link is coming soon')));
+    $app.querySelectorAll('[data-klink]').forEach(b => b.onclick = () => toast(b.dataset.klink === 'ees' ? L('실제 사이트에서는 Wix의 EES / ELS 사이트로 이동해요', 'The real site goes to the EES / ELS site on Wix') : L('곧 연결돼요', 'This link opens soon')));
     $app.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
       if (!API.session() || API.session().role !== 'parent') { sessionStorage.setItem('gpdemo.after', b.dataset.buy); location.hash = '#/login'; return; }
       checkout(b.dataset.buy);
@@ -1114,7 +1114,7 @@
     const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
     const soon = '',   // no "준비 중" tags (boss, 19 Nov)
       open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
-    const cover = (b, cls = '') => { const inner = `<figure>${b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b><i>${L('준비 중', 'Coming')}</i></span>`}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;   // a place without a cover yet
+    const cover = (b, cls = '') => { const inner = `<figure>${b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b></span>`}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;   // a place without a cover yet
       return canOpen(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
     // Start PBL, Level A and B: four theme blocks, three numbers in each, a phonics pad with every number
     const themeView = v => `<div class="bp-themes">${v.themes.map((t, k) => `<section class="bp-theme" style="--c:${t.c};${t.t ? '--t:' + t.t : ''}">
