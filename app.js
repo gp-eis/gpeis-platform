@@ -358,20 +358,20 @@
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
   function openSoon(key) {
-    const sep = key === 'math-lab' || key === 'logic-essay';   // GPPIS opens in September 2027 (boss, 19 Nov)
+    const sep = key === 'math-lab' || key === 'logic-essay';   // GPPIS opens in January 2028 (boss, 20 Nov; was September 2027)
     const logo = key === 'gpfis' ? `<div class="op-logos">${['pbl', 'phonics', 'math'].map(k => `<img src="${PROD_LOGO[k]}" alt="">`).join('')}</div>` : PROD_LOGO[key] ? `<img class="op-logo" src="${PROD_LOGO[key]}" alt="">` : '';
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap op">
       <section class="op-card">
         <div class="op-l">
           <span class="op-dots" aria-hidden="true">${LOGO_DOTS}</span>
-          <p class="op-y">2027</p>
-          <p class="op-m">${sep ? L('9월', 'September') : L('1월', 'January')}</p>
+          <p class="op-y">${sep ? 2028 : 2027}</p>
+          <p class="op-m">${L('1월', 'January')}</p>
           <p class="op-open">OPEN</p>
         </div>
         <div class="op-r">
           ${logo}
-          <h1>${sep ? L('2027년 9월 OPEN', 'OPEN in September 2027') : L('2027년 1월 OPEN', 'OPEN in January 2027')}</h1>
+          <h1>${sep ? L('2028년 1월 OPEN', 'OPEN in January 2028') : L('2027년 1월 OPEN', 'OPEN in January 2027')}</h1>
           <div class="op-btns"><a class="btn primary big" href="#/">${L('프로그램 둘러보기', 'See the programmes')}</a><a class="btn big" href="#/consult">${L('GP MOM INSIGHT 상담', 'Ask GP MOM INSIGHT')}</a></div>
         </div>
       </section>
@@ -438,7 +438,7 @@
     const pblCard = () => cell('stripe-pbl', slideH(), plogo('pbl', 'Start PBL'), 'p-pbl', 0, '');
     const soonCard = (name) => { const key = name.toLowerCase().replace(/\s+/g, '-');
       return cell('stripe-soon soon-' + key, (name === 'Math Lab' ? counterRoll('math-art-lab', [1, 2, 3]) : padFlip(key, [1, 2, 4])), plogo(key, name), name === 'Math Lab' ? 'p-ml' : 'p-le', 50000,
-        `<span class="badge muted open27">${L('2027년 9월 OPEN', 'OPEN September 2027')}</span>`); };
+        `<span class="badge muted open27">${L('2028년 1월 OPEN', 'OPEN January 2028')}</span>`); };
     const group = (code, name, cards, after = '', big = '', top = '') => `
       <section class="pgroup g-${code.toLowerCase()}" aria-label="${code}">
         <h2><b>${code}</b> ${big || `<span>${name}</span>`}${doodle('arrow', 'g-d')}</h2>${top}
@@ -457,7 +457,7 @@
     <main class="wrap">
       <section class="hero vibe-hero">
         <div>
-          <span class="eyebrow">${L('창의사교력 GPFIS · 독서 GPGB · 미래역량 GPPIS', 'Creative social skills GPFIS · Reading GPGB · Future skills GPPIS')}</span>
+          <span class="eyebrow">${L('창의사교력 GPFIS · 독서 GPGB · 글로벌 미래역량 GPPIS', 'Creative social skills GPFIS · Reading GPGB · Global future skills GPPIS')}</span>
           <h1>${L('<mark class="hl-y">듣는</mark> 영어가 달라야<br><mark class="hl-p">말하는</mark> 영어가 달라집니다.', '<mark class="hl-y">Listen</mark> more,<br><mark class="hl-b">understand</mark> more,<br><mark class="hl-p">speak</mark> naturally.')}</h1>
           <div class="form-row"><a class="btn primary big" href="#/about">${L('GPEIS 소개 보기', 'About GPEIS')}</a><a class="btn big" href="#/consult">${L('MOM INSIGHT 상담', 'Ask a mentor')}</a></div>
         </div>
@@ -470,7 +470,7 @@
       ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('창의사교력 프로그램', 'Creative social-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`,
         `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="#/open?p=gpfis">${L('맛보기', 'Sample')}</a></div>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
-      ${group('GPPIS', L('초등부 미래역량 프로그램', 'Future-skills programmes for primary'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
+      ${group('GPPIS', L('글로벌 미래역량 프로그램', 'Global future-skills programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
       ${''/* The family bundle and group-purchase strip was taken out on 11 Nov 2026: pricing bundles and the school route are not planned yet. The checkout still understands "bundle". */}
       <div class="strip consult-strip">
