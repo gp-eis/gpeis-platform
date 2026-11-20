@@ -356,6 +356,11 @@
     <svg class="foot-art" viewBox="0 0 420 220" aria-hidden="true"><circle cx="330" cy="150" r="80" fill="var(--hl-y)"/><path d="M150 220l70-120 70 120z" fill="var(--hl-p)"/><rect x="40" y="130" width="90" height="90" rx="18" fill="var(--hl-b)"/><circle cx="238" cy="62" r="26" fill="var(--hl-g)"/></svg>
   </footer>`;
 
+  /* ---------- GPFIS 맛보기 (21 Nov 2026): the kids' site is live, so the GPFIS sample buttons open it in a new tab.
+     Story Street is the front door; Fresh Math and Let's Go Readers open their own worlds inside it. (gpfis-site/tools/publish.cjs) ---------- */
+  const GPFIS_LIVE = 'https://gp-eis.github.io/gpfis-kids/';
+  const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html' };
+
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
   function openSoon(key) {
     const sep = key === 'math-lab' || key === 'logic-essay';   // GPPIS opens in January 2028 (boss, 20 Nov; was September 2027)
@@ -468,7 +473,7 @@
         <div class="products">${kinderBox()}</div>
       </section>
       ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('창의사교력 프로그램', 'Creative social-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`,
-        `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="#/open?p=gpfis">${L('맛보기', 'Sample')}</a></div>`)}
+        `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="${GPFIS_LIVE}" target="_blank" rel="noopener">${L('맛보기', 'Sample')}</a></div>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('글로벌 미래역량 프로그램', 'Global future-skills programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
@@ -705,7 +710,7 @@
       $app.innerHTML = topbar(authNav()) + `<main class="wrap"><div class="auth" style="text-align:center">
         <div style="font-size:42px">🔒</div><h1>${L(`${p.name}은(는) 구독 후 열려요`, `${p.name} opens after you subscribe`)}</h1>
         <p>${L('이 화면이 "구매한 상품만 열기"예요. 서버가 우리 가족의 구독을 확인한 뒤에만 내용을 보내 줘요.', 'This is "only what you bought opens": the server sends the content only after it has checked the family\'s subscription.')}</p>
-        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" href="${id === 'library' ? '#/play/library?sample=1' : '#/open?p=' + id}">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
+        <button class="btn primary big" id="sub">${won(p.price)}/${L('월 구독하기', 'month · Subscribe')}</button><a class="btn" ${GPFIS_SAMPLE[id] ? 'target="_blank" rel="noopener"' : ''} href="${id === 'library' ? '#/play/library?sample=1' : GPFIS_SAMPLE[id] || '#/open?p=' + id}">${L('맛보기 보기', 'Try a sample')}</a></div></main>`;
       bindCommon();
       document.getElementById('sub').onclick = () => { if (!s || s.role !== 'parent') { sessionStorage.setItem('gpdemo.after', id); location.hash = '#/login'; } else checkout(id); };
       return;
