@@ -271,4 +271,22 @@
       lvl.shelves = [{ title: 'Active Literacy and Readers', sub: '', more: '', books: [], groups }, ...lvl.shelves.filter(s => !/^Active (Literacy|Readers)$/.test(s.title))];
     });
   }
+
+  /* ---- 23 Nov 2026 (boss): one book per number in the pattern Readers, Readers, Literacy; each theme of three numbers is one row
+     (A: Baker, Pet Groomer, Athlete, Park Ranger; B: Designer, Farmer, Beekeeper, Cave Explorer). Today's covers stay until the new ones come. ---- */
+  {
+    const kc = n => `assets/catalog/k/${n}.webp`;
+    const HAVE = { a: { al: [1, 2, 3, 4, 5, 10], ar: [1, 2, 3, 4, 5, 10] }, b: { al: [1, 2, 3, 4, 5, 7, 8, 10], ar: [1, 2, 3, 4, 5, 7, 8, 10] } };
+    const THEMES = { a: ['Baker', 'Pet Groomer', 'Athlete', 'Park Ranger'], b: ['Designer', 'Farmer', 'Beekeeper', 'Cave Explorer'] };
+    const empty = t => ({ t, img: '', id: '', soft: false, ph: '', land: true });
+    C['k-lgr'].levels.forEach(lvl => {
+      const l = lvl.key.toLowerCase(); if (!HAVE[l]) return;
+      const book = n => {
+        const lit = n % 3 === 0, key = lit ? 'al' : 'ar', t = n + ' · ' + (lit ? 'Active Literacy' : 'Active Readers');
+        return HAVE[l][key].includes(n) ? bk(t, kc(`${key}-${l}${n}`)) : empty(t);
+      };
+      const groups = THEMES[l].map((theme, i) => ({ no: `${i * 3 + 1} – ${i * 3 + 3}`, theme, books: [1, 2, 3].map(k => book(i * 3 + k)) }));
+      const s = lvl.shelves.find(x => x.title === 'Active Literacy and Readers'); if (s) s.groups = groups;
+    });
+  }
 })();

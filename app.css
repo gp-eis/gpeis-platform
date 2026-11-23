@@ -1935,3 +1935,9 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 @media (max-width: 1000px) { .bp-shelf.grid .bp-shelf-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .bp-shelf.grid .bp-shelf-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 12px; }
   .bp-shelf.grid .bp-img .bp-open { font-size: 11px; padding: 5px 8px 5px 6px; bottom: 6px; } .bp-shelf.grid .bp-img .bp-open svg { width: 12px; height: 12px; } }
+
+/* 23 Nov: Active Literacy and Readers by theme (three numbers in one row, Readers · Readers · Literacy) */
+.bp-mg.th { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.bp-mg-head { display: flex; align-items: center; gap: 10px; }
+.bp-mg.th .bp-mg-no { width: auto; height: 32px; padding: 0 14px; border-radius: 16px; font-size: 15px; white-space: nowrap; }
+.bp-mg-head span { font: 600 17px/1.2 var(--round); color: var(--ink); }
