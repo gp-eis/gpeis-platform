@@ -179,8 +179,66 @@
   // the programme pages: worksheet covers only
   C['p-pbl'] = { levels: [one(L => 'Worksheets', [bk('Level A · 10 · Park Ranger', cat('ws-park-ranger-cover'), 'ws-park-ranger'), bk('Level B · 10 · Cave Explorer', cat('ws-cave-explorer-cover'), 'ws-cave-explorer')])] };
   C['p-pbl'].levels[0].shelves[0].title = 'Worksheets';
+  /* ---- 23 Nov 2026 (user): the 24 Start PBL worksheet covers, one per number of the 24-number 목차
+     (worksheets/start-pbl/covers, pages turned into assets/catalog/pbl-cover-NN.webp). Covers only for now, no look-inside. ---- */
+  {
+    const PBL24 = ['All About Me', 'My Friends & Me', 'My Family', 'My Neighborhood', 'From a Seed to a Plant', 'Plants Around the World',
+      'The Amazing World of Animals', 'How Animals Live', 'Exploring the Seven Continents', 'Discovering the Five Oceans', 'Material Culture', 'Intangible Culture',
+      'Our Beautiful Earth', 'Let’s Save Our Earth!', 'Exploring Our World', 'Amazing Discoveries', 'My Amazing Body', 'How My Body Works',
+      'Matter, Energy & Motion', 'Earth & Natural Phenomena', 'Great Minds That Changed the World', 'War and Peace: People Who Changed History', 'Our Future World', 'Beyond Earth'];
+    C['p-pbl'].levels[0].shelves.unshift(shelf('Worksheets · 1 – 24', '', PBL24.map((t, i) => bk(`Start PBL · ${i + 1}`, cat('pbl-cover-' + String(i + 1).padStart(2, '0'))))));
+  }
   C['p-lgr'] = { levels: [one('Worksheets', [bk('Phonics Reading Story', cat('phonics-reading-story-cover'), 'phonics-reading-story')])] };
+  /* ---- 23 Nov 2026 (user): the 24 Let's Go Readers worksheet covers, one per number of the 24-number 목차
+     (worksheets/lets-go-readers/lgr-covers, pages turned into assets/catalog/lgr-cover-NN.webp). Covers only for now, no look-inside. ---- */
+  {
+    const LGR24 = ['Letters A–D', 'Letters E–H', 'Letters I–L', 'Letters M–P', 'Letters Q–T', 'Letters U–Z',
+      'Short a · 1', 'Short a · 2', 'Short e and i · 1', 'Short e and i · 2', 'Short o and u · 1', 'Short o and u · 2',
+      'Double Consonants 1 · 1', 'Double Consonants 1 · 2', 'Double Consonants 2 · 1', 'Double Consonants 2 · 2', 'Double Vowels · 1', 'Double Vowels · 2',
+      'Magic e · 1', 'Magic e · 2', 'Soft Sounds', 'Hard Sounds and y', 'Word Sorting and Sound Rules', 'Reading New Words'];
+    C['p-lgr'].levels[0].shelves.unshift(shelf('Worksheets · 1 – 24', '', LGR24.map((t, i) => bk(`${i + 1} · ${t}`, cat('lgr-cover-' + String(i + 1).padStart(2, '0'))))));
+  }
   C['p-fm'] = { levels: [one('Worksheets', [bk('Shapes · Time · Weight', cat('ws-fresh-math-cover'), 'ws-fresh-math')])] };
+  /* ---- 23 Nov 2026 (user): the 24 Fresh Math worksheet covers, one per number of the 24-number 목차
+     (worksheets/fresh-math/fm-covers, pages turned into assets/catalog/fm-cover-NN.webp). Covers only for now, no look-inside. ---- */
+  {
+    const FM24 = ['Shapes Around Us', 'Shape Builders', 'Lines Everywhere', 'Lines & Angles', 'Blocks & Balls', 'Build It Up!', "Let's Measure!", 'Long & Short',
+      'Big & Small', 'Cover It Up!', 'Weigh It!', 'Heavy & Light', 'Find the Pattern', 'Make a Pattern', 'Sort It Out', 'Sort & Count',
+      'My Day', 'Telling Time', 'Add & Subtract', 'Carry & Borrow', 'Times Tables', 'Share It Equally', 'Fractions & Decimals', 'Mixed Calculation'];
+    C['p-fm'].levels[0].shelves.unshift(shelf('Worksheets · 1 – 24', '', FM24.map((t, i) => bk(`Fresh Math · ${i + 1}`, cat('fm-cover-' + String(i + 1).padStart(2, '0'))))));
+  }
+  /* ---- 23 Nov 2026 (user): "there are now 2 worksheets, so just add the 보기 on the first book" — same for Start PBL and
+     Let's Go Readers. Each programme page keeps only the 1 – 24 shelf (the older sample shelves are gone from the tab; their
+     pages stay in BOOKS), number 1 opens its real worksheets (spreads copied from worksheets/<programme>/<set> as
+     assets/worksheets/<fm|pbl|lgr>-01-N.webp), and the shelf is an even grid: 6 a row on a computer, 4 on a tablet, 3 on a phone. ---- */
+  {
+    const spreads = (key, n, name) => Array.from({ length: n }, (_, k) => ({ img: `assets/worksheets/${key}-01-${k + 1}.webp`, t: `${name}, spread ${k + 1}` }));
+    const FIRST = [
+      ['p-fm', { id: 'ws-fm-01', series: 'fm', title: 'Fresh Math · 1 · Shapes Around Us', kind: 'Fresh Math', cover: cat('fm-cover-01'), seal: ['No.', '1'],
+        ko: '꼭짓점과 변을 세어 보고, 주변에서 도형을 찾고, 직접 만들고 나누어 보는 4주 워크시트예요.',
+        en: 'Four weeks of worksheets: count vertices and sides, find shapes all around, then build and split them.',
+        note: ['표지 옆 장들은 Fresh Math 1번 워크시트 전체예요. 표지와 차례, 4주 32쪽, 정답 2쪽이 있어요.', 'The pages beside the cover are the whole Fresh Math number 1 set: cover, contents, 32 pages over four weeks and 2 answer pages.'],
+        facts: [['Fresh Math · GPFIS', 'Fresh Math · GPFIS'], ['1 · Shapes Around Us (Vertices)', '1 · Shapes Around Us (Vertices)'], ['4주 · 32쪽 + 정답', '4 weeks · 32 pages + answers']],
+        sheets: spreads('fm', 18, 'Fresh Math 1') }],
+      ['p-pbl', { id: 'ws-pbl-01', series: 'ees', title: 'Start PBL · 1 · All About Me', kind: 'Start PBL', cover: cat('pbl-cover-01'), seal: ['No.', '1'],
+        ko: '나의 이름과 얼굴, 감정, 좋아하는 것과 잘하는 것, 나의 하루와 꿈을 그리고 쓰며 나를 알아가요.',
+        en: 'Children get to know themselves: their name and face, feelings, what they like and can do, their day and their dreams.',
+        note: ['표지 옆 장들은 Start PBL 1번 워크시트 전체예요. 표지와 차례, 4주 32쪽이 있어요.', 'The pages beside the cover are the whole Start PBL number 1 set: cover, contents and 32 pages over four weeks.'],
+        facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['1 · All About Me', '1 · All About Me'], ['4주 · 32쪽', '4 weeks · 32 pages']],
+        sheets: spreads('pbl', 17, 'Start PBL 1') }],
+      ['p-lgr', { id: 'ws-lgr-01', series: 'lgr', title: "Let's Go Readers · 1 · Letters A–D", kind: "Let's Go Readers", cover: cat('lgr-cover-01'), seal: ['No.', '1'],
+        ko: 'A, B, C, D로 시작하는 낱말마다 짧은 이야기를 읽고, 이해 질문과 파닉스, 이름 낱말·움직임 낱말 활동을 해요.',
+        en: 'A short story for each A, B, C and D word, with reading questions, phonics, and naming and doing words.',
+        note: ['표지 옆 장들은 Let’s Go Readers 1번 워크시트 전체예요. 이야기 24편, 한 편마다 이야기 쪽과 활동 쪽이 있어요.', 'The pages beside the cover are the whole Let’s Go Readers number 1 set: 24 stories, each with a story page and an activity page.'],
+        facts: [["Let's Go Readers · GPFIS", "Let's Go Readers · GPFIS"], ['1 · Letters A–D', '1 · Letters A–D'], ['이야기 24편 · 50쪽', '24 stories · 50 pages']],
+        sheets: spreads('lgr', 25, "Let's Go Readers 1") }]];
+    FIRST.forEach(([p, b]) => {
+      window.BOOKS.push({ level: '', no: '1', talk: [], ...b });
+      const sh = C[p].levels[0].shelves[0];
+      sh.books[0].id = b.id; sh.grid = true;
+      C[p].levels[0].shelves = [sh];
+    });
+  }
 
   /* ---- 19 Nov 2026: the new GP EPS books on the GPFIS programme pages, 12 places each (covers from D:\GP Books\GP EPS ..., made by make-kinder-covers.cjs).
      To add a book later: run make-kinder-covers.cjs with the new PDF on the drive and put its number in EPS_HAVE. ---- */

@@ -1924,3 +1924,14 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 @media (min-width: 761px) { .bp-strip-row:not(.wide) { display: grid; grid-template-columns: repeat(6, max-content); justify-content: start; } }
 /* the hand-drawn arrows beside the section headings are gone (user, 21 Nov: they did not look good) */
 .pgroup h2 .g-d { display: none; }
+
+/* 23 Nov 2026 (user): the 1 – 24 worksheet shelves (Fresh Math, Start PBL, Let's Go Readers) are an even grid:
+   6 a row on a computer, 4 on a tablet, 3 on a phone (24 = 4 x 6 = 6 x 4 = 8 x 3), and number 1 carries its own 보기 tag */
+.bp-shelf.grid .bp-shelf-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px 18px; align-items: start; }
+.bp-shelf.grid .bp-shelf-row .bp-cover { min-width: 0; }
+.bp-shelf.grid .bp-shelf-row .bp-cover img { width: 100%; height: auto; display: block; }
+.bp-shelf.grid .bp-img { position: relative; display: block; }
+.bp-shelf.grid .bp-img .bp-open { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+@media (max-width: 1000px) { .bp-shelf.grid .bp-shelf-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .bp-shelf.grid .bp-shelf-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 12px; }
+  .bp-shelf.grid .bp-img .bp-open { font-size: 11px; padding: 5px 8px 5px 6px; bottom: 6px; } .bp-shelf.grid .bp-img .bp-open svg { width: 12px; height: 12px; } }

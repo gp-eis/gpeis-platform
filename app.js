@@ -1120,7 +1120,9 @@
     const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
     const soon = '',   // no "준비 중" tags (boss, 19 Nov)
       open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
-    const cover = (b, cls = '') => { const inner = `<figure>${b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b></span>`}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;   // a place without a cover yet
+    // pill = put the 워크시트 보기 tag on the cover itself (the 1 – 24 shelves, 23 Nov 2026: only number 1 opens so far)
+    const cover = (b, cls = '', pill) => { const im = b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b></span>`;   // a place without a cover yet
+      const inner = `<figure>${pill && canOpen(b.id) ? `<span class="bp-img">${im}${open}</span>` : im}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;
       return canOpen(b.id) ? `<a class="bp-cover can ${cls}" href="#/books/${b.id}">${inner}</a>` : `<div class="bp-cover ${cls}">${inner}</div>`; };
     // Start PBL, Level A and B: four theme blocks, three numbers in each, a phonics pad with every number
     const themeView = v => `<div class="bp-themes">${v.themes.map((t, k) => `<section class="bp-theme" style="--c:${t.c};${t.t ? '--t:' + t.t : ''}">
@@ -1133,9 +1135,9 @@
         <ul>${c.books.map(b => { const can = canOpen(b.id), inner = `<img src="${b.img}" alt=""><span><b>${b.t}</b>${can ? open : soon}</span>`; return `<li>${can ? `<a href="#/books/${b.id}">${inner}</a>` : `<div>${inner}</div>`}</li>`; }).join('')}</ul></section>`).join('')}</div>
       ${v.strips.map(st => `<section class="bp-strip"><div><div class="n">${st.tag}</div><h3>${L(st.title[0], st.title[1])}</h3><p>${L(st.text[0], st.text[1])}</p></div><div class="bp-strip-row ${st.wide ? 'wide' : ''}">${st.books.map(b => cover(b)).join('')}</div></section>`).join('')}`;
     // every other programme: shelves of covers
-    const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${sh.books.some(b => canOpen(b.id)) ? open : ''}</div>
+    const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}${sh.grid ? ' grid' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${!sh.grid && sh.books.some(b => canOpen(b.id)) ? open : ''}</div>
         ${sh.groups ? `<div class="bp-mgroups">${sh.groups.map(g => `<div class="bp-mg"><b class="bp-mg-no">${g.no}</b><div class="bp-mg-row n${g.books.length}">${g.books.map(b => cover(b, b.land ? 'land' : '')).join('')}</div></div>`).join('')}</div>`   // books grouped by number (Active Literacy and Readers)
-          : `<div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b)).join('') : ''}</div>`}</section>`).join('')}</div>`;
+          : `<div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b, '', sh.grid)).join('') : ''}</div>`}</section>`).join('')}</div>`;
     // GB Magic Library: one card per number with its two books, Reading Book and Reading Literacy (boss, 14 Nov: no story covers)
     const gbView = v => `<div class="bp-rows two">${v.rows.map(r => `<section class="bp-row"><div class="bp-row-h"><b>${r.no}</b><span>Level ${v.key} · ${r.no}</span></div>
         <div class="bp-row-books">${[['Reading Book', r.rb], ['Reading Literacy', r.wb]].map(([t, cv]) => `<figure class="bp-cover"><img src="${cv.img}" alt=""><figcaption>${t}${cv.soft ? `<i>${L('임시', 'stand-in')}</i>` : ''}</figcaption></figure>`).join('')}</div></section>`).join('')}</div>`;
