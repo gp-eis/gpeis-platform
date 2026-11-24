@@ -1121,7 +1121,8 @@
     if (lv) bookLevel[cur.cls] = lv.key;
     const kTab = cur.group === 'Kindergarten', canOpen = id => !kTab && hasSheets(id);   // GP books are only shown; worksheets belong to the programmes
     const soon = '',   // no "준비 중" tags (boss, 19 Nov)
-      open = kTab ? '' : `<span class="bp-open">${EYE}${L('워크시트 보기', 'See worksheets')}</span>`;
+      bookName = { 'p-pbl': 'Speech Book', 'p-lgr': 'Speaking Book', 'p-fm': 'Discussion Book' }[cur.cls],   // user 24 Nov: not 'worksheet'
+      open = kTab ? '' : `<span class="bp-open">${EYE}${bookName ? L(bookName + ' 보기', 'See the ' + bookName) : L('워크시트 보기', 'See worksheets')}</span>`;
     // pill = put the 워크시트 보기 tag on the cover itself (the 1 – 24 shelves, 23 Nov 2026: only number 1 opens so far)
     const cover = (b, cls = '', pill) => { const im = b.img ? `<img src="${b.img}" alt="">` : `<span class="bp-ph"><b>${b.ph || ''}</b></span>`;   // a place without a cover yet
       const inner = `<figure>${pill && canOpen(b.id) ? `<span class="bp-img">${im}${open}</span>` : im}${b.t ? `<figcaption>${b.t}</figcaption>` : ''}</figure>`;
@@ -1184,7 +1185,7 @@
         <button class="arrow next" id="stripNext" aria-label="${L('다음', 'Next')}">→</button>
       </div>
       <div class="wrap">
-        <p class="strip-note">${b.sheets.some(s => s.img) ? L('표지 옆 장들은 이 책의 수업 내용으로 만든 “그리고 쓰는” 워크시트예요.', 'The pages beside the cover are the draw-and-write worksheets made from this book’s lessons.') : L('표지 옆 장들은 “그리고 쓰는” 워크시트 미리보기 샘플이에요. 실제 워크시트는 책의 수업 내용으로 따로 만들어요.', 'The pages beside the cover are sample previews of the draw-and-write worksheets. The real worksheets will be made separately from the book’s lessons.')}</p>
+        <p class="strip-note"${/^ws-(pbl|lgr|fm)-/.test(b.id) ? " hidden" : ""}>${b.sheets.some(s => s.img) ? L('표지 옆 장들은 이 책의 수업 내용으로 만든 “그리고 쓰는” 워크시트예요.', 'The pages beside the cover are the draw-and-write worksheets made from this book’s lessons.') : L('표지 옆 장들은 “그리고 쓰는” 워크시트 미리보기 샘플이에요. 실제 워크시트는 책의 수업 내용으로 따로 만들어요.', 'The pages beside the cover are sample previews of the draw-and-write worksheets. The real worksheets will be made separately from the book’s lessons.')}</p>
         <h1 class="book-title" style="color:${col}">${esc(b.title)}</h1>
         <div class="book-cols">
           <div class="book-desc">

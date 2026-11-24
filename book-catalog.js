@@ -129,11 +129,11 @@
   const B = window.BOOKS, by = id => B.find(b => b.id === id) || {}, sheetsOf = (...ids) => ids.flatMap(id => by(id).sheets || []);
   const wsBook = (id, from, o) => ({ ...by(from), id, no: '', pages: undefined, cover: cat(id + '-cover'), ...o });
   B.push(
-    wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Worksheets', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: [toc('start-pbl'), ...sheetsOf('ees-park-ranger', 'ees-park-ranger-2')],
+    wsBook('ws-park-ranger', 'ees-park-ranger', { title: 'Park Ranger Speech Book', kind: 'Start PBL · Level A · 10', seal: ['Level', 'A'], sheets: [toc('start-pbl'), ...sheetsOf('ees-park-ranger', 'ees-park-ranger-2')],
       facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['Level A · 10', 'Level A · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
-    wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Worksheets', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: [toc('start-pbl'), ...sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2')],
+    wsBook('ws-cave-explorer', 'ees-cave-explorer', { title: 'Cave Explorer Speech Book', kind: 'Start PBL · Level B · 10', seal: ['Level', 'B'], sheets: [toc('start-pbl'), ...sheetsOf('ees-cave-explorer', 'ees-cave-explorer-2')],
       facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['Level B · 10', 'Level B · 10'], ['그리고 쓰는 워크시트 8장', '8 draw-and-write worksheets']] }),
-    wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Worksheets', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'], sheets: [toc('fresh-math'), ...(by('fresh-math-a').sheets || [])],
+    wsBook('ws-fresh-math', 'fresh-math-a', { title: 'Fresh Math Discussion Book · Sample', kind: 'Fresh Math', level: '', seal: ['Sheets', '3'], sheets: [toc('fresh-math'), ...(by('fresh-math-a').sheets || [])],
       facts: [['Fresh Math · GPFIS', 'Fresh Math · GPFIS'], ['도형 · 시계 · 무게', 'Shapes · time · weight'], ['워크시트 3장', '3 worksheets']] }));
   const C = window.CATALOG, one = (title, list) => ({ key: '', age: ['', ''], shelves: [shelf(title, '', list)] });
   // the GP books, as they were
@@ -215,21 +215,21 @@
     const spreads = (key, n, name) => Array.from({ length: n }, (_, k) => ({ img: `assets/worksheets/${key}-01-${k + 1}.webp`, t: `${name}, spread ${k + 1}` }));
     const FIRST = [
       ['p-fm', { id: 'ws-fm-01', series: 'fm', title: 'Fresh Math · 1 · Shapes Around Us', kind: 'Fresh Math', cover: cat('fm-cover-01'), seal: ['No.', '1'],
-        ko: '꼭짓점과 변을 세어 보고, 주변에서 도형을 찾고, 직접 만들고 나누어 보는 4주 워크시트예요.',
+        ko: '꼭짓점과 변을 세어 보고, 주변에서 도형을 찾고, 직접 만들고 나누어 보는 4주 Discussion Book이에요.',
         en: 'Four weeks of worksheets: count vertices and sides, find shapes all around, then build and split them.',
-        note: ['표지 옆 장들은 Fresh Math 1번 워크시트 전체예요. 표지와 차례, 4주 32쪽, 정답 2쪽이 있어요.', 'The pages beside the cover are the whole Fresh Math number 1 set: cover, contents, 32 pages over four weeks and 2 answer pages.'],
+        note: ['표지 옆 장들은 Fresh Math 1번 Discussion Book 전체예요. 표지와 차례, 4주 32쪽, 정답 2쪽이 있어요.', 'The pages beside the cover are the whole Fresh Math number 1 set: cover, contents, 32 pages over four weeks and 2 answer pages.'],
         facts: [['Fresh Math · GPFIS', 'Fresh Math · GPFIS'], ['1 · Shapes Around Us (Vertices)', '1 · Shapes Around Us (Vertices)'], ['4주 · 32쪽 + 정답', '4 weeks · 32 pages + answers']],
         sheets: spreads('fm', 18, 'Fresh Math 1') }],
       ['p-pbl', { id: 'ws-pbl-01', series: 'ees', title: 'Start PBL · 1 · All About Me', kind: 'Start PBL', cover: cat('pbl-cover-01'), seal: ['No.', '1'],
         ko: '나의 이름과 얼굴, 감정, 좋아하는 것과 잘하는 것, 나의 하루와 꿈을 그리고 쓰며 나를 알아가요.',
         en: 'Children get to know themselves: their name and face, feelings, what they like and can do, their day and their dreams.',
-        note: ['표지 옆 장들은 Start PBL 1번 워크시트 전체예요. 표지와 차례, 4주 32쪽이 있어요.', 'The pages beside the cover are the whole Start PBL number 1 set: cover, contents and 32 pages over four weeks.'],
+        note: ['표지 옆 장들은 Start PBL 1번 Speech Book 전체예요. 표지와 차례, 4주 32쪽이 있어요.', 'The pages beside the cover are the whole Start PBL number 1 set: cover, contents and 32 pages over four weeks.'],
         facts: [['Start PBL · GPFIS', 'Start PBL · GPFIS'], ['1 · All About Me', '1 · All About Me'], ['4주 · 32쪽', '4 weeks · 32 pages']],
         sheets: spreads('pbl', 17, 'Start PBL 1') }],
       ['p-lgr', { id: 'ws-lgr-01', series: 'lgr', title: "Let's Go Readers · 1 · Letters A–D", kind: "Let's Go Readers", cover: cat('lgr-cover-01'), seal: ['No.', '1'],
         ko: 'A, B, C, D로 시작하는 낱말마다 짧은 이야기를 읽고, 이해 질문과 파닉스, 이름 낱말·움직임 낱말 활동을 해요.',
         en: 'A short story for each A, B, C and D word, with reading questions, phonics, and naming and doing words.',
-        note: ['표지 옆 장들은 Let’s Go Readers 1번 워크시트 전체예요. 이야기 24편, 한 편마다 이야기 쪽과 활동 쪽이 있어요.', 'The pages beside the cover are the whole Let’s Go Readers number 1 set: 24 stories, each with a story page and an activity page.'],
+        note: ['표지 옆 장들은 Let’s Go Readers 1번 Speaking Book 전체예요. 이야기 24편, 한 편마다 이야기 쪽과 활동 쪽이 있어요.', 'The pages beside the cover are the whole Let’s Go Readers number 1 set: 24 stories, each with a story page and an activity page.'],
         facts: [["Let's Go Readers · GPFIS", "Let's Go Readers · GPFIS"], ['1 · Letters A–D', '1 · Letters A–D'], ['이야기 24편 · 50쪽', '24 stories · 50 pages']],
         sheets: spreads('lgr', 25, "Let's Go Readers 1") }]];
     FIRST.forEach(([p, b]) => {
@@ -328,4 +328,6 @@
     const l = lvl.key.toLowerCase(); const s = lvl.shelves.find(x => x.title === 'Active Literacy and Readers'); if (!s || !s.groups || !/^[ab]$/.test(l)) return;
     s.groups.forEach((g, gi) => { g.books = g.books.map((b, bi) => { const n = gi * 3 + bi + 1; return { ...b, img: 'assets/catalog/k/' + (n % 3 === 0 ? 'al-' : 'ar-') + l + n + '.webp', ph: '' }; }); });
   });
+  /* ---- 24 Nov 2026 (user): the 1 – 24 books are not called worksheets: Speech Book (Start PBL), Speaking Book (Let's Go Readers), Discussion Book (Fresh Math) ---- */
+  [['p-pbl', 'Speech Book'], ['p-lgr', 'Speaking Book'], ['p-fm', 'Discussion Book']].forEach(([k, name]) => C[k].levels.forEach(l => l.shelves.forEach(sh => { if (sh.title === 'Worksheets · 1 – 24') sh.title = name + ' · 1 – 24'; })));
 })();
