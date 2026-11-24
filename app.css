@@ -1985,3 +1985,7 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 /* 24 Nov (user): ELS K in two rows of six on PC */
 @media (min-width: 761px) { .bp-shelf.six .bp-shelf-row { display: grid; grid-template-columns: repeat(6, max-content); justify-content: start; } }
 .bprog.p-gb .bprog-text .lead > b:first-child { background: var(--c-gb); }
+/* 24 Nov (user): curriculum cards tinted in the programme colour, not white */
+.bp-curr li { background: color-mix(in srgb, var(--c-pbl) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-pbl) 35%, transparent); }
+.bprog.p-lgr .bp-curr li { background: color-mix(in srgb, var(--c-lgr) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-lgr) 35%, transparent); }
+.bprog.p-fm .bp-curr li { background: color-mix(in srgb, var(--c-fm) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-fm) 35%, transparent); }

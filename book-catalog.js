@@ -163,14 +163,14 @@
       { key: 'A', age: ['만 3세', 'age 3'], shelves: [
         shelf('Active Literacy', '', al('A', ALA, [[7, bk(lv('A', 7), old('ees-athlete'))], [8, bk(lv('A', 8), cat('al-a-8'))]])),
         shelf('Active Readers', '', nums(ALA, 'ar-a', n => lv('A', n))),
-        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-a', n => lv('A', n))) ] },
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'pw-a', n => lv('A', n))) ] },
       { key: 'B', age: ['만 4세', 'age 4'], shelves: [
         shelf('Active Literacy', '', al('B', ALB, [])),
         shelf('Active Readers', '', nums(ALB, 'ar-b', n => lv('B', n))),
-        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-b', n => lv('B', n))) ] },
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'pw-b', n => lv('B', n))) ] },
       { key: 'C', age: ['만 5세', 'age 5'], shelves: [
         shelf('ELS K', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'k', n => 'K · ' + n)),
-        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'pw-c', n => lv('C', n))) ] } ] };
+        shelf('Phonics Writing', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'pw-c', n => lv('C', n))) ] } ] };
     const TOPIC = ['', 'Vertices', 'Lines', 'Surfaces', 'Lengths', 'Area', 'Weight', 'Rule', 'Category', 'Time', 'Calculation'];
     C['k-fm'] = { levels: [['A', '만 3세', 'age 3'], ['B', '만 4세', 'age 4'], ['C', '만 5세', 'age 5']].map(([L, ko, en]) => ({ key: L, age: [ko, en], shelves: [
       shelf('Literacy and Math', '', nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'lm-' + L.toLowerCase(), n => n + ' · ' + TOPIC[n])) ] })) };
@@ -243,7 +243,8 @@
   /* ---- 19 Nov 2026: the new GP EPS books on the GPFIS programme pages, 12 places each (covers from D:\GP Books\GP EPS ..., made by make-kinder-covers.cjs).
      To add a book later: run make-kinder-covers.cjs with the new PDF on the drive and put its number in EPS_HAVE. ---- */
   {
-    const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9], de: [1,2,3,4,5,7,8,9], lm: [1,2,3,4,5,6,7,8,9], ecs: [1,2,3,4,5,6,7,8,9,10,11,12] };
+    const EPS_HAVE = { ps: [1,2,3,4,5,6,7,8,9,10,11,12], de: [1,2,3,4,5,6,7,8,9,10,11,12], lm: [1,2,3,4,5,6,7,8,9,10,11,12],   // 24 Nov: missing ones are ChatGPT stand-in covers (boss)
+      ecs: [1,2,3,4,5,6,7,8,9,10,11,12] };
     const DE = ['', 'School', 'Spring', 'Family', 'Neighborhood', 'Summer', '', 'Fall', 'Countries', 'Reading'];   // titles from the file names (6 is not on the drive yet)
     const twelve = (p, cap) => Array.from({ length: 12 }, (x, i) => i + 1).map(n => EPS_HAVE[p].includes(n) ? bk(cap(n), `assets/catalog/k/eps-${p}${n}.webp`) : { t: cap(n), img: '', id: '', soft: false, ph: n });
     // 20 Nov: the EPS books live on their own tab, EPS / ECS, over 24 numbers (they no longer sit on the Start PBL, Let's Go Readers and Fresh Math pages)
@@ -320,4 +321,11 @@
       });
     });
   }
+  /* ---- 24 Nov 2026 (boss): stand-in covers made with ChatGPT in each series' own design (Active Readers 11, Active Literacy 6 9 12,
+     Phonics Writing 11-12, EPS gaps). Every Active Literacy and Readers place now shows its own book; real covers replace them
+     when make-kinder-covers.cjs finds the printed PDF (same file names). Originals in _dummy-covers-src. ---- */
+  C['k-lgr'].levels.forEach(lvl => {
+    const l = lvl.key.toLowerCase(); const s = lvl.shelves.find(x => x.title === 'Active Literacy and Readers'); if (!s || !s.groups || !/^[ab]$/.test(l)) return;
+    s.groups.forEach((g, gi) => { g.books = g.books.map((b, bi) => { const n = gi * 3 + bi + 1; return { ...b, img: 'assets/catalog/k/' + (n % 3 === 0 ? 'al-' : 'ar-') + l + n + '.webp', ph: '' }; }); });
+  });
 })();
