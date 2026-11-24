@@ -456,7 +456,7 @@
             <a class="pmore" href="#/books?p=k-pbl">${EYE}<span>${L('자세히 보기', 'See more')}</span></a>
             <div class="body"><h3>${KLOGO}</h3></div>
           </article>
-          <div class="pbelow noprice kbtns"><div class="actions">${[['ees', 'EES / ELS'], ['readers', 'Readers Series'], ['lm', 'Literacy and Math']].map(([k, t], i) => `<button class="btn ${i ? '' : 'primary'}" data-klink="${k}">${t}</button>`).join('')}</div></div>
+          <div class="pbelow noprice kbtns"><div class="actions"><button class="btn primary" id="kinderBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="#/open?p=kinder">${L('맛보기', 'Sample')}</a></div></div>
         </div>`;
     $app.innerHTML = topbar(authNav()) + `
     <main class="wrap">
@@ -492,7 +492,7 @@
     if (at) $app.querySelectorAll('.pm img, .pm-roll > div > div').forEach(e => { e.style.animationDelay = (parseFloat(getComputedStyle(e).animationDelay) || 0) - at + 's'; e.style.animationPlayState = 'paused'; });
     document.getElementById('gpfisBuy').onclick = () => toast(L('실제 사이트에서는 GPFIS(Start PBL · Let’s Go Readers · Fresh Math) 구독 결제로 이동해요', 'The real site goes to the GPFIS subscription (Start PBL, Let’s Go Readers and Fresh Math)'));
     // Play Kinder links: EES / ELS goes to the existing Wix site; the other two links are not ready yet (19 Nov 2026)
-    $app.querySelectorAll('[data-klink]').forEach(b => b.onclick = () => toast(b.dataset.klink === 'ees' ? L('실제 사이트에서는 Wix의 EES / ELS 사이트로 이동해요', 'The real site goes to the EES / ELS site on Wix') : L('곧 연결돼요', 'This link opens soon')));
+    { const kb = document.getElementById('kinderBuy'); if (kb) kb.onclick = () => toast(L('실제 사이트에서는 Play Kinder 구독 결제로 이동해요', 'The real site goes to the Play Kinder subscription')); }
     $app.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
       if (!API.session() || API.session().role !== 'parent') { sessionStorage.setItem('gpdemo.after', b.dataset.buy); location.hash = '#/login'; return; }
       checkout(b.dataset.buy);
@@ -1138,7 +1138,8 @@
       ${v.strips.map(st => `<section class="bp-strip"><div><div class="n">${st.tag}</div><h3>${L(st.title[0], st.title[1])}</h3><p>${L(st.text[0], st.text[1])}</p></div><div class="bp-strip-row ${st.wide ? 'wide' : ''}">${st.books.map(b => cover(b)).join('')}</div></section>`).join('')}`;
     // every other programme: shelves of covers
     const shelfView = v => `<div class="bp-shelves">${v.shelves.map(sh => `<section class="bp-shelf ${sh.books.some(b => /\/gb-[abc]\d-/.test(b.img)) ? 'land nocap' : sh.books.length > 2 && sh.books.every(b => /assets\/worksheets\//.test(b.img)) ? 'land' : ''}${sh.grid ? ' grid' : ''}"><div class="bp-shelf-h"><h4>${sh.title}</h4>${sh.sub ? `<span>${sh.sub}</span>` : ''}${!sh.grid && sh.books.some(b => canOpen(b.id)) ? open : ''}</div>
-        ${sh.groups ? `<div class="bp-mgroups">${sh.groups.map(g => `<div class="bp-mg${g.theme ? ' th' : ''}">${g.theme ? `<div class="bp-mg-head"><b class="bp-mg-no">${g.no}</b><span>${g.theme}</span></div>` : `<b class="bp-mg-no">${g.no}</b>`}<div class="bp-mg-row n${g.books.length}">${g.books.map(b => cover(b, b.land ? 'land' : '')).join('')}</div></div>`).join('')}</div>`   // books grouped by number (Active Literacy and Readers)
+        ${sh.curr ? `<ol class="bp-curr">${sh.curr.map((c, i) => `<li><b class="bp-curr-no">${i + 1}</b><div><strong>${c.t}</strong>${c.ko ? `<span class="bp-curr-ko">${c.ko}</span>` : ""}<small>${c.d}</small></div></li>`).join("")}</ol>`   // 24-month curriculum (24 Nov)
+          : sh.groups ? `<div class="bp-mgroups">${sh.groups.map(g => `<div class="bp-mg${g.theme ? ' th' : ''}">${g.theme ? `<div class="bp-mg-head"><b class="bp-mg-no">${g.no}</b><span>${g.theme}</span></div>` : `<b class="bp-mg-no">${g.no}</b>`}<div class="bp-mg-row n${g.books.length}">${g.books.map(b => cover(b, b.land ? 'land' : '')).join('')}</div></div>`).join('')}</div>`   // books grouped by number (Active Literacy and Readers)
           : `<div class="bp-shelf-row">${sh.books.length ? sh.books.map(b => cover(b, '', sh.grid)).join('') : ''}</div>`}</section>`).join('')}</div>`;
     // GB Magic Library: one card per number with its two books, Reading Book and Reading Literacy (boss, 14 Nov: no story covers)
     const gbView = v => `<div class="bp-rows two">${v.rows.map(r => `<section class="bp-row"><div class="bp-row-h"><b>${r.no}</b><span>Level ${v.key} · ${r.no}</span></div>

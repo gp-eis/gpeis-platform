@@ -1957,3 +1957,23 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .myplan .art.phonics { background: url(assets/gpfis-cards/lets-go-readers.webp) center / cover; }
 .myplan .art.phonics span { display: none; }
 .myplan .art.math { background: url(assets/gpfis-cards/fresh-math.webp) center / cover; }
+
+/* 24 Nov (user): the speaking mode (Speech / Speaking / Discussion) stands out as a coloured label */
+.bprog-text .lead > b:first-child { display: inline-block; padding: 4px 14px 5px; margin-right: 4px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 1.08em; letter-spacing: .02em; vertical-align: 1px; }
+.bprog.p-pbl .bprog-text .lead > b:first-child, .bprog.k-pbl .bprog-text .lead > b:first-child { background: var(--c-pbl); }
+.bprog.p-lgr .bprog-text .lead > b:first-child, .bprog.k-lgr .bprog-text .lead > b:first-child { background: var(--c-lgr); }
+.bprog.p-fm .bprog-text .lead > b:first-child, .bprog.k-fm .bprog-text .lead > b:first-child { background: var(--c-fm); }
+
+/* 24 Nov (user): the 24-month curriculum before the worksheet covers */
+.bp-curr { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.bp-curr li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 14px; background: #fff; border-radius: 14px; box-shadow: 0 1px 0 rgba(21, 30, 75, .06); }
+.bp-curr-no { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: #fff; font: 600 14px/1 var(--round); }
+.bprog.p-pbl .bp-curr-no { background: var(--c-pbl); } .bprog.p-lgr .bp-curr-no { background: var(--c-lgr); } .bprog.p-fm .bp-curr-no { background: var(--c-fm); }
+.bp-curr li div { display: grid; gap: 3px; min-width: 0; }
+.bp-curr strong { font: 600 15px/1.25 var(--round); color: var(--ink); }
+.bp-curr-ko { font-size: 13px; color: var(--ink); opacity: .75; }
+.bp-curr small { font-size: 12px; line-height: 1.4; color: #6b6a64; }
+.bp-shelf:has(.bp-curr) .bp-shelf-row { display: none; }
+@media (max-width: 1100px) { .bp-curr { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 800px) { .bp-curr { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .bp-curr { grid-template-columns: minmax(0, 1fr); } }
