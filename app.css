@@ -1941,3 +1941,14 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .bp-mg-head { display: flex; align-items: center; gap: 10px; }
 .bp-mg.th .bp-mg-no { width: auto; height: 32px; padding: 0 14px; border-radius: 16px; font-size: 15px; white-space: nowrap; }
 .bp-mg-head span { font: 600 17px/1.2 var(--round); color: var(--ink); }
+
+/* 24 Nov: sample parent page by subscription (GB Magic Library, GPFIS with Start PBL · Let's Go Readers · Fresh Math) */
+.myplan { display: grid; gap: 12px; }
+.myplan h2 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0; font: 700 22px/1.2 var(--round); color: var(--ink); }
+.myplan h2 span { font: 600 15px var(--sans); color: var(--ink); opacity: .75; }
+.myplan h2 em { font-style: normal; align-self: center; }
+.art.pbl { background: url(assets/worksheets/ees-park-ranger-1.png) center 20% / cover, #e8f1ff; }
+.bar.pbl i { background: var(--pbl); }
+.chip.pbl, .chip.gpfis { background: #efe7f8; color: var(--pbl); }
+.myplan .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 700px) { .myplan .grid3 { grid-template-columns: minmax(0, 1fr); } }

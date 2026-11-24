@@ -4,10 +4,10 @@
   const $app = document.getElementById('app');  const $modal = document.getElementById('modal');
   const $toast = document.getElementById('toast');
   const P = API.PRODUCTS;
-  const prod = id => P.find(p => p.id === id);
+  const prod = id => P.find(p => p.id === id) || API.PLANS.find(p => p.id === id) || (id === 'pbl' ? API.PBL : undefined);
   const won = n => '₩' + n.toLocaleString('ko-KR');
   const face = f => `assets/faces/face-${f}.webp`;
-  const art = id => ({ library: 'gb', math: 'math', phonics: 'phonics' })[id];
+  const art = id => ({ library: 'gb', math: 'math', phonics: 'phonics', pbl: 'pbl', gpfis: 'pbl' })[id];
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const artBox = (id, cls = 'art') => `<div class="${cls} ${art(id)}">${id === 'phonics' ? '<span>A b c</span>' : ''}</div>`;
   let parentOk = false;
@@ -359,7 +359,7 @@
   /* ---------- GPFIS 맛보기 (21 Nov 2026): the kids' site is live, so the GPFIS sample buttons open it in a new tab.
      Story Street is the front door; Fresh Math and Let's Go Readers open their own worlds inside it. (gpfis-site/tools/publish.cjs) ---------- */
   const GPFIS_LIVE = 'https://gp-eis.github.io/gpfis-kids/';
-  const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html' };
+  const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html', pbl: GPFIS_LIVE + 'pbl/index.html' };
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
   function openSoon(key) {
@@ -541,7 +541,7 @@
   /* ---------- Checkout (pretend payment company window) ---------- */
   async function checkout(id) {
     const fam = await API.family();
-    const items = id === 'bundle' ? P.filter(p => !(fam.subs[p.id] && fam.subs[p.id].status === 'active')) : [prod(id)];
+    const items = id === 'bundle' ? P.filter(p => !(fam.subs[p.id] && fam.subs[p.id].status === 'active')) : [API.planOf(id) || prod(id)];
     if (!items.length) { toast(L('이미 모두 구독 중이에요', 'You already have all three')); return; }
     const total = id === 'bundle' ? Math.max(API.BUNDLE - P.filter(p => !items.includes(p)).reduce((a, p) => a + p.price, 0), 0) : items[0].price;
     modal(`
@@ -587,13 +587,15 @@
     <main class="wrap" style="padding-block:28px 48px;display:grid;gap:22px">
       <div><h1 style="font-size:26px">${L('누가 놀이할까요?', "Who's playing today?")}</h1></div>
       <div class="kids">${fam.children.map(c => `<button class="kid ${c.id === activeKid ? 'on' : ''}" data-kid="${c.id}"><img src="${face(c.face)}" alt=""><b>${esc(c.name)}</b></button>`).join('')}</div>
-      <div class="grid3">${P.map(p => {
-        const s = fam.subs[p.id], open = s && s.status !== 'ended';
-        return `<a class="tile ${open ? '' : 'locked'}" href="${open ? `#/play/${p.id}` : '#'}" data-tile="${p.id}">
+      ${API.PLANS.map(pl => { const ps = fam.subs[pl.id], on = ps && ps.status !== 'ended'; return `<section class="myplan">
+        <h2>${pl.id === 'gpfis' ? `GPFIS <span>${L(pl.ko, pl.en)}</span>` : `GPGB <span>${L(pl.ko, pl.en)}</span>`}${on ? `<em class="badge ok">${L('구독 중', 'Subscribed')}</em>` : ''}</h2>
+      <div class="grid3">${pl.parts.map(prod).map(p => {
+        const open = on, ext = open && GPFIS_SAMPLE[p.id];
+        return `<a class="tile ${open ? '' : 'locked'}" href="${ext || (open ? `#/play/${p.id}` : '#')}" ${ext ? 'target="_blank" rel="noopener"' : ''} data-tile="${pl.id}">
           ${artBox(p.id)}
           ${open ? '' : `<span class="badge lock lockmark">🔒 ${L('구독 전', 'Not subscribed')}</span>`}
           <div class="cap"><b>${p.name}</b>${open ? `<span class="prog" style="min-width:110px"><span class="bar ${art(p.id)}"><i style="width:${Math.round(kid.progress[p.id] / p.total * 100)}%"></i></span>${kid.progress[p.id]}/${p.total}${unit(p)}</span>` : `<span class="btn primary" style="padding:4px 12px">${L('구독하기', 'Subscribe')}</span>`}</div>
-        </a>`; }).join('')}</div>
+        </a>`; }).join('')}</div></section>`; }).join('')}
       <div class="panel" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
         <div style="flex:1;min-width:220px"><b>${L('부모님 화면', 'Parent area')}</b><br><span class="dim">${L('구독 관리, 결제 내역, 학습 리포트, 쿠폰, 가족 프로필, 개인정보 동의', 'Subscriptions, payments, learning reports, coupons, family profiles, privacy consent')}</span></div>
         <a class="btn" href="#/family/subs">${L('부모님 화면 열기', 'Open the parent area')} →</a>
@@ -626,10 +628,10 @@
       <a href="#/family">← ${L('아이 화면으로', 'Back to the children')}</a></aside>`;
     let body = '';
     if (tab === 'subs') {
-      const monthly = P.filter(p => fam.subs[p.id] && fam.subs[p.id].status === 'active').reduce((a, p) => a + p.price, 0);
+      const monthly = API.PLANS.filter(p => fam.subs[p.id] && fam.subs[p.id].status === 'active').reduce((a, p) => a + p.price, 0);
       body = `<h1>${L('구독 관리', 'Subscriptions')}</h1><p class="sub">${L('상품마다 따로 구독하고 따로 해지할 수 있어요.', 'Each product is subscribed to and cancelled on its own.')}</p>
       <div class="panel scroll"><table><tr><th>${L('상품', 'Product')}</th><th>${L('상태', 'Status')}</th><th>${L('결제 수단', 'Method')}</th><th>${L('다음 결제일', 'Next payment')}</th><th class="num">${L('월 요금', 'Per month')}</th><th></th></tr>
-      ${P.map(p => { const s = fam.subs[p.id];
+      ${API.PLANS.map(p => { const s = fam.subs[p.id];
         if (!s) return `<tr><td><span class="chip ${p.id}">${p.name}</span></td><td><span class="badge muted">${L('구독 전', 'Not subscribed')}</span></td><td class="dim">-</td><td class="dim">-</td><td class="num">${won(p.price)}</td><td><button class="btn primary" data-buy="${p.id}">${L('구독하기', 'Subscribe')}</button></td></tr>`;
         return `<tr><td><span class="chip ${p.id}">${p.name}</span></td><td>${s.status === 'active' ? `<span class="badge ok">${L('구독 중', 'Active')}</span>` : `<span class="badge warn">${L('해지 예약', 'Cancelled, open until end')}</span>`}</td><td>${esc(dv(s.method))}</td><td>${s.status === 'active' ? s.next : L(s.next + '까지 이용', 'Open until ' + s.next)}</td><td class="num">${won(p.price)}</td>
           <td>${s.status === 'active' ? `<button class="btn" data-cancel="${p.id}">${L('해지', 'Cancel')}</button>` : `<button class="btn" data-resume="${p.id}">${L('다시 구독', 'Resume')}</button>`}</td></tr>`; }).join('')}
@@ -643,7 +645,7 @@
     } else if (tab === 'reports') {
       body = `<h1>${L('학습 리포트', 'Learning reports')}</h1><p class="sub">${L('이번 달 아이별·상품별 진도예요. 자세한 리포트는 각 상품 안의 부모님 화면에 있어요.', 'This month\'s progress per child and product. Detailed reports are in each product\'s own parent area.')}</p>
       <div class="grid2">${fam.children.map(c => `<div class="panel"><h2><span><img class="mini-face" src="${face(c.face)}" alt="">${esc(c.name)} <span class="dim" style="font-weight:400">· ${L('레벨', 'Level')} ${c.level}</span></span></h2>
-        ${P.map(p => { const s = fam.subs[p.id]; return `<div style="display:grid;gap:4px;margin-bottom:12px"><span class="chip ${p.id}" style="justify-self:start">${p.name}</span>
+        ${API.PLANS.flatMap(pl => pl.parts.map(id => [prod(id), fam.subs[pl.id]])).map(([p, s]) => { return `<div style="display:grid;gap:4px;margin-bottom:12px"><span class="chip ${p.id}" style="justify-self:start">${p.name}</span>
           ${s ? `<div class="prog"><span class="bar ${art(p.id)}"><i style="width:${Math.round(c.progress[p.id] / p.total * 100)}%"></i></span>${c.progress[p.id]}/${p.total}${unit(p)}</div>` : `<span class="dim" style="font-size:13px">${L('구독하지 않은 상품', 'Not subscribed')}</span>`}</div>`; }).join('')}
       </div>`).join('')}</div>`;
     } else if (tab === 'coupons') {
@@ -722,7 +724,7 @@
         <div class="card"><span class="chip ${id}" style="justify-self:center">${who ? esc(who) : L('구독 중', 'Subscribed')}</span>
           <h1 style="font:600 30px var(--round)">${p.name}</h1>
           ${id === 'library' ? '' : `<p style="margin:0">${L(`여기서 ${p.name}이(가) 열려요. 이 샘플은 정문과 계정만 보여 주고, 상품 내용은 각 프로젝트에서 만들어요.`, `${p.name} opens here. This sample only shows the front door and accounts; each product is built in its own project.`)}</p>`}
-          ${id === 'library' ? `<a class="btn primary big" style="justify-self:center" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('데모 열기', 'Open the demo')} ↗</a>` : `<span class="dim" hidden>${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
+          ${id === 'library' ? `<a class="btn primary big" style="justify-self:center" href="https://gp-eis.github.io/gb-magic-library/" target="_blank" rel="noopener">${L('데모 열기', 'Open the demo')} ↗</a>` : GPFIS_SAMPLE[id] ? `<a class="btn primary big" style="justify-self:center" href="${GPFIS_SAMPLE[id]}" target="_blank" rel="noopener">${L('열기', 'Open')} ↗</a>` : `<span class="dim" hidden>${L('아직 만드는 중 (Fresh Math 계획 단계, Let’s Go Readers)', 'Not built yet (Fresh Math is at the plan stage; Let’s Go Readers is being prepared)')}</span>`}
         </div></div></div>`;
     bindCommon();
   }
@@ -876,7 +878,7 @@
       ${TABS.map(([k, n]) => `<a href="#/staff${k ? '/' + k : ''}" class="${k === tab || (k === 'schools' && tab === 'school') || (k === 'families' && tab === 'family') ? 'on' : ''}">${n}</a>`).join('')}</aside>`;
     const allReceipts = o.families.flatMap(f => f.receipts.map(r => ({ ...r, fam: f.name, famId: f.id })));
     const pname = id => prod(id).name.replace('GB Magic ', '');
-    const famSubs = f => P.filter(p => f.subs[p.id]).map(p => `<span class="chip ${p.id}">${pname(p.id)}${f.subs[p.id].status === 'cancelled' ? L(' (해지 예약)', ' (cancelled)') : ''}</span>`).join(' ') || `<span class="dim">${L('없음', 'None')}</span>`;
+    const famSubs = f => [...P, prod('gpfis')].filter(p => f.subs[p.id]).map(p => `<span class="chip ${p.id}">${pname(p.id)}${f.subs[p.id].status === 'cancelled' ? L(' (해지 예약)', ' (cancelled)') : ''}</span>`).join(' ') || `<span class="dim">${L('없음', 'None')}</span>`;
     let body = '';
     if (!tab) {
       const active = o.families.reduce((a, f) => a + Object.values(f.subs).filter(s => s.status === 'active').length, 0);
@@ -926,7 +928,7 @@
       body = `<a href="#/staff/families" class="dim">← ${L('가정 회원', 'Families')}</a><h1>${f.name}</h1><p class="sub">${f.email} · ${f.login} · ${L('동의', 'consent')} ${f.consent.date} · ${L('마케팅 수신', 'marketing')} ${f.consent.marketing ? L('예', 'yes') : L('아니요', 'no')}</p>
       <div class="grid2">
         <div class="panel"><h2>${L('아이', 'Children')}</h2><table>${f.children.map(c => `<tr><td><img class="mini-face" src="${face(c.face)}" alt="">${esc(c.name)}</td><td>${L('레벨', 'Level')} ${c.level}</td><td>${c.fromSchool ? L('기관에서 연결', 'Linked from school') : ''}</td></tr>`).join('')}</table></div>
-        <div class="panel"><h2>${L('구독', 'Subscriptions')}</h2><table>${P.filter(p => f.subs[p.id]).map(p => `<tr><td><span class="chip ${p.id}">${p.name}</span></td><td>${f.subs[p.id].status === 'active' ? L('구독 중', 'Active') : L('해지 예약', 'Cancelled')}</td><td>${esc(dv(f.subs[p.id].method))}</td><td>${f.subs[p.id].next}</td></tr>`).join('') || `<tr><td class="dim">${L('구독 없음', 'No subscriptions')}</td></tr>`}</table></div>
+        <div class="panel"><h2>${L('구독', 'Subscriptions')}</h2><table>${[...P, prod('gpfis')].filter(p => f.subs[p.id]).map(p => `<tr><td><span class="chip ${p.id}">${p.name}</span></td><td>${f.subs[p.id].status === 'active' ? L('구독 중', 'Active') : L('해지 예약', 'Cancelled')}</td><td>${esc(dv(f.subs[p.id].method))}</td><td>${f.subs[p.id].next}</td></tr>`).join('') || `<tr><td class="dim">${L('구독 없음', 'No subscriptions')}</td></tr>`}</table></div>
       </div>
       <div class="panel scroll"><h2>${L('결제', 'Payments')}</h2><table>${f.receipts.map(r => `<tr><td>${r.date}</td><td>${esc(dv(r.item))}</td><td>${esc(dv(r.method))}</td><td class="num">${won(r.amount)}</td><td><button class="btn" data-x>${L('환불', 'Refund')}</button></td></tr>`).join('') || `<tr><td class="dim">${L('결제 없음', 'No payments')}</td></tr>`}</table></div>
       <div class="form-row"><button class="btn" data-x>${L('구독 직접 켜기 (오류 시)', 'Switch a subscription on by hand (if something broke)')}</button><button class="btn" data-x>${L('쿠폰 보내기', 'Send a coupon')}</button><button class="btn" data-x>${L('탈퇴 처리 (데이터 삭제)', 'Close account (delete data)')}</button></div>
@@ -1088,10 +1090,10 @@
     const prog = (cls, name, line, extra) => out.push({ cls, name, line, extra: extra || '', group });
     group = 'GPFIS'; out.push({ cls: 'p-eps', name: 'EPS / ECS', label: 'EPS / ECS', group, line: L('EPS · ECS 교재, 24개월 과정', 'EPS and ECS books, a 24-number course'), extra: '' });   // 20 Nov 2026
     group = 'GPFIS'; prog('p-pbl', 'Start PBL', L('<b>Speech</b> · 주제를 탐구하고 프로젝트 결과를 영어로 발표해요.', '<b>Speech</b> · Children explore a theme and present their project in English.'),   // 23 Nov 2026: speaking first (boss)
-          `<p>${L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!')}</p><p>${L('주제를 중심으로 동화, 과학, 수학, 자연, 역사, 문화 등 다양한 영역을 연결합니다.', 'Each theme links stories, science, maths, nature, history and culture.')}</p>` + steps([['Listen', L('다양한 맥락에서 영어를 듣고', 'hear English in many contexts')], ['Understand', L('내용을 이해하고 지식을 넓히며', 'understand and widen knowledge')], ['Explore', L('질문하고 탐구하고', 'ask and explore')], ['Speak', L('자신의 생각을 영어로 표현합니다', 'say their own ideas in English')]]));
+          `<p>${L('하나의 주제, 다양한 이야기, 확장되는 영어 사고력!', 'One theme, many stories, growing thinking in English!')}</p>` + steps([['Listen', L('다양한 맥락에서 영어를 듣고', 'hear English in many contexts')], ['Understand', L('내용을 이해하고 지식을 넓히며', 'understand and widen knowledge')], ['Explore', L('질문하고 탐구하고', 'ask and explore')], ['Speak', L('자신의 생각을 영어로 표현합니다', 'say their own ideas in English')]]));
     group = 'GPFIS'; prog('p-lgr', "Let’s Go Readers", L('<b>Speaking</b> · 읽기를 통해 문장을 이해하고, 문법을 적용하여 바르게 말해요.', '<b>Speaking</b> · Children understand sentences through reading and say them correctly, using the grammar.'), `<p>${L('Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', 'A reading programme that includes Reading Phonics.')}</p>`);
     group = 'GPFIS'; prog('p-fm', 'Fresh Math', L('<b>Discussion</b> · 수학적 근거를 들어 설명하고 토론해요.', '<b>Discussion</b> · Children explain with mathematical reasons and discuss.'),
-          `<p>${L('숲에서 발견하는 수학, 놀이로 키우는 사고력', 'Maths found in the forest, thinking grown through play')}</p><p>${L('자연물을 살펴보고 직접 비교하고 분류하며 수학 개념을 경험합니다.', 'Children look closely at things from nature, compare and sort them, and meet maths ideas.')}</p>` + steps([['Count', L('세어 보기', 'count')], ['Compare', L('크기·길이 비교하기', 'compare size and length')], ['Sort', L('모양과 특징에 따라 분류하기', 'sort by shape and feature')], ['Find patterns', L('자연 속 규칙 찾기', 'find patterns in nature')], ['Measure & build', L('재고 구성하며 만들기', 'measure and build')]]));
+          steps([['Count', L('세어 보기', 'count')], ['Compare', L('크기·길이 비교하기', 'compare size and length')], ['Sort', L('모양과 특징에 따라 분류하기', 'sort by shape and feature')], ['Find patterns', L('자연 속 규칙 찾기', 'find patterns in nature')], ['Measure & build', L('재고 구성하며 만들기', 'measure and build')]]));
     out.filter(p => p.group === 'GPFIS' && p.cls !== 'p-eps').forEach(p => out.push({ ...p, cls: 'k' + p.cls.slice(1), group: 'Kindergarten', as: p.cls, ...KNAME[p.cls], extra: `<p class="k-only">${PARTNER()}</p><p>${L('유치부 협력 기관에서 쓰는 GP 교재예요. 레벨과 번호에 따라 볼 수 있어요.', 'The GP books used at partner kindergartens, by level and number.')}</p>` }));
     group = 'GPGB'; prog('p-gb', 'GB Magic Library', L('144권의 책에서 시작하는 읽기·탐구·영어 글쓰기', 'Reading, exploring and English writing, starting from 144 books'),
           `<p>${L('다양한 그림책과 동화를 읽고 이야기의 의미와 관점을 살펴보며 자신의 생각을 말과 글로 표현합니다.', 'Children read picture books and stories, look at their meaning and points of view, and put their own thoughts into speech and writing.')}</p>` +

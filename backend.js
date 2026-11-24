@@ -18,6 +18,13 @@
       line: 'Reading Phonics가 함께 들어 있는 읽기 프로그램이에요.', unit: '활동', total: 8,
       lineEn: 'A reading programme that includes Reading Phonics. Details are being prepared.', unitEn: ' activities' }
   ];
+  // 24 Nov 2026: what a family actually buys. GPFIS is one subscription that opens three programmes.
+  const PBL = { id: 'pbl', name: 'Start PBL', ko: '스타트 PBL', price: 35000, color: 'pbl', line: '', unit: '미션', total: 12, lineEn: '', unitEn: ' missions' };
+  const PLANS = [
+    { id: 'gpfis', name: 'GPFIS', ko: '창의사교력 프로그램', en: 'Creative social-thinking programme', price: 35000, parts: ['pbl', 'phonics', 'math'] },
+    { id: 'library', name: 'GB Magic Library', ko: '독서 프로그램', en: 'Reading programme', price: 50000, parts: ['library'] }
+  ];
+  const planOf = id => PLANS.find(pl => pl.id === id || pl.parts.includes(id));
   const BUNDLE = 99000;   // example only: the three subscribable programmes cost 120,000 separately (GPKIS 35,000 each, GPPIS 50,000 each)
 
   function seed() {
@@ -33,7 +40,7 @@
       lastPlayed: i % 5 === 3 ? '2주 전' : (i % 3 === 0 ? '오늘' : (i % 3 === 1 ? '어제' : '3일 전'))
     }));
     return {
-      version: 8,
+      version: 9,
       // Other schools, as GP staff see them in the list (only the first school is filled in for the sample).
       otherSchools: [
         { id: 'sch2', name: '별빛 영어학원 (분당)', admin: '한실장', products: ['math', 'phonics'], seats: 30, used: 27, status: '이용 중', paid: '입금 완료', to: '2028-02-29' },
@@ -81,16 +88,16 @@
         kim: {
           id: 'kim', name: '김지민', email: 'parent@example.com', login: 'kakao',
           children: [
-            { id: 'k1', name: '하준', face: 'gerry', level: 'B', progress: { library: 7, math: 3, phonics: 0 } },
-            { id: 'k2', name: '소율', face: 'penny', level: 'A', progress: { library: 4, math: 1, phonics: 0 } }
+            { id: 'k1', name: '하준', face: 'gerry', level: 'B', progress: { library: 7, math: 3, phonics: 5, pbl: 6 } },
+            { id: 'k2', name: '소율', face: 'penny', level: 'A', progress: { library: 4, math: 1, phonics: 2, pbl: 3 } }
           ],
           subs: {
             library: { status: 'active', since: '2027-03-02', next: plusMonth(t), method: '카카오페이' },
-            math: { status: 'active', since: '2027-03-02', next: plusMonth(t), method: '신용카드 ****1234' }
+            gpfis: { status: 'active', since: '2027-03-02', next: plusMonth(t), method: '신용카드 ****1234' }
           },
           receipts: [
-            { date: '2027-03-02', item: 'GB Magic Library 3월', amount: 29000, method: '카카오페이' },
-            { date: '2027-03-02', item: 'Fresh Math 3월', amount: 29000, method: '신용카드 ****1234' }
+            { date: '2027-03-02', item: 'GB Magic Library 3월', amount: 50000, method: '카카오페이' },
+            { date: '2027-03-02', item: 'GPFIS 3월 (Start PBL · Let’s Go Readers · Fresh Math)', amount: 35000, method: '신용카드 ****1234' }
           ],
           coupons: [
             { id: 'cp1', title: '굿즈 10% 할인', why: '하준 · Fresh Math 3월 숲 수료증', code: 'FM10-7Q2K-9XA', until: '2027-05-31', used: false }
@@ -122,7 +129,7 @@
   }
 
   function load() {
-    try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && d.version === 8) return d; } catch (e) {}
+    try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && d.version === 9) return d; } catch (e) {}
     const d = seed(); save(d); return d;
   }
   function save(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} }
@@ -133,7 +140,7 @@
   const fam = () => db.families.kim;
 
   window.API = {
-    PRODUCTS, BUNDLE,
+    PRODUCTS, BUNDLE, PLANS, PBL, planOf,
     session: () => session,
     reset() { db = seed(); save(db); setSession(null); },
 
@@ -143,10 +150,10 @@
 
     // Parent
     async family() { await wait(200); return JSON.parse(JSON.stringify(fam())); },
-    async hasProduct(id) { await wait(80); const s = fam().subs[id]; return !!s && s.status !== 'ended'; },
+    async hasProduct(id) { await wait(80); const pl = planOf(id), s = fam().subs[id] || (pl && fam().subs[pl.id]); return !!s && s.status !== 'ended'; },
     async subscribe(id, method) {
       await wait(1200);
-      const p = PRODUCTS.find(x => x.id === id), t = today();
+      const p = PLANS.find(x => x.id === id) || PRODUCTS.find(x => x.id === id), t = today();
       fam().subs[id] = { status: 'active', since: t, next: plusMonth(t), method };
       fam().receipts.unshift({ date: t, item: p.name + ' 첫 달', amount: p.price, method });
       save(db); return fam().subs[id];
@@ -156,7 +163,7 @@
     async addChild(name, face) {
       await wait(400); const f = fam();
       if (f.children.length >= 4) throw new Error('아이는 4명까지 등록할 수 있어요.');
-      f.children.push({ id: 'k' + Date.now(), name, face, level: 'A', progress: { library: 0, math: 0, phonics: 0 } });
+      f.children.push({ id: 'k' + Date.now(), name, face, level: 'A', progress: { library: 0, math: 0, phonics: 0, pbl: 0 } });
       save(db); return f.children;
     },
 
