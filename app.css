@@ -1977,3 +1977,11 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 @media (max-width: 1100px) { .bp-curr { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 800px) { .bp-curr { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .bp-curr { grid-template-columns: minmax(0, 1fr); } }
+
+/* 24 Nov (user): Play Kinder 구독하기 / 맛보기 the same size as the GPFIS ones */
+.stripe-kinder .kbtns .actions { gap: 8px; }
+.stripe-kinder .kbtns .actions .btn { font-size: 16px; padding: 9px 18px; }
+
+/* 24 Nov (user): ELS K in two rows of six on PC */
+@media (min-width: 761px) { .bp-shelf.six .bp-shelf-row { display: grid; grid-template-columns: repeat(6, max-content); justify-content: start; } }
+.bprog.p-gb .bprog-text .lead > b:first-child { background: var(--c-gb); }
