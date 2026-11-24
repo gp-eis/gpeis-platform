@@ -362,6 +362,79 @@
   const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html', pbl: GPFIS_LIVE + 'pbl/index.html' };
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
+  /* Play Kinder Speaking Book (boss, 24 Nov 2026): like Start PBL's Speech Book. Each activity = one spread:
+     left the real Park Ranger worksheet page, right the recording page (choose a word, say the sentence, words turn
+     green as they are heard, 1-3 stars, hear your own voice). Recordings stay in this browser only (sample). */
+  const KB = [
+    { src: 1, half: 'r', title: 'Now you!', q: "What's your job?", say: 'I am ___.', choices: ['a park ranger', 'a baker', 'a farmer'] },
+    { src: 2, half: 'r', title: 'What do you protect?', q: 'What do you protect?', say: 'I protect the ___.', choices: ['trees', 'animals', 'rivers'] },
+    { src: 3, half: 'r', title: 'What can we see?', q: 'What can we see in the park?', say: 'We can see ___.', choices: ['animals', 'rivers', 'forests'] },
+    { src: 4, half: 'l', title: 'Let’s protect the forests.', q: 'What do park rangers do?', say: 'Let’s protect the forests.' },
+    { src: 5, half: 'l', title: 'What is a national park?', q: 'What is a national park?', say: 'It is a protected place.' },
+    { src: 6, half: 'r', title: 'Look at the animals!', q: 'What animal do you see?', say: 'I see ___.', choices: ['a monkey', 'a giraffe', 'an elephant', 'a lion'] }];
+  const kbPage = a => `background-image:url(assets/worksheets/ees-park-ranger-${a.src}.png);background-position:${a.half === 'r' ? '100%' : '0'} 0`;
+  const kbState = KB.map(a => ({ pick: a.choices ? a.choices[0] : '', stars: 0, url: '', heard: [] }));
+  const kbWords = s => s.toLowerCase().replace(/[’']/g, '').replace(/[^a-z ]/g, ' ').split(/\s+/).filter(Boolean);
+  function kinderBook(start) {
+    let n = start, rec = null, sr = null, timer = null;
+    const ov = document.createElement('div'); ov.className = 'kb-ov'; document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+    const close = () => { stop(); ov.remove(); document.body.style.overflow = ''; };
+    const sentence = i => KB[i].say.replace('___', kbState[i].pick);
+    function stop() { try { sr && sr.stop(); } catch (e) {} try { rec && rec.state !== 'inactive' && rec.stop(); } catch (e) {} clearTimeout(timer); }
+    function draw() {
+      const a = KB[n], st = kbState[n], words = sentence(n).split(' '), heard = new Set(st.heard);
+      ov.innerHTML = `<div class="kb-book" role="dialog" aria-label="Speaking Book">
+        <button class="kb-x" aria-label="${L('닫기', 'Close')}">✕</button>
+        <div class="kb-lp" style="${kbPage(a)}"></div>
+        <div class="kb-rp">
+          <p class="kb-n">${n + 1} / ${KB.length}</p>
+          <h3>${a.q}</h3>
+          ${a.choices ? `<div class="kb-chips">${a.choices.map(c => `<button class="${c === st.pick ? 'on' : ''}" data-pick="${c}">${c}</button>`).join('')}</div>` : ''}
+          <div class="kb-say">${words.map(w => `<span class="${st.heard.length ? (heard.has(kbWords(w)[0]) ? 'g' : 'p') : ''}">${w}</span>`).join(' ')}</div>
+          <div class="kb-row"><button class="kb-mic">${L('🎤 말하기', '🎤 Say it!')}</button><div class="kb-stars">${[1, 2, 3].map(k => `<i class="${k <= st.stars ? 'on' : ''}">★</i>`).join('')}</div></div>
+          <p class="kb-msg"></p>
+          <div class="kb-row">${st.url ? `<button class="kb-listen">▶ ${L('내 목소리 듣기', 'Listen to me!')}</button>` : ''}</div>
+          <div class="kb-nav"><button class="kb-prev" ${n ? '' : 'disabled'}>‹ ${L('이전', 'Back')}</button>
+            <span class="kb-dots">${KB.map((x, i) => `<i class="${i === n ? 'on' : kbState[i].stars ? 'done' : ''}"></i>`).join('')}</span>
+            <button class="kb-next">${n < KB.length - 1 ? L('다음', 'Next') + ' ›' : L('다 했어요!', 'All done!')}</button></div>
+        </div></div>`;
+      ov.querySelector('.kb-x').onclick = close;
+      ov.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { st.pick = b.dataset.pick; st.heard = []; st.stars = 0; draw(); });
+      ov.querySelector('.kb-prev').onclick = () => { stop(); n--; draw(); };
+      ov.querySelector('.kb-next').onclick = () => { stop(); if (n < KB.length - 1) { n++; draw(); } else close(); };
+      const ls = ov.querySelector('.kb-listen'); if (ls) ls.onclick = () => new Audio(st.url).play().catch(() => {});
+      ov.querySelector('.kb-mic').onclick = e => listen(e.currentTarget);
+    }
+    async function listen(btn) {
+      const msg = ov.querySelector('.kb-msg'), st = kbState[n], target = kbWords(sentence(n));
+      if (btn.classList.contains('on')) { stop(); return; }
+      let stream;
+      try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+      catch (e) { msg.textContent = L('마이크를 쓸 수 있게 허락해 주세요.', 'Please allow the microphone.'); return; }
+      btn.classList.add('on'); btn.textContent = L('■ 듣고 있어요…', '■ Listening…'); msg.textContent = '';
+      const chunks = []; rec = new MediaRecorder(stream); rec.ondataavailable = e => chunks.push(e.data);
+      let heard = [];
+      rec.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        const got = target.filter(w => heard.includes(w)).length, SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const stars = !SR ? 3 : got >= target.length ? 3 : got >= Math.ceil(target.length * 0.6) ? 2 : got ? 1 : 0;
+        if (stars >= st.stars) { st.stars = stars; st.heard = SR ? heard : target; if (st.url) URL.revokeObjectURL(st.url); st.url = URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' })); }
+        draw();
+        ov.querySelector('.kb-msg').textContent = stars === 3 ? L('아주 잘했어요!', 'Great job!') : stars ? L('잘했어요! 한 번 더 해 볼까요?', 'Good try! Say it again?') : L('잘 안 들렸어요. 크게 말해 봐요!', "I couldn't hear you. Say it loudly!");
+      };
+      try { rec.start(); } catch (e) { stream.getTracks().forEach(t => t.stop()); btn.classList.remove('on'); btn.textContent = L('🎤 말하기', '🎤 Say it!'); msg.textContent = L('녹음을 시작할 수 없어요. 다시 눌러 주세요.', 'Recording could not start. Press again.'); return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR) {
+        sr = new SR(); sr.lang = 'en-US'; sr.interimResults = true; sr.continuous = false;
+        sr.onresult = e => { heard = kbWords([...e.results].map(r => r[0].transcript).join(' '));
+          ov.querySelectorAll('.kb-say span').forEach(s => s.className = heard.includes(kbWords(s.textContent)[0]) ? 'g' : ''); };
+        sr.onend = () => { try { rec.state !== 'inactive' && rec.stop(); } catch (e) {} };
+        try { sr.start(); } catch (e) {}
+      }
+      timer = setTimeout(stop, 8000);
+    }
+    draw();
+  }
   /* Play Kinder 맛보기 (boss, 24 Nov 2026): three sample story videos; one big player, three pictures to switch */
   function kinderSample() {
     const V = [['Hide-and-Seek', 1], ['It’s Our Home, Too!', 2], ['Birdie’s Present', 3]];
@@ -370,8 +443,16 @@
       <div class="ks-head">${KLOGO}<span>${L('맛보기', 'Sample')}</span></div>
       <div class="ks-player"><video id="ksVideo" controls playsinline preload="metadata" poster="assets/kinder/sample-1.webp" src="assets/kinder/sample-1.mp4"></video></div>
       <div class="ks-list">${V.map(([t, n], i) => `<button class="ks-item ${i ? '' : 'on'}" data-v="${n}"><img src="assets/kinder/sample-${n}.webp" alt=""><b>${n}</b><span>${t}</span></button>`).join('')}</div>
+      <section class="kb-sec">
+        <h2>Speaking Book <span>${L('Park Ranger 워크시트로 말해 봐요', 'Speak with the Park Ranger worksheet')}</span></h2>
+        <div class="kb-shelf">
+          <button class="kb-cover" data-kb="0" aria-label="${L('Speaking Book 열기', 'Open the Speaking Book')}"><span>Park Ranger · Speaking Book</span></button>
+          <p class="kb-hint">${L('표지를 눌러 책을 열어요.', 'Tap the cover to open the book.')}</p>
+        </div>
+      </section>
     </main>${foot()}`;
     bindCommon();
+    $app.querySelectorAll('[data-kb]').forEach(b => b.onclick = () => kinderBook(+b.dataset.kb));
     const vid = document.getElementById('ksVideo');
     $app.querySelectorAll('.ks-item').forEach(b => b.onclick = () => {
       $app.querySelectorAll('.ks-item').forEach(x => x.classList.toggle('on', x === b));
