@@ -359,7 +359,13 @@
   /* ---------- GPFIS 맛보기 (21 Nov 2026): the kids' site is live, so the GPFIS sample buttons open it in a new tab.
      Story Street is the front door; Fresh Math and Let's Go Readers open their own worlds inside it. (gpfis-site/tools/publish.cjs) ---------- */
   const GPFIS_LIVE = 'https://gp-eis.github.io/gpfis-kids/';
-  const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html', pbl: GPFIS_LIVE + 'pbl/index.html' };
+  /* FOR NOW (user, 24 Nov 2026): every GPFIS 맛보기 opens with WEEK 1 ALREADY FINISHED (the demo child: drawings, books,
+     recordings, reports), by going through the kids' site's quiet entrance demo/fill.html?go=sample.
+     TO REVERT when she says so: set GPFIS_DEMO to false. Nothing else needs changing. */
+  const GPFIS_DEMO = true;
+  const gpfisTo = to => GPFIS_DEMO ? GPFIS_LIVE + 'demo/fill.html?go=sample' + (to ? '&to=' + encodeURIComponent(to) : '') : GPFIS_LIVE + (to || '');
+  const GPFIS_HOME = gpfisTo('');
+  const GPFIS_SAMPLE = { math: gpfisTo('fm/index.html'), phonics: gpfisTo('lgr/kingdom.html'), pbl: gpfisTo('pbl/index.html') };
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
   /* Play Kinder Speaking Book (boss, 24 Nov 2026): like Start PBL's Speech Book. Each activity = one spread:
@@ -572,7 +578,7 @@
         <div class="products">${kinderBox()}</div>
       </section>
       ${group('GPFIS', '', [pblCard(), buyCard(prod('phonics')), buyCard(prod('math'))], '', `<span>${L('창의사교력 프로그램', 'Creative social-skills programmes')}</span> <b class="g-price">₩35,000 <small>/ ${L('월', 'mo')}</small></b>`,
-        `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="${GPFIS_LIVE}" target="_blank" rel="noopener">${L('맛보기', 'Sample')}</a></div>`)}
+        `<div class="g-actions"><button class="btn primary" id="gpfisBuy">${L('구독하기', 'Subscribe')}</button><a class="btn" href="${GPFIS_HOME}" target="_blank" rel="noopener">${L('맛보기', 'Sample')}</a></div>`)}
       ${group('GPGB', L('독서 프로그램', 'Reading programme'), [buyCard(prod('library'))])}
       ${group('GPPIS', L('글로벌 미래역량 프로그램', 'Global future-skills programmes'), [soonCard('Math Lab', '매스 랩'), soonCard('Logic Essay', '로직 에세이')])}
       ${divider()}
