@@ -1952,3 +1952,8 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .chip.pbl, .chip.gpfis { background: #efe7f8; color: var(--pbl); }
 .myplan .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 700px) { .myplan .grid3 { grid-template-columns: minmax(0, 1fr); } }
+/* 24 Nov (user): the GPFIS cards on the parent page show the new kids' site worlds (airship, Gemstone kingdom, space) */
+.myplan .art.pbl { background: url(assets/gpfis-cards/start-pbl.webp) center / cover; }
+.myplan .art.phonics { background: url(assets/gpfis-cards/lets-go-readers.webp) center / cover; }
+.myplan .art.phonics span { display: none; }
+.myplan .art.math { background: url(assets/gpfis-cards/fresh-math.webp) center / cover; }
