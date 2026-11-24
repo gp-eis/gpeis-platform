@@ -362,7 +362,25 @@
   const GPFIS_SAMPLE = { math: GPFIS_LIVE + 'fm/index.html', phonics: GPFIS_LIVE + 'lgr/kingdom.html', pbl: GPFIS_LIVE + 'pbl/index.html' };
 
   /* ---------- 2027년 1월 OPEN: what every 맛보기 shows until the programmes open (boss, 19 Nov 2026) ---------- */
+  /* Play Kinder 맛보기 (boss, 24 Nov 2026): three sample story videos; one big player, three pictures to switch */
+  function kinderSample() {
+    const V = [['Hide-and-Seek', 1], ['It’s Our Home, Too!', 2], ['Birdie’s Present', 3]];
+    $app.innerHTML = topbar(authNav()) + `
+    <main class="wrap ks">
+      <div class="ks-head">${KLOGO}<span>${L('맛보기', 'Sample')}</span></div>
+      <div class="ks-player"><video id="ksVideo" controls playsinline preload="metadata" poster="assets/kinder/sample-1.webp" src="assets/kinder/sample-1.mp4"></video></div>
+      <div class="ks-list">${V.map(([t, n], i) => `<button class="ks-item ${i ? '' : 'on'}" data-v="${n}"><img src="assets/kinder/sample-${n}.webp" alt=""><b>${n}</b><span>${t}</span></button>`).join('')}</div>
+    </main>${foot()}`;
+    bindCommon();
+    const vid = document.getElementById('ksVideo');
+    $app.querySelectorAll('.ks-item').forEach(b => b.onclick = () => {
+      $app.querySelectorAll('.ks-item').forEach(x => x.classList.toggle('on', x === b));
+      vid.poster = `assets/kinder/sample-${b.dataset.v}.webp`; vid.src = `assets/kinder/sample-${b.dataset.v}.mp4`;
+      vid.play().catch(() => {}); vid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
   function openSoon(key) {
+    if (key === 'kinder') return kinderSample();
     const sep = key === 'math-lab' || key === 'logic-essay';   // GPPIS opens in January 2028 (boss, 20 Nov; was September 2027)
     const logo = key === 'gpfis' ? `<div class="op-logos">${['pbl', 'phonics', 'math'].map(k => `<img src="${PROD_LOGO[k]}" alt="">`).join('')}</div>` : PROD_LOGO[key] ? `<img class="op-logo" src="${PROD_LOGO[key]}" alt="">` : '';
     $app.innerHTML = topbar(authNav()) + `

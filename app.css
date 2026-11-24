@@ -1989,3 +1989,18 @@ html[lang="en"] .bp-lead { max-width: 36em; }
 .bp-curr li { background: color-mix(in srgb, var(--c-pbl) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-pbl) 35%, transparent); }
 .bprog.p-lgr .bp-curr li { background: color-mix(in srgb, var(--c-lgr) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-lgr) 35%, transparent); }
 .bprog.p-fm .bp-curr li { background: color-mix(in srgb, var(--c-fm) 13%, #fff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-fm) 35%, transparent); }
+
+/* 24 Nov (boss): Play Kinder 맛보기 = three sample videos */
+.ks { padding-block: 28px 56px; display: grid; gap: 18px; max-width: 1040px; }
+.ks-head { display: flex; align-items: baseline; gap: 14px; font: 700 34px/1.1 var(--round); }
+.ks-head > span:last-child { font: 600 20px var(--sans); color: var(--ink); }
+.ks-player { border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(21, 30, 75, .15); }
+.ks-player video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.ks-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.ks-item { position: relative; display: grid; gap: 8px; padding: 8px 8px 12px; border: 2px solid transparent; border-radius: 16px; background: #fff; cursor: pointer; text-align: left; font: inherit; color: var(--ink); }
+.ks-item img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; display: block; }
+.ks-item b { position: absolute; top: 14px; left: 14px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: #fff; font: 600 15px/1 var(--round); }
+.ks-item span { font: 600 15px/1.3 var(--round); padding-inline: 4px; }
+.ks-item.on { border-color: #6a3fb5; box-shadow: 0 6px 18px rgba(106, 63, 181, .18); }
+.ks-item.on b { background: #6a3fb5; }
+@media (max-width: 600px) { .ks-head { font-size: 26px; } .ks-list { grid-template-columns: minmax(0, 1fr); } .ks-item { grid-template-columns: 140px 1fr; align-items: center; } }
