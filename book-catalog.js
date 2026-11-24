@@ -323,7 +323,7 @@
   }
   /* ---- 24 Nov 2026 (boss): stand-in covers made with ChatGPT in each series' own design (Active Readers 11, Active Literacy 6 9 12,
      Phonics Writing 11-12, EPS gaps). Every Active Literacy and Readers place now shows its own book; real covers replace them
-     when make-kinder-covers.cjs finds the printed PDF (same file names). Originals in _dummy-covers-src. ---- */
+     when make-kinder-covers.cjs finds the printed PDF (same file names). Originals in platform/content/dummy-covers-src. ---- */
   C['k-lgr'].levels.forEach(lvl => {
     const l = lvl.key.toLowerCase(); const s = lvl.shelves.find(x => x.title === 'Active Literacy and Readers'); if (!s || !s.groups || !/^[ab]$/.test(l)) return;
     s.groups.forEach((g, gi) => { g.books = g.books.map((b, bi) => { const n = gi * 3 + bi + 1; return { ...b, img: 'assets/catalog/k/' + (n % 3 === 0 ? 'al-' : 'ar-') + l + n + '.webp', ph: '' }; }); });
